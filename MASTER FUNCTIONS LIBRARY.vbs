@@ -3898,11 +3898,17 @@ FUNCTION write_panel_to_MAXIS_DCEX(DCEX_provider, DCEX_reason, DCEX_subsidy, DCE
 		EMWritescreen DCEX_provider, 6, 47
 		EMWritescreen DCEX_reason, 7, 44
 		EMWritescreen DCEX_subsidy, 8, 44
+		IF len(DCEX_child_number1) = 1 THEN DCEX_child_number1 = "0" & DCEX_child_number1
 		EMWritescreen DCEX_child_number1, 11, 29
+		IF len(DCEX_child_number2) = 1 THEN DCEX_child_number1 = "0" & DCEX_child_number2
 		EMWritescreen DCEX_child_number2, 12, 29
+		IF len(DCEX_child_number3) = 1 THEN DCEX_child_number1 = "0" & DCEX_child_number3
 		EMWritescreen DCEX_child_number3, 13, 29
+		IF len(DCEX_child_number4) = 1 THEN DCEX_child_number1 = "0" & DCEX_child_number4
 		EMWritescreen DCEX_child_number4, 14, 29
+		IF len(DCEX_child_number5) = 1 THEN DCEX_child_number1 = "0" & DCEX_child_number5
 		EMWritescreen DCEX_child_number5, 15, 29
+		IF len(DCEX_child_number6) = 1 THEN DCEX_child_number1 = "0" & DCEX_child_number6
 		EMWritescreen DCEX_child_number6, 16, 29
 		EMWritescreen DCEX_child_number1_ver, 11, 41
 		EMWritescreen DCEX_child_number2_ver, 12, 41
@@ -3937,11 +3943,17 @@ FUNCTION write_panel_to_MAXIS_DCEX(DCEX_provider, DCEX_reason, DCEX_subsidy, DCE
 		IF hc_month = "CURRENT MONTH + 1" THEN
 			PF3
 		ELSE
+			IF len(DCEX_child_number1) = 1 THEN DCEX_child_number1 = "0" & DCEX_child_number1
 			EMWritescreen DCEX_child_number1, 8, 39
+			IF len(DCEX_child_number2) = 1 THEN DCEX_child_number1 = "0" & DCEX_child_number2
 			EMWritescreen DCEX_child_number2, 9, 39
+			IF len(DCEX_child_number3) = 1 THEN DCEX_child_number1 = "0" & DCEX_child_number3
 			EMWritescreen DCEX_child_number3, 10, 39
+			IF len(DCEX_child_number4) = 1 THEN DCEX_child_number1 = "0" & DCEX_child_number4
 			EMWritescreen DCEX_child_number4, 11, 39
+			IF len(DCEX_child_number5) = 1 THEN DCEX_child_number1 = "0" & DCEX_child_number5
 			EMWritescreen DCEX_child_number5, 12, 39
+			IF len(DCEX_child_number6) = 1 THEN DCEX_child_number1 = "0" & DCEX_child_number6
 			EMWritescreen DCEX_child_number6, 13, 39
 			EMWritescreen DCEX_child_number1_pro, 8, 49
 			EMWritescreen DCEX_child_number2_pro, 9, 49
@@ -4570,7 +4582,7 @@ FUNCTION write_panel_to_MAXIS_JOBS(jobs_number, jobs_inc_type, jobs_inc_verif, j
 	END IF
 END FUNCTION
 
-Function write_panel_to_MAXIS_MEDI(SSN_first, SSN_mid, SSN_last, MEDI_claim_number_suffix, MEDI_part_A_premium, MEDI_part_B_premium, MEDI_part_A_begin_date, MEDI_part_B_begin_date)
+Function write_panel_to_MAXIS_MEDI(SSN_first, SSN_mid, SSN_last, MEDI_claim_number_suffix, MEDI_part_A_premium, MEDI_part_B_premium, MEDI_part_A_begin_date, MEDI_part_B_begin_date, MEDI_apply_prem_to_spdn, MEDI_apply_prem_end_date)
 	call navigate_to_screen("STAT", "MEDI")
 	call ERRR_screen_check
 	call create_panel_if_nonexistent
@@ -4582,6 +4594,11 @@ Function write_panel_to_MAXIS_MEDI(SSN_first, SSN_mid, SSN_last, MEDI_claim_numb
 	EMWriteScreen MEDI_part_B_premium, 7, 73
 	If MEDI_part_A_begin_date <> "" then call create_MAXIS_friendly_date(MEDI_part_A_begin_date, 0, 15, 24)
 	If MEDI_part_B_begin_date <> "" then call create_MAXIS_friendly_date(MEDI_part_B_begin_date, 0, 15, 54)
+	EMWriteScreen MEDI_apply_prem_to_spdn, 11, 71
+	IF MEDI_apply_prem_end_date <> "" THEN 
+		EMWriteScreen left(MEDI_apply_prem_end_date, 2), 12, 71
+		EMWriteScreen right(MEDI_apply_prem_end_date, 2), 12, 74
+	END IF
 	transmit
 	transmit
 End function
@@ -4640,9 +4657,15 @@ Function write_panel_to_MAXIS_OTHR(othr_type, othr_cash_value, othr_cash_value_v
 	Emwritescreen right(othr_share_ratio, 1), 15, 54  'enters the ratio of ownership using the right 1 digit of what is entered into the file
 End Function
 
-FUNCTION write_panel_to_MAXIS_PARE(appl_date, PARE_child_1, PARE_child_1_relation, PARE_child_1_verif, PARE_child_2, PARE_child_2_relation, PARE_child_2_verif, PARE_child_3, PARE_child_3_relation, PARE_child_3_verif, PARE_child_4, PARE_child_4_relation, PARE_child_4_verif, PARE_child_5, PARE_child_5_relation, PARE_child_5_verif, PARE_child_6, PARE_child_6_relation, PARE_child_6_verif)
+FUNCTION write_panel_to_MAXIS_PARE(appl_date, reference_number, PARE_child_1, PARE_child_1_relation, PARE_child_1_verif, PARE_child_2, PARE_child_2_relation, PARE_child_2_verif, PARE_child_3, PARE_child_3_relation, PARE_child_3_verif, PARE_child_4, PARE_child_4_relation, PARE_child_4_verif, PARE_child_5, PARE_child_5_relation, PARE_child_5_verif, PARE_child_6, PARE_child_6_relation, PARE_child_6_verif)
 	Call navigate_to_screen("STAT", "PARE") 
-	call create_panel_if_nonexistent
+	CALL write_value_and_transmit(reference_number, 20, 76)
+	EMReadScreen num_of_PARE, 1, 2, 78
+	IF num_of_PARE = "0" THEN 
+		CALL write_value_and_transmit("NN", 20, 79)
+	ELSE
+		PF9
+	END IF
 	CALL create_MAXIS_friendly_date(appl_date, 0, 5, 37)
 	EMWriteScreen DatePart("YYYY", appl_date), 5, 43
 	
@@ -4939,9 +4962,9 @@ End Function
 FUNCTION write_panel_to_MAXIS_SHEL(SHEL_subsidized, SHEL_shared, SHEL_paid_to, SHEL_rent_retro, SHEL_rent_retro_ver, SHEL_rent_pro, SHEL_rent_pro_ver, SHEL_lot_rent_retro, SHEL_lot_rent_retro_ver, SHEL_lot_rent_pro, SHEL_lot_rent_pro_ver, SHEL_mortgage_retro, SHEL_mortgage_retro_ver, SHEL_mortgage_pro, SHEL_mortgage_pro_ver, SHEL_insur_retro, SHEL_insur_retro_ver, SHEL_insur_pro, SHEL_insur_pro_ver, SHEL_taxes_retro, SHEL_taxes_retro_ver, SHEL_taxes_pro, SHEL_taxes_pro_ver, SHEL_room_retro, SHEL_room_retro_ver, SHEL_room_pro, SHEL_room_pro_ver, SHEL_garage_retro, SHEL_garage_retro_ver, SHEL_garage_pro, SHEL_garage_pro_ver, SHEL_subsidy_retro, SHEL_subsidy_retro_ver, SHEL_subsidy_pro, SHEL_subsidy_pro_ver)
 	call navigate_to_screen("STAT", "SHEL")
 	call create_panel_if_nonexistent
-	EMWritescreen SHEL_subsidized, 6, 42
-	EMWritescreen SHEL_shared, 6, 60
-	EMWritescreen SHEL_paid_to, 7, 46
+	EMWritescreen SHEL_subsidized, 6, 46
+	EMWritescreen SHEL_shared, 6, 64
+	EMWritescreen SHEL_paid_to, 7, 50
 	EMWritescreen SHEL_rent_retro, 11, 37
 	EMWritescreen SHEL_rent_retro_ver, 11, 48
 	EMWritescreen SHEL_rent_pro, 11, 56
