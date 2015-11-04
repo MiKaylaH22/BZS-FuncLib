@@ -2087,6 +2087,10 @@ Function navigate_to_MAXIS_screen(function_to_go_to, command_to_go_to)
   EMWaitReady 0, 0
   EMReadScreen MAXIS_check, 5, 1, 39
   If MAXIS_check = "MAXIS" or MAXIS_check = "AXIS " then
+    EMReadScreen locked_panel, 23, 2, 30
+    IF locked_panel = "Program History Display" then 
+	PF3 'Checks to see if on Program History panel - which does not allow the Command line to be updated
+    END IF
     row = 1
     col = 1
     EMSearch "Function: ", row, col
