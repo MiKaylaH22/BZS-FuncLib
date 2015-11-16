@@ -1599,6 +1599,18 @@ Function check_for_MAXIS(end_script)
 	Loop until MAXIS_check = "MAXIS" or MAXIS_check = "AXIS "
 End function
 
+Function check_for_password(are_we_passworded_out)
+	Transmit 'transmitting to see if the password screen appears
+	Emreadscreen password_check, 8, 2, 33 'checking for the word password which will indicate you are passworded out
+	If password_check = "PASSWORD" then 'If the word password is found then it will tell the worker and set the parameter to be true, otherwise it will be set to false.
+		Msgbox "Are you passworded out? Press OK and the dialog will reappear. Once it does, you can enter your password."
+		are_we_passworded_out = true
+	Else 
+		are_we_passworded_out = false
+	End If 
+End Function
+
+
 Function check_for_PRISM(end_script)
 	EMReadScreen PRISM_check, 5, 1, 36
 	if end_script = True then
@@ -1826,14 +1838,22 @@ Function MAXIS_background_check
 End function
 
 Function MAXIS_case_number_finder(variable_for_MAXIS_case_number)
-	row = 1
-	col = 1
-	EMSearch "Case Nbr:", row, col
-	If row <> 0 then 
-		EMReadScreen variable_for_MAXIS_case_number, 8, row, col + 10
+	EMReadScreen variable_for_SELF_check, 4, 2, 50
+	IF variable_for_SELF_check = "SELF" then 	
+		EMReadScreen variable_for_MAXIS_case_number, 8, 18, 43
 		variable_for_MAXIS_case_number = replace(variable_for_MAXIS_case_number, "_", "")
 		variable_for_MAXIS_case_number = trim(variable_for_MAXIS_case_number)
-	End if
+	ELSE
+		row = 1
+		col = 1
+		EMSearch "Case Nbr:", row, col
+		If row <> 0 then 
+			EMReadScreen variable_for_MAXIS_case_number, 8, row, col + 10
+			variable_for_MAXIS_case_number = replace(variable_for_MAXIS_case_number, "_", "")
+			variable_for_MAXIS_case_number = trim(variable_for_MAXIS_case_number)
+		END IF
+	END IF
+	
 End function
 
 Function HH_member_custom_dialog(HH_member_array)
