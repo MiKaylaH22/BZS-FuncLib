@@ -1,4 +1,4 @@
-MsgBox "Something in your configuration has gone wrong. You are loading a beta-branch functions library which is depreciated. Please ask an alpha user to contact Veronica Cary at DHS ASAP."
+
 
 '---------------------------------------------------------------------------------------------------
 'HOW THIS SCRIPT WORKS:
