@@ -99,34 +99,34 @@ FUNCTION income_test_SNAP_net(household_size, income_limit)
 	END IF
 END FUNCTION
 
-FUNCTION ten_day_cutoff_check(footer_month, footer_year, ten_day_cutoff)
+FUNCTION ten_day_cutoff_check(MAXIS_footer_month, MAXIS_footer_year, ten_day_cutoff)
 	'All 10-day cutoff dates are provided in POLI/TEMP TE19.132
-	IF footer_month = "01" AND footer_year = "16" THEN 
+	IF MAXIS_footer_month = "01" AND MAXIS_footer_year = "16" THEN 
 		ten_day_cutoff = #01/21/2016#
-	ELSEIF footer_month = "02" AND footer_year = "16" THEN
+	ELSEIF MAXIS_footer_month = "02" AND MAXIS_footer_year = "16" THEN
 		ten_day_cutoff = #02/18/2016#
-	ELSEIF footer_month = "03" AND footer_year = "16" THEN 
+	ELSEIF MAXIS_footer_month = "03" AND MAXIS_footer_year = "16" THEN 
 		ten_day_cutoff = #03/21/2016#
-	ELSEIF footer_month = "04" AND footer_year = "16" THEN 
+	ELSEIF MAXIS_footer_month = "04" AND MAXIS_footer_year = "16" THEN 
 		ten_day_cutoff = #04/20/2016#
-	ELSEIF footer_month = "05" AND footer_year = "16" THEN
+	ELSEIF MAXIS_footer_month = "05" AND MAXIS_footer_year = "16" THEN
 		ten_day_cutoff = #05/19/2016#
-	ELSEIF footer_month = "06" AND footer_year = "16" THEN 
+	ELSEIF MAXIS_footer_month = "06" AND MAXIS_footer_year = "16" THEN 
 		ten_day_cutoff = #06/20/2016#
-	ELSEIF footer_month = "07" AND footer_year = "16" THEN 
+	ELSEIF MAXIS_footer_month = "07" AND MAXIS_footer_year = "16" THEN 
 		ten_day_cutoff = #07/21/2016#
-	ELSEIF footer_month = "08" AND footer_year = "16" THEN 
+	ELSEIF MAXIS_footer_month = "08" AND MAXIS_footer_year = "16" THEN 
 		ten_day_cutoff = #08/19/2016#
-	ELSEIF footer_month = "09" AND footer_year = "16" THEN 
+	ELSEIF MAXIS_footer_month = "09" AND MAXIS_footer_year = "16" THEN 
 		ten_day_cutoff = #09/20/2016#
-	ELSEIF footer_month = "10" AND footer_year = "16" THEN 
+	ELSEIF MAXIS_footer_month = "10" AND MAXIS_footer_year = "16" THEN 
 		ten_day_cutoff = #10/20/2016#
-	ELSEIF footer_month = "11" AND footer_year = "16" THEN 
+	ELSEIF MAXIS_footer_month = "11" AND MAXIS_footer_year = "16" THEN 
 		ten_day_cutoff = #11/18/2016#
-	ELSEIF footer_month = "12" AND footer_year = "16" THEN 
+	ELSEIF MAXIS_footer_month = "12" AND MAXIS_footer_year = "16" THEN 
 		ten_day_cutoff = #12/21/2016#
 	ELSE
-		MsgBox "You have entered a date (" & footer_month & "/" & footer_year & ") not supported by this function. Please contact a scripts administrator to determine if the script requires updating.", vbInformation + vbSystemModal, "NOTICE"
+		MsgBox "You have entered a date (" & MAXIS_footer_month & "/" & MAXIS_footer_year & ") not supported by this function. Please contact a scripts administrator to determine if the script requires updating.", vbInformation + vbSystemModal, "NOTICE"
 	END IF
 END FUNCTION
 
@@ -472,7 +472,7 @@ Function add_JOBS_to_variable(variable_name_for_JOBS)
     current_month_for_hc_est = dateadd("m", "1", date)
     current_month_for_hc_est = datepart("m", current_month_for_hc_est)
     IF len(current_month_for_hc_est) = 1 THEN current_month_for_hc_est = "0" & current_month_for_hc_est
-    IF footer_month = current_month_for_hc_est THEN
+    IF MAXIS_footer_month = current_month_for_hc_est THEN
 	IF HC_JOBS_amt <> "________" THEN variable_name_for_JOBS = variable_name_for_JOBS & "- HC Inc Est: $" & HC_JOBS_amt & "/" & pay_frequency & "; "
     END IF
 	If JOBS_ver = "N" or JOBS_ver = "?" then variable_name_for_JOBS = variable_name_for_JOBS & "- No proof provided for this panel; "
@@ -669,7 +669,7 @@ Function add_UNEA_to_variable(variable_name_for_UNEA)
     current_month_for_hc_est = dateadd("m", "1", date)
     current_month_for_hc_est = datepart("m", current_month_for_hc_est)
     IF len(current_month_for_hc_est) = 1 THEN current_month_for_hc_est = "0" & current_month_for_hc_est
-    IF footer_month = current_month_for_hc_est THEN
+    IF MAXIS_footer_month = current_month_for_hc_est THEN
     	If HC_UNEA_amt <> "" THEN variable_name_for_UNEA = variable_name_for_UNEA & "- HC Inc Est: $" & HC_UNEA_amt & "/" & pay_frequency & "; "
     END IF
     If UNEA_ver = "N" or UNEA_ver = "?" then variable_name_for_UNEA = variable_name_for_UNEA & "- No proof provided for this panel; "
@@ -1611,7 +1611,7 @@ Function autofill_editbox_from_MAXIS(HH_member_array, panel_read_from, variable_
     IF wreg_total <> "0" THEN
 	EmWriteScreen "x", 13, 57
 	transmit
-	 bene_mo_col = (15 + (4*cint(footer_month)))
+	 bene_mo_col = (15 + (4*cint(MAXIS_footer_month)))
 	  bene_yr_row = 10
        abawd_counted_months = 0
        second_abawd_period = 0
@@ -1797,12 +1797,12 @@ Function convert_array_to_droplist_items(array_to_convert, output_droplist_box)
 	Next
 End Function
 
-'This function converts a date (MM/DD/YY or MM/DD/YYYY format) into a separate footer month and footer year variables. For best results, always use footer_month and footer_year as the appropriate variables.
-FUNCTION convert_date_into_MAXIS_footer_month(date_to_convert, footer_month, footer_year)
-	footer_month = DatePart("m", date_to_convert)						'Uses DatePart function to copy the month from date_to_convert into the footer_month variable.
-	IF Len(footer_month) = 1 THEN footer_month = "0" & footer_month		'Uses Len function to determine if the footer_month is a single digit month. If so, it adds a 0, which MAXIS needs.
-	footer_year = DatePart("yyyy", date_to_convert)						'Uses DatePart function to copy the year from date_to_convert into the footer_year variable.
-	footer_year = Right(footer_year, 2)									'Uses Right function to reduce the footer_year variable to it's right 2 characters (allowing for a 2 digit footer year).
+'This function converts a date (MM/DD/YY or MM/DD/YYYY format) into a separate footer month and footer year variables. For best results, always use MAXIS_footer_month and MAXIS_footer_year as the appropriate variables.
+FUNCTION convert_date_into_MAXIS_footer_month(date_to_convert, MAXIS_footer_month, MAXIS_footer_year)
+	IF Len(MAXIS_footer_month) = 1 THEN MAXIS_footer_month = "0" & MAXIS_footer_month		'Uses Len function to determine if the MAXIS_footer_month is a single digit month. If so, it adds a 0, which MAXIS needs.
+	MAXIS_footer_month = DatePart("m", date_to_convert)										'Uses DatePart function to copy the month from date_to_convert into the MAXIS_footer_month variable.
+	MAXIS_footer_year = DatePart("yyyy", date_to_convert)									'Uses DatePart function to copy the year from date_to_convert into the MAXIS_footer_year variable.
+	MAXIS_footer_year = Right(MAXIS_footer_year, 2)											'Uses Right function to reduce the MAXIS_footer_year variable to it's right 2 characters (allowing for a 2 digit footer year).
 END FUNCTION
 
 'This function converts a numeric digit to an Excel column, up to 104 digits (columns).
@@ -2438,7 +2438,7 @@ FUNCTION MAXIS_footer_finder(MAXIS_footer_month, MAXIS_footer_year)'Grabbing the
 END FUNCTION
 
 'Function for checking and changing the footer month to the MAXIS_footer_month & MAXIS_footer_year selected by the user in the inital dialog if necessary
-FUNCTION MAXIS_footer_month_confirmation	'Must use MAXIS_footer_month & MAXIS footer_year as variables for this function to work
+FUNCTION MAXIS_footer_month_confirmation	'Must use MAXIS_footer_month & MAXIS MAXIS_footer_year as variables for this function to work
 	EMReadScreen SELF_check, 4, 2, 50			'Does this to check to see if we're on SELF screen
 	IF SELF_check = "SELF" THEN
 		EMReadScreen panel_footer_month, 2, 20, 43
@@ -2686,8 +2686,8 @@ Function navigate_to_MAXIS_screen(function_to_go_to, command_to_go_to)
       EMWriteScreen function_to_go_to, 16, 43
       EMWriteScreen "________", 18, 43
       EMWriteScreen MAXIS_case_number, 18, 43
-      EMWriteScreen footer_month, 20, 43
-      EMWriteScreen footer_year, 20, 46
+      EMWriteScreen MAXIS_footer_month, 20, 43
+      EMWriteScreen MAXIS_footer_year, 20, 46
       EMWriteScreen command_to_go_to, 21, 70
       EMSendKey "<enter>"
       EMWaitReady 0, 0
