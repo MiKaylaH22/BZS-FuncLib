@@ -442,7 +442,12 @@ Function add_JOBS_to_variable(variable_name_for_JOBS)
 	prospective_JOBS_amt = trim(prospective_JOBS_amt)
 '  Reads the information about health care off of HC Income Estimator
     EMReadScreen pay_frequency, 1, 18, 35
-    EMWriteScreen "x", 19, 54
+	EMReadScreen HC_income_est_check, 3, 19, 63 'reading to find the HC income estimator is moving 6/1/16, to account for if it only affects future months we are reading to find the HC inc EST
+	IF HC_income_est_check = "Est" Then 'this is the old position
+		EMWriteScreen "x", 19, 54
+	ELSE								'this is the new position
+		EMWriteScreen "x", 19, 48
+	END IF
     transmit
     EMReadScreen HC_JOBS_amt, 8, 11, 63
     HC_JOBS_amt = trim(HC_JOBS_amt)
@@ -2424,6 +2429,7 @@ FUNCTION MAXIS_dialog_navigation
     If ButtonPressed = WKEX_button then call navigate_to_MAXIS_screen("stat", "WKEX")
 END FUNCTION
 
+
 FUNCTION MAXIS_footer_finder(MAXIS_footer_month, MAXIS_footer_year)'Grabbing the footer month/year
 	'Does this to check to see if we're on SELF screen
 	EMReadScreen SELF_check, 4, 2, 50
@@ -2431,9 +2437,15 @@ FUNCTION MAXIS_footer_finder(MAXIS_footer_month, MAXIS_footer_year)'Grabbing the
 		EMReadScreen MAXIS_footer_month, 2, 20, 43
 		EMReadScreen MAXIS_footer_year, 2, 20, 46
 	ELSE
-		Call find_variable("Month: ", MAXIS_footer, 5)
-		MAXIS_footer_month = left(MAXIS_footer, 2)
-		MAXIS_footer_year = right(MAXIS_footer, 2)
+		EMReadScreen MEMO_check, 4, 2, 47
+		IF MEMO_check = "MEMO" Then	
+			EMReadScreen MAXIS_footer_month, 2, 19, 54
+			EMReadScreen MAXIS_footer_year, 2, 49, 57
+		ELSE
+			Call find_variable("Month: ", MAXIS_footer, 5)
+			MAXIS_footer_month = left(MAXIS_footer, 2)
+			MAXIS_footer_year = right(MAXIS_footer, 2)
+		END IF
 	End if
 END FUNCTION
 
@@ -5082,7 +5094,12 @@ FUNCTION write_panel_to_MAXIS_JOBS(jobs_number, jobs_inc_type, jobs_inc_verif, j
 
 	'=====determines if the benefit month is current month + 1 and dumps information into the HC income estimator
 	IF (bene_month * 1) = (datepart("M", DATE) + 1) THEN		'<===== "bene_month * 1" is needed to convert bene_month from a string to numeric.
-		EMWriteScreen "X", 19, 54
+		EMReadScreen HC_income_est_check, 3, 19, 63 'reading to find the HC income estimator is moving 6/1/16, to account for if it only affects future months we are reading to find the HC inc EST
+		IF HC_income_est_check = "Est" Then 'this is the old position
+			EMWriteScreen "x", 19, 54
+		ELSE								'this is the new position
+			EMWriteScreen "x", 19, 48
+		END IF
 		transmit
 
 		DO
@@ -5984,49 +6001,4 @@ FUNCTION write_panel_to_MAXIS_WREG(wreg_fs_pwe, wreg_fset_status, wreg_defer_fs,
 	EMWriteScreen wreg_ga_basis, 15, 50
 
 	transmit
-END FUNCTION
-
-'--------DEPRECIATED FUNCTIONS KEPT FOR COMPATIBILITY PURPOSES, THE NEW FUNCTIONS ARE INDICATED WITHIN THE OLD FUNCTIONS
-'----------------------------DEPRECIATED FUNCTIONS ARE TO BE REMOVED IN THE JUNE 2016 RELEASE
-
-Function ERRR_screen_check 'Checks for error prone cases				'DEPRECIATED AS OF 01/20/2015.
-	veronica_message = MsgBox ("This script uses ERRR_screen_check, a depreciated function. If you are seeing this message, let a scripts administrator know right away: a function in a custom script may need to be updated. Without said update, this script might become unavailable on or before June 27, 2016.", vbExclamation)
-	EMReadScreen ERRR_check, 4, 2, 52	'Now included in NAVIGATE_TO_MAXIS_SCREEN
-	If ERRR_check = "ERRR" then transmit
-End Function
-
-Function maxis_check_function											'DEPRECIATED AS OF 01/20/2015.
-	veronica_message = MsgBox ("This script uses maxis_check_function, a depreciated function. If you are seeing this message, let a scripts administrator know right away: a function in a custom script may need to be updated. Without said update, this script might become unavailable on or before June 27, 2016.", vbExclamation)
-	call check_for_MAXIS(True)	'Always true, because the original function always exited, and this needs to match the original function for reverse compatibility reasons.
-End function
-
-Function navigate_to_screen(MAXIS_function, MAXIS_command)				'DEPRECIATED AS OF 03/09/2015.
-	veronica_message = MsgBox ("This script uses navigate_to_screen, a depreciated function. If you are seeing this message, let a scripts administrator know right away: a function in a custom script may need to be updated. Without said update, this script might become unavailable on or before June 27, 2016.", vbExclamation)
-	call navigate_to_MAXIS_screen(MAXIS_function, MAXIS_command)
-End function
-
-Function write_editbox_in_case_note(bullet, variable, length_of_indent) 'DEPRECIATED AS OF 01/20/2015.
-	veronica_message = MsgBox ("This script uses write_editbox_in_case_note, a depreciated function. If you are seeing this message, let a scripts administrator know right away: a function in a custom script may need to be updated. Without said update, this script might become unavailable on or before June 27, 2016.", vbExclamation)
-	call write_bullet_and_variable_in_case_note(bullet, variable)
-End function
-
-Function write_new_line_in_case_note(variable)							'DEPRECIATED AS OF 01/20/2015.
-	veronica_message = MsgBox ("This script uses write_new_line_in_case_note, a depreciated function. If you are seeing this message, let a scripts administrator know right away: a function in a custom script may need to be updated. Without said update, this script might become unavailable on or before June 27, 2016.", vbExclamation)
-	call write_variable_in_CASE_NOTE(variable)
-End function
-
-Function write_new_line_in_SPEC_MEMO(variable_to_enter)					'DEPRECIATED AS OF 01/20/2015.
-	veronica_message = MsgBox ("This script uses write_new_line_in_SPEC_MEMO, a depreciated function. If you are seeing this message, let a scripts administrator know right away: a function in a custom script may need to be updated. Without said update, this script might become unavailable on or before June 27, 2016.", vbExclamation)
-	call write_variable_in_SPEC_MEMO(variable_to_enter)
-End function
-
-'Depreciated 04/25/2016
-FUNCTION worker_county_code_determination(x, y)
-	veronica_message = MsgBox ("This script uses worker_county_code_determination, a depreciated function. If you are seeing this message, let a scripts administrator know right away: a function in a custom script may need to be updated. Without said update, this script might become unavailable on or before June 27, 2016.", vbExclamation)
-    get_county_code
-End function
-
-FUNCTION write_TIKL_function(variable)									'DEPRECIATED AS OF 01/20/2015.
-	veronica_message = MsgBox ("This script uses write_TIKL_function, a depreciated function. If you are seeing this message, let a scripts administrator know right away: a function in a custom script may need to be updated. Without said update, this script might become unavailable on or before June 27, 2016.", vbExclamation)
-	call write_variable_in_TIKL(variable)
 END FUNCTION
