@@ -37,6 +37,8 @@ CM_plus_2_yr =  right(                  DatePart("yyyy",        DateAdd("m", 2, 
 If worker_county_code   = "" then worker_county_code = "MULTICOUNTY"
 county_name = ""
 
+If ButtonPressed <> "" then ButtonPressed = ""		'Defines ButtonPressed if not previously defined, allowing scripts the benefit of not having to declare ButtonPressed all the time
+
 '=========================================================================================================================================================================== FUNCTIONS RELATED TO GLOBAL CONSTANTS
 FUNCTION income_test_SNAP_categorically_elig(household_size, income_limit)
 	'See Combined Manual 0019.06
@@ -1804,8 +1806,8 @@ End Function
 
 'This function converts a date (MM/DD/YY or MM/DD/YYYY format) into a separate footer month and footer year variables. For best results, always use MAXIS_footer_month and MAXIS_footer_year as the appropriate variables.
 FUNCTION convert_date_into_MAXIS_footer_month(date_to_convert, MAXIS_footer_month, MAXIS_footer_year)
-	IF Len(MAXIS_footer_month) = 1 THEN MAXIS_footer_month = "0" & MAXIS_footer_month		'Uses Len function to determine if the MAXIS_footer_month is a single digit month. If so, it adds a 0, which MAXIS needs.
 	MAXIS_footer_month = DatePart("m", date_to_convert)										'Uses DatePart function to copy the month from date_to_convert into the MAXIS_footer_month variable.
+	IF Len(MAXIS_footer_month) = 1 THEN MAXIS_footer_month = "0" & MAXIS_footer_month		'Uses Len function to determine if the MAXIS_footer_month is a single digit month. If so, it adds a 0, which MAXIS needs.
 	MAXIS_footer_year = DatePart("yyyy", date_to_convert)									'Uses DatePart function to copy the year from date_to_convert into the MAXIS_footer_year variable.
 	MAXIS_footer_year = Right(MAXIS_footer_year, 2)											'Uses Right function to reduce the MAXIS_footer_year variable to it's right 2 characters (allowing for a 2 digit footer year).
 END FUNCTION
@@ -2523,6 +2525,36 @@ Function MMIS_RKEY_finder
   EMWaitReady 0, 0
 End function
 
+FUNCTION month_change(interval, starting_month, starting_year, result_month, result_year)
+	result_month = abs(starting_month)
+	result_year = abs(starting_year)
+	valid_month = FALSE
+	IF result_month = 1 OR result_month = 2 OR result_month = 3 OR result_month = 4 OR result_month = 5 OR result_month = 6 OR result_month = 7 OR result_month = 8 OR result_month = 9 OR result_month = 10 OR result_month = 11 OR result_month = 12 Then valid_month = TRUE 
+	If valid_month = FALSE Then 
+		Month_Input_Error_Msg = MsgBox("The month to start from is not a number between 1 and 12, these are the only valid entries for this function. Your data will have the wrong month." & vbnewline & "The month input was: " & result_month & vbnewline & vbnewline & "Do you wish to continue?", vbYesNo + vbSystemModal, "Input Error")
+		If Month_Input_Error_Msg = VBNo Then script_end_procedure("")
+	End If
+	Do 
+		If left(interval, 1) = "-" Then 
+			result_month = result_month - 1
+			If result_month = 0 then 
+				result_month = 12
+				result_year = result_year - 1
+			End If 
+			interval = interval + 1
+		Else 
+			result_month = result_month + 1
+			If result_month = 13 then 
+				result_month = 1
+				result_year = result_year + 1
+			End if 
+			interval = interval - 1
+		End If 
+	Loop until interval = 0
+	result_month = right("00" & result_month, 2)
+	result_year = right(result_year, 2)
+END FUNCTION 
+
 FUNCTION navigate_to_MAXIS(maxis_mode)  'This function is to be used when navigating back to MAXIS from another function in BlueZone (MMIS, PRISM, INFOPAC, etc.)
 	attn
 	EMConnect "A"
@@ -2807,6 +2839,10 @@ function new_service_heading
     EMSendKey "--------------SERVICE--------------------AMOUNT----------STATUS--------------" & "<newline>"
     MAXIS_service_row = 5
   end if
+End function
+
+Function open_URL_in_browser(URL_to_open)
+	CreateObject("WScript.Shell").Run(URL_to_open)
 End function
 
 Function panel_navigation_next
