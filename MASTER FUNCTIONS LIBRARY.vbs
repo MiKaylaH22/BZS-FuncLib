@@ -37,6 +37,8 @@ CM_plus_2_yr =  right(                  DatePart("yyyy",        DateAdd("m", 2, 
 If worker_county_code   = "" then worker_county_code = "MULTICOUNTY"
 county_name = ""
 
+If ButtonPressed <> "" then ButtonPressed = ""		'Defines ButtonPressed if not previously defined, allowing scripts the benefit of not having to declare ButtonPressed all the time
+
 '=========================================================================================================================================================================== FUNCTIONS RELATED TO GLOBAL CONSTANTS
 FUNCTION income_test_SNAP_categorically_elig(household_size, income_limit)
 	'See Combined Manual 0019.06
@@ -1825,6 +1827,44 @@ function convert_digit_to_excel_column(col_in_excel)
 	If col_in_excel >= 105 then script_end_procedure("This script is only able to assign excel columns to 104 distinct digits. You've exceeded this number, and this script cannot continue.")
 end function
 
+'This function is used to grab all active X numbers according to the supervisor X number(s) inputted
+FUNCTION create_array_of_all_active_x_numbers_by_supervisor(array_name, supervisor_array)
+	'Getting to REPT/USER
+	CALL navigate_to_MAXIS_screen("REPT", "USER")
+
+	'Sorting by supervisor
+	PF5
+	PF5
+
+	'Reseting array_name
+	array_name = ""
+
+	'Splitting the list of inputted supervisors...
+	supervisor_array = replace(supervisor_array, " ", "")
+	supervisor_array = split(supervisor_array, ",")
+	FOR EACH unit_supervisor IN supervisor_array
+		IF unit_supervisor <> "" THEN 
+			'Entering the supervisor number and sending a transmit
+			CALL write_value_and_transmit(unit_supervisor, 21, 12)
+			
+			MAXIS_row = 7
+			DO
+				EMReadScreen worker_ID, 8, MAXIS_row, 5
+				worker_ID = trim(worker_ID)
+				IF worker_ID = "" THEN EXIT DO
+				array_name = trim(array_name & " " & worker_ID)
+				MAXIS_row = MAXIS_row + 1
+				IF MAXIS_row = 19 THEN 
+					PF8
+					MAXIS_row = 7
+				END IF
+			LOOP
+		END IF
+	NEXT
+	'Preparing array_name for use...
+	array_name = split(array_name)
+END FUNCTION
+
 Function create_array_of_all_active_x_numbers_in_county(array_name, county_code)
 	'Getting to REPT/USER
 	call navigate_to_MAXIS_screen("rept", "user")
@@ -2429,6 +2469,7 @@ FUNCTION MAXIS_dialog_navigation
     If ButtonPressed = WKEX_button then call navigate_to_MAXIS_screen("stat", "WKEX")
 END FUNCTION
 
+
 FUNCTION MAXIS_footer_finder(MAXIS_footer_month, MAXIS_footer_year)'Grabbing the footer month/year
 	'Does this to check to see if we're on SELF screen
 	EMReadScreen SELF_check, 4, 2, 50
@@ -2436,9 +2477,15 @@ FUNCTION MAXIS_footer_finder(MAXIS_footer_month, MAXIS_footer_year)'Grabbing the
 		EMReadScreen MAXIS_footer_month, 2, 20, 43
 		EMReadScreen MAXIS_footer_year, 2, 20, 46
 	ELSE
-		Call find_variable("Month: ", MAXIS_footer, 5)
-		MAXIS_footer_month = left(MAXIS_footer, 2)
-		MAXIS_footer_year = right(MAXIS_footer, 2)
+		EMReadScreen MEMO_check, 4, 2, 47
+		IF MEMO_check = "MEMO" Then	
+			EMReadScreen MAXIS_footer_month, 2, 19, 54
+			EMReadScreen MAXIS_footer_year, 2, 49, 57
+		ELSE
+			Call find_variable("Month: ", MAXIS_footer, 5)
+			MAXIS_footer_month = left(MAXIS_footer, 2)
+			MAXIS_footer_year = right(MAXIS_footer, 2)
+		END IF
 	End if
 END FUNCTION
 
@@ -2515,6 +2562,36 @@ Function MMIS_RKEY_finder
   EMSendKey "<enter>"
   EMWaitReady 0, 0
 End function
+
+FUNCTION month_change(interval, starting_month, starting_year, result_month, result_year)
+	result_month = abs(starting_month)
+	result_year = abs(starting_year)
+	valid_month = FALSE
+	IF result_month = 1 OR result_month = 2 OR result_month = 3 OR result_month = 4 OR result_month = 5 OR result_month = 6 OR result_month = 7 OR result_month = 8 OR result_month = 9 OR result_month = 10 OR result_month = 11 OR result_month = 12 Then valid_month = TRUE 
+	If valid_month = FALSE Then 
+		Month_Input_Error_Msg = MsgBox("The month to start from is not a number between 1 and 12, these are the only valid entries for this function. Your data will have the wrong month." & vbnewline & "The month input was: " & result_month & vbnewline & vbnewline & "Do you wish to continue?", vbYesNo + vbSystemModal, "Input Error")
+		If Month_Input_Error_Msg = VBNo Then script_end_procedure("")
+	End If
+	Do 
+		If left(interval, 1) = "-" Then 
+			result_month = result_month - 1
+			If result_month = 0 then 
+				result_month = 12
+				result_year = result_year - 1
+			End If 
+			interval = interval + 1
+		Else 
+			result_month = result_month + 1
+			If result_month = 13 then 
+				result_month = 1
+				result_year = result_year + 1
+			End if 
+			interval = interval - 1
+		End If 
+	Loop until interval = 0
+	result_month = right("00" & result_month, 2)
+	result_year = right(result_year, 2)
+END FUNCTION 
 
 FUNCTION navigate_to_MAXIS(maxis_mode)  'This function is to be used when navigating back to MAXIS from another function in BlueZone (MMIS, PRISM, INFOPAC, etc.)
 	attn
@@ -2800,6 +2877,10 @@ function new_service_heading
     EMSendKey "--------------SERVICE--------------------AMOUNT----------STATUS--------------" & "<newline>"
     MAXIS_service_row = 5
   end if
+End function
+
+Function open_URL_in_browser(URL_to_open)
+	CreateObject("WScript.Shell").Run(URL_to_open)
 End function
 
 Function panel_navigation_next
@@ -5994,49 +6075,4 @@ FUNCTION write_panel_to_MAXIS_WREG(wreg_fs_pwe, wreg_fset_status, wreg_defer_fs,
 	EMWriteScreen wreg_ga_basis, 15, 50
 
 	transmit
-END FUNCTION
-
-'--------DEPRECIATED FUNCTIONS KEPT FOR COMPATIBILITY PURPOSES, THE NEW FUNCTIONS ARE INDICATED WITHIN THE OLD FUNCTIONS
-'----------------------------DEPRECIATED FUNCTIONS ARE TO BE REMOVED IN THE JUNE 2016 RELEASE
-
-Function ERRR_screen_check 'Checks for error prone cases				'DEPRECIATED AS OF 01/20/2015.
-	veronica_message = MsgBox ("This script uses ERRR_screen_check, a depreciated function. If you are seeing this message, let a scripts administrator know right away: a function in a custom script may need to be updated. Without said update, this script might become unavailable on or before June 27, 2016.", vbExclamation)
-	EMReadScreen ERRR_check, 4, 2, 52	'Now included in NAVIGATE_TO_MAXIS_SCREEN
-	If ERRR_check = "ERRR" then transmit
-End Function
-
-Function maxis_check_function											'DEPRECIATED AS OF 01/20/2015.
-	veronica_message = MsgBox ("This script uses maxis_check_function, a depreciated function. If you are seeing this message, let a scripts administrator know right away: a function in a custom script may need to be updated. Without said update, this script might become unavailable on or before June 27, 2016.", vbExclamation)
-	call check_for_MAXIS(True)	'Always true, because the original function always exited, and this needs to match the original function for reverse compatibility reasons.
-End function
-
-Function navigate_to_screen(MAXIS_function, MAXIS_command)				'DEPRECIATED AS OF 03/09/2015.
-	veronica_message = MsgBox ("This script uses navigate_to_screen, a depreciated function. If you are seeing this message, let a scripts administrator know right away: a function in a custom script may need to be updated. Without said update, this script might become unavailable on or before June 27, 2016.", vbExclamation)
-	call navigate_to_MAXIS_screen(MAXIS_function, MAXIS_command)
-End function
-
-Function write_editbox_in_case_note(bullet, variable, length_of_indent) 'DEPRECIATED AS OF 01/20/2015.
-	veronica_message = MsgBox ("This script uses write_editbox_in_case_note, a depreciated function. If you are seeing this message, let a scripts administrator know right away: a function in a custom script may need to be updated. Without said update, this script might become unavailable on or before June 27, 2016.", vbExclamation)
-	call write_bullet_and_variable_in_case_note(bullet, variable)
-End function
-
-Function write_new_line_in_case_note(variable)							'DEPRECIATED AS OF 01/20/2015.
-	veronica_message = MsgBox ("This script uses write_new_line_in_case_note, a depreciated function. If you are seeing this message, let a scripts administrator know right away: a function in a custom script may need to be updated. Without said update, this script might become unavailable on or before June 27, 2016.", vbExclamation)
-	call write_variable_in_CASE_NOTE(variable)
-End function
-
-Function write_new_line_in_SPEC_MEMO(variable_to_enter)					'DEPRECIATED AS OF 01/20/2015.
-	veronica_message = MsgBox ("This script uses write_new_line_in_SPEC_MEMO, a depreciated function. If you are seeing this message, let a scripts administrator know right away: a function in a custom script may need to be updated. Without said update, this script might become unavailable on or before June 27, 2016.", vbExclamation)
-	call write_variable_in_SPEC_MEMO(variable_to_enter)
-End function
-
-'Depreciated 04/25/2016
-FUNCTION worker_county_code_determination(x, y)
-	veronica_message = MsgBox ("This script uses worker_county_code_determination, a depreciated function. If you are seeing this message, let a scripts administrator know right away: a function in a custom script may need to be updated. Without said update, this script might become unavailable on or before June 27, 2016.", vbExclamation)
-    get_county_code
-End function
-
-FUNCTION write_TIKL_function(variable)									'DEPRECIATED AS OF 01/20/2015.
-	veronica_message = MsgBox ("This script uses write_TIKL_function, a depreciated function. If you are seeing this message, let a scripts administrator know right away: a function in a custom script may need to be updated. Without said update, this script might become unavailable on or before June 27, 2016.", vbExclamation)
-	call write_variable_in_TIKL(variable)
 END FUNCTION
