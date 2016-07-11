@@ -39,6 +39,23 @@ county_name = ""
 
 If ButtonPressed <> "" then ButtonPressed = ""		'Defines ButtonPressed if not previously defined, allowing scripts the benefit of not having to declare ButtonPressed all the time
 
+'Preloading worker_signature, as a constant to be used in scripts---------------------------------------------------------------------------------------------------------
+
+'Needs to determine MyDocs directory before proceeding.
+Set wshshell = CreateObject("WScript.Shell")
+user_myDocs_folder = wshShell.SpecialFolders("MyDocuments") & "\"
+
+'Now it determines the signature
+With (CreateObject("Scripting.FileSystemObject"))															'Creating an FSO
+	If .FileExists(user_myDocs_folder & "workersig.txt") Then												'If the workersig.txt file exists...
+		Set get_worker_sig = CreateObject("Scripting.FileSystemObject")										'Create another FSO
+		Set worker_sig_command = get_worker_sig.OpenTextFile(user_myDocs_folder & "workersig.txt")			'Open the text file
+		worker_sig = worker_sig_command.ReadAll																'Read the text file
+		IF worker_sig <> "" THEN worker_signature = worker_sig												'If it isn't blank then the worker_signature should be populated with the contents of the file
+		worker_sig_command.Close																			'Closes the file
+	END IF
+END WITH
+
 '=========================================================================================================================================================================== FUNCTIONS RELATED TO GLOBAL CONSTANTS
 FUNCTION income_test_SNAP_categorically_elig(household_size, income_limit)
 	'See Combined Manual 0019.06
@@ -1734,7 +1751,7 @@ End function
 FUNCTION cancel_confirmation
 	If ButtonPressed = 0 then
 		cancel_confirm = MsgBox("Are you sure you want to cancel the script? Press YES to cancel. Press NO to return to the script.", vbYesNo)
-		If cancel_confirm = vbYes then script_end_procedure("CANCEL BUTTON SELECTED")     
+		If cancel_confirm = vbYes then script_end_procedure("~PT: user pressed cancel")     
         'script_end_procedure text added for statistical purposes. If script was canceled prior to completion, the statistics will reflect this.
 	End if
 END FUNCTION
@@ -1827,6 +1844,44 @@ function convert_digit_to_excel_column(col_in_excel)
 	'Closes script if the number gets too high (very rare circumstance, just errorproofing)
 	If col_in_excel >= 105 then script_end_procedure("This script is only able to assign excel columns to 104 distinct digits. You've exceeded this number, and this script cannot continue.")
 end function
+
+'This function is used to grab all active X numbers according to the supervisor X number(s) inputted
+FUNCTION create_array_of_all_active_x_numbers_by_supervisor(array_name, supervisor_array)
+	'Getting to REPT/USER
+	CALL navigate_to_MAXIS_screen("REPT", "USER")
+
+	'Sorting by supervisor
+	PF5
+	PF5
+
+	'Reseting array_name
+	array_name = ""
+
+	'Splitting the list of inputted supervisors...
+	supervisor_array = replace(supervisor_array, " ", "")
+	supervisor_array = split(supervisor_array, ",")
+	FOR EACH unit_supervisor IN supervisor_array
+		IF unit_supervisor <> "" THEN 
+			'Entering the supervisor number and sending a transmit
+			CALL write_value_and_transmit(unit_supervisor, 21, 12)
+			
+			MAXIS_row = 7
+			DO
+				EMReadScreen worker_ID, 8, MAXIS_row, 5
+				worker_ID = trim(worker_ID)
+				IF worker_ID = "" THEN EXIT DO
+				array_name = trim(array_name & " " & worker_ID)
+				MAXIS_row = MAXIS_row + 1
+				IF MAXIS_row = 19 THEN 
+					PF8
+					MAXIS_row = 7
+				END IF
+			LOOP
+		END IF
+	NEXT
+	'Preparing array_name for use...
+	array_name = split(array_name)
+END FUNCTION
 
 Function create_array_of_all_active_x_numbers_in_county(array_name, county_code)
 	'Getting to REPT/USER
@@ -2808,22 +2863,6 @@ function navigation_buttons 'this works by calling the navigation_buttons functi
   If ButtonPressed = UNEA_button then call navigate_to_MAXIS_screen("stat", "UNEA")
 End function
 
-function new_BS_BSI_heading
-  EMGetCursor MAXIS_row, MAXIS_col
-  If MAXIS_row = 4 then
-    EMSendKey "--------BURIAL SPACE/ITEMS---------------AMOUNT----------STATUS--------------" & "<newline>"
-    MAXIS_row = 5
-  end if
-End function
-
-function new_CAI_heading
-  EMGetCursor MAXIS_row, MAXIS_col
-  If MAXIS_row = 4 then
-    EMSendKey "--------CASH ADVANCE ITEMS---------------AMOUNT----------STATUS--------------" & "<newline>"
-    MAXIS_row = 5
-  end if
-End function
-
 function new_page_check
   EMGetCursor MAXIS_row, MAXIS_col
   If MAXIS_row = 17 then
@@ -2833,14 +2872,6 @@ function new_page_check
     MAXIS_row = 4
   End if
 end function
-
-function new_service_heading
-  EMGetCursor MAXIS_service_row, MAXIS_service_col
-  If MAXIS_service_row = 4 then
-    EMSendKey "--------------SERVICE--------------------AMOUNT----------STATUS--------------" & "<newline>"
-    MAXIS_service_row = 5
-  end if
-End function
 
 Function open_URL_in_browser(URL_to_open)
 	CreateObject("WScript.Shell").Run(URL_to_open)
@@ -3044,8 +3075,7 @@ END FUNCTION
 
 function script_end_procedure(closing_message)
 	stop_time = timer
-	If closing_message <> "" AND closing_message <> "CANCEL BUTTON SELECTED" then MsgBox closing_message
-    'Bypasses the closing message of "CANCEL BUTTON SELECTED" in the cancel_confirmation function if being used in scripts where chain-loading is occurring
+	If closing_message <> "" AND left(closing_message, 3) <> "~PT" then MsgBox closing_message '"~PT" forces the message to "pass through", i.e. not create a pop-up, but to continue without further diversion to the database, where it will write a record with the message
 	script_run_time = stop_time - start_time
 	If is_county_collecting_stats  = True then
 		'Getting user name
@@ -3082,7 +3112,9 @@ function script_end_procedure(closing_message)
             objRecordSet.Open "INSERT INTO usage_log (USERNAME, SDATE, STIME, SCRIPT_NAME, SRUNTIME, CLOSING_MSGBOX, STATS_COUNTER, STATS_MANUALTIME, STATS_DENOMINATION, WORKER_COUNTY_CODE, SCRIPT_SUCCESS)" &  _
             "VALUES ('" & user_ID & "', '" & date & "', '" & time & "', '" & name_of_script & "', " & abs(script_run_time) & ", '" & closing_message & "', " & abs(STATS_counter) & ", " & abs(STATS_manualtime) & ", '" & STATS_denomination & "', '" & worker_county_code & "', " & SCRIPT_success & ")", objConnection, adOpenStatic, adLockOptimistic
         End if
-
+		
+		'Closing the connection
+		objConnection.Close
 	End if
 	If disable_StopScript = FALSE or disable_StopScript = "" then stopscript
 end function
@@ -4012,8 +4044,23 @@ Function write_panel_to_MAXIS_ACCT(acct_type, acct_numb, acct_location, acct_bal
 	Emwritescreen acct_type, 6, 44  'enters the account type code
 	Emwritescreen acct_numb, 7, 44  'enters the account number
 	Emwritescreen acct_location, 8, 44  'enters the account location
-	Emwritescreen acct_balance, 10, 46  'enters the balance
-	Emwritescreen acct_bal_ver, 10, 63  'enters the balance verification
+
+	' >>>>> Comment: Updated 06/22/2016 <<<<<
+	' >>>>> Looking for the acct_bal_ver location. This changed with asset unification...
+	' >>>>> ... but the location is not the same across all months. It needs to be variable...
+	' >>>>> ... so Krabappel knows where to write stuff and junk or whatever ...
+	' >>>>> This has been tested on training case 226398 for the benefit months 05/16 and 06/16...
+	' >>>>> ... in 05/16 the acct_bal_ver coordinates are 10, 63 and in 06/16, they are 10, 64...
+	' >>>>> ... and the code is working in both months.
+	' >>> Looking for the balance field and then we will write the verif code on the same line...
+	acct_row = 1
+	acct_col = 1
+	EMSearch "Balance: ", acct_row, acct_col
+	EMWriteScreen acct_balance, acct_row, acct_col + 11  'enters the balance
+	acct_col = 1
+	EMSearch "Ver: ", acct_row, acct_col
+	EMWriteScreen acct_bal_ver, acct_row, acct_col + 5  'enters the balance verification
+	
 	IF acct_date <> "" THEN call create_MAXIS_friendly_date(acct_date, 0, 11, 44)  'enters the account balance date in a MAXIS friendly format. mm/dd/yy
 	Emwritescreen acct_withdraw, 12, 46  'enters the withdrawl penalty
 	Emwritescreen acct_cash_count, 14, 50  'enters y/n if counted for cash
