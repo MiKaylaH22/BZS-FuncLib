@@ -1679,7 +1679,6 @@ Function autofill_editbox_from_MAXIS(HH_member_array, panel_read_from, variable_
 			'declaring & splitting the second set of abawd months array
 			If left(second_set_info_list, 1) = "," then second_set_info_list = right(second_set_info_list, len(second_set_info_list) - 1)
 			second_months_array = Split(second_set_info_list,",")
-			If second_set_info_list = "" then second_set_info_list = "none"
 
 			bene_mo_col = bene_mo_col - 4
     		IF bene_mo_col = 15 THEN
@@ -1725,7 +1724,7 @@ Function autofill_editbox_from_MAXIS(HH_member_array, panel_read_from, variable_
 	If read_abawd_status = "07" THEN  abawd_status = "ABAWD = work exp participant."
 	If read_abawd_status = "08" THEN  abawd_status = "ABAWD = othr E & T service."
 	If read_abawd_status = "09" THEN  abawd_status = "ABAWD = reside in waiver area."
-	If read_abawd_status = "10" THEN  abawd_status = "ABAWD = ABAWD & has used " & abawd_counted_months & " mo." & " List of counted ABAWD months:" & abawd_info_list & ". Second set of ABAWD months used: " & second_set_info_list & "."
+	If read_abawd_status = "10" THEN  abawd_status = "ABAWD = ABAWD & has used " & abawd_counted_months & " mo." & " List of counted ABAWD months:" & abawd_info_list & ". Second set of ABAWD months used:" & second_set_info_list & "."
 	If read_abawd_status = "11" THEN  abawd_status = "ABAWD = Using 2nd set of ABAWD months. List of 2nd set used:" & second_set_info_list & "."
 	If read_abawd_status = "12" THEN  abawd_status = "ABAWD = RCA or GA recip."
 	If read_abawd_status = "13" THEN  abawd_status = "ABAWD = ABAWD extension."
