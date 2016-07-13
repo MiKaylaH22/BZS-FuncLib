@@ -5321,7 +5321,7 @@ Function write_panel_to_MAXIS_PBEN(pben_referal_date, pben_type, pben_appl_date,
 	Call navigate_to_MAXIS_screen("STAT", "PBEN")  'navigates to the stat panel
 	call create_panel_if_nonexistent
 	Emreadscreen pben_row_check, 2, 8, 24  'reads the MAXIS screen to find out if the PBEN row has already been used.
-	If pben_row_check = "  " THEN   'if the row is blank it enters it in the 8th row.
+	If pben_row_check = "__" THEN   'if the row is blank it enters it in the 8th row.
 		Emwritescreen pben_type, 8, 24  'enters pben type code
 		call create_MAXIS_friendly_date(pben_referal_date, 0, 8, 40)  'enters referal date in MAXIS friendly format mm/dd/yy
 		call create_MAXIS_friendly_date(pben_appl_date, 0, 8, 51)  'enters appl date in  MAXIS friendly format mm/dd/yy
@@ -5330,7 +5330,7 @@ Function write_panel_to_MAXIS_PBEN(pben_referal_date, pben_type, pben_appl_date,
 		Emwritescreen pben_disp, 8, 77  'enters the status of pben application
 	else
 		EMreadscreen pben_row_check, 2, 9, 24  'if row 8 is filled already it will move to row 9 and see if it has been used.
-		IF pben_row_check = "  " THEN  'if the 9th row is blank it enters the information there.
+		IF pben_row_check = "__" THEN  'if the 9th row is blank it enters the information there.
 		'second pben row
 			Emwritescreen pben_type, 9, 24
 			call create_MAXIS_friendly_date(pben_referal_date, 0, 9, 40)
@@ -5340,7 +5340,7 @@ Function write_panel_to_MAXIS_PBEN(pben_referal_date, pben_type, pben_appl_date,
 			Emwritescreen pben_disp, 9, 77
 		else
 		Emreadscreen pben_row_check, 2, 10, 24  'if row 8 is filled already it will move to row 9 and see if it has been used.
-			IF pben-row_check = "  " THEN  'if the 9th row is blank it enters the information there.
+			IF pben-row_check = "__" THEN  'if the 9th row is blank it enters the information there.
 			'third pben row
 				Emwritescreen pben_type, 10, 24
 				call create_MAXIS_friendly_date(pben_referal_date, 0, 10, 40)
