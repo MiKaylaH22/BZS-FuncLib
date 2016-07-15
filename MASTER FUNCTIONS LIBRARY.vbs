@@ -3031,33 +3031,6 @@ function script_end_procedure(closing_message)
 	If disable_StopScript = FALSE or disable_StopScript = "" then stopscript
 end function
 
-function script_end_procedure_wsh(closing_message) 'For use when running a script outside of the BlueZone Script Host
-	If closing_message <> "" then MsgBox closing_message
-	stop_time = timer
-	script_run_time = stop_time - start_time
-	If is_county_collecting_stats = True then
-		'Getting user name
-		Set objNet = CreateObject("WScript.NetWork")
-		user_ID = objNet.UserName
-
-		'Setting constants
-		Const adOpenStatic = 3
-		Const adLockOptimistic = 3
-
-		'Creating objects for Access
-		Set objConnection = CreateObject("ADODB.Connection")
-		Set objRecordSet = CreateObject("ADODB.Recordset")
-
-		'Opening DB
-		objConnection.Open "Provider = Microsoft.ACE.OLEDB.12.0; Data Source = " & "" & stats_database_path & ""
-
-		'Opening usage_log and adding a record
-		objRecordSet.Open "INSERT INTO usage_log (USERNAME, SDATE, STIME, SCRIPT_NAME, SRUNTIME, CLOSING_MSGBOX)" &  _
-		"VALUES ('" & user_ID & "', '" & date & "', '" & time & "', '" & name_of_script & "', " & script_run_time & ", '" & closing_message & "')", objConnection, adOpenStatic, adLockOptimistic
-	End if
-	Wscript.Quit
-end function
-
 'Navigates you to a blank case note, presses PF9, and checks to make sure you're in edit mode (keeping you from writing all of the case note on an inquiry screen).
 FUNCTION start_a_blank_CASE_NOTE
 	call navigate_to_MAXIS_screen("case", "note")
@@ -5842,6 +5815,10 @@ function stat_navigation
 	MAXIS_dialog_navigation
 End function
 
+function script_end_procedure_wsh(closing_message) 'For use when running a script outside of the BlueZone Script Host
+	retirement_message = MsgBox ("This script uses script_end_procedure_wsh, a depreciated function. If you are seeing this message, let a scripts administrator know right away: a function in a custom script may need to be updated. Without said update, this script might become unavailable on or before August 22, 2016.", vbExclamation)
+	script_end_procedure(closing_message)
+end function
 
 Function step_through_handling 'This function will introduce "warning screens" before each transmit, which is very helpful for testing new scripts
 	'To use this function, simply replace the "Execute text_from_the_other_script" line with:
