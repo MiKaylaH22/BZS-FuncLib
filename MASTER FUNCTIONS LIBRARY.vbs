@@ -3069,19 +3069,6 @@ FUNCTION start_a_blank_CASE_NOTE
 	Loop until (mode_check = "A" or mode_check = "E")
 END FUNCTION
 
-Function step_through_handling 'This function will introduce "warning screens" before each transmit, which is very helpful for testing new scripts
-	'To use this function, simply replace the "Execute text_from_the_other_script" line with:
-	'Execute replace(text_from_the_other_script, "EMWaitReady 0, 0", "step_through_handling")
-	step_through = MsgBox("Step " & step_number & chr(13) & chr(13) & "If you see something weird on your screen (like a MAXIS or PRISM error), PRESS CANCEL then email your script administrator about it. Make sure you include the step you're on.", vbOKCancel)
-	If step_number = "" then step_number = 1	'Declaring the variable
-	If step_through = vbCancel then
-		stopscript
-	Else
-		EMWaitReady 0, 0
-		step_number = step_number + 1
-	End if
-End Function
-
 function transmit
   EMSendKey "<enter>"
   EMWaitReady 0, 0
@@ -5854,3 +5841,18 @@ function stat_navigation
 	retirement_message = MsgBox ("This script uses stat_navigation, a depreciated function. If you are seeing this message, let a scripts administrator know right away: a function in a custom script may need to be updated. Without said update, this script might become unavailable on or before August 22, 2016.", vbExclamation)
 	MAXIS_dialog_navigation
 End function
+
+
+Function step_through_handling 'This function will introduce "warning screens" before each transmit, which is very helpful for testing new scripts
+	'To use this function, simply replace the "Execute text_from_the_other_script" line with:
+	'Execute replace(text_from_the_other_script, "EMWaitReady 0, 0", "step_through_handling")
+	retirement_message = MsgBox ("This script uses step_through_handling, a depreciated function. If you are seeing this message, let a scripts administrator know right away: a function in a custom script may need to be updated. Without said update, this script might become unavailable on or before August 22, 2016.", vbExclamation)
+	step_through = MsgBox("Step " & step_number & chr(13) & chr(13) & "If you see something weird on your screen (like a MAXIS or PRISM error), PRESS CANCEL then email your script administrator about it. Make sure you include the step you're on.", vbOKCancel)
+	If step_number = "" then step_number = 1	'Declaring the variable
+	If step_through = vbCancel then
+		stopscript
+	Else
+		EMWaitReady 0, 0
+		step_number = step_number + 1
+	End if
+End Function
