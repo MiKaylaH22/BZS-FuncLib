@@ -2536,17 +2536,6 @@ FUNCTION MAXIS_footer_month_confirmation	'Must use MAXIS_footer_month & MAXIS MA
 	END IF
 END FUNCTION
 
-Function memb_navigation_prev
-  HH_memb_row = HH_memb_row - 1
-  EMReadScreen prev_HH_memb, 2, HH_memb_row, 3
-  If isnumeric(prev_HH_memb) = False then
-    HH_memb_row = HH_memb_row + 1
-  Else
-    EMWriteScreen prev_HH_memb, 20, 76
-    EMWriteScreen "01", 20, 79
-  End if
-End function
-
 Function MMIS_RKEY_finder
   'Now we use a Do Loop to get to the start screen for MMIS.
   Do
@@ -5947,8 +5936,12 @@ END FUNCTION
 '--------DEPRECIATED FUNCTIONS KEPT FOR COMPATIBILITY PURPOSES, THE NEW FUNCTIONS ARE INDICATED WITHIN THE OLD FUNCTIONS
 '----------------------------DEPRECIATED FUNCTIONS ARE TO BE REMOVED IN THE AUGUST 2016 SCRIPT RELEASE
  
- FUNCTION memb_navigation_next
-   	retirement_message = MsgBox ("This script uses memb_navigation_next, a depreciated function. If you are seeing this message, let a scripts administrator know right away: a function in a custom script may need to be updated. Without said update, this script might become unavailable on or before August 22, 2016.", vbExclamation)
+FUNCTION memb_navigation_next
+	retirement_message = MsgBox ("This script uses memb_navigation_next, a depreciated function. If you are seeing this message, let a scripts administrator know right away: a function in a custom script may need to be updated. Without said update, this script might become unavailable on or before August 22, 2016.", vbExclamation)
    	MAXIS_dialog_navigation
- End function
+End function
  
+Function memb_navigation_prev
+	retirement_message = MsgBox ("This script uses memb_navigation_prev, a depreciated function. If you are seeing this message, let a scripts administrator know right away: a function in a custom script may need to be updated. Without said update, this script might become unavailable on or before August 22, 2016.", vbExclamation)
+ 	MAXIS_dialog_navigation
+End function
