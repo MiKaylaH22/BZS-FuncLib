@@ -2536,28 +2536,6 @@ FUNCTION MAXIS_footer_month_confirmation	'Must use MAXIS_footer_month & MAXIS MA
 	END IF
 END FUNCTION
 
-Function memb_navigation_next
-  HH_memb_row = HH_memb_row + 1
-  EMReadScreen next_HH_memb, 2, HH_memb_row, 3
-  If isnumeric(next_HH_memb) = False then
-    HH_memb_row = HH_memb_row + 1
-  Else
-    EMWriteScreen next_HH_memb, 20, 76
-    EMWriteScreen "01", 20, 79
-  End if
-End function
-
-Function memb_navigation_prev
-  HH_memb_row = HH_memb_row - 1
-  EMReadScreen prev_HH_memb, 2, HH_memb_row, 3
-  If isnumeric(prev_HH_memb) = False then
-    HH_memb_row = HH_memb_row + 1
-  Else
-    EMWriteScreen prev_HH_memb, 20, 76
-    EMWriteScreen "01", 20, 79
-  End if
-End function
-
 Function MMIS_RKEY_finder
   'Now we use a Do Loop to get to the start screen for MMIS.
   Do
@@ -2813,61 +2791,6 @@ Function navigate_to_PRISM_screen(x) 'x is the name of the screen
   EMWaitReady 0, 0
 End function
 
-function navigation_buttons 'this works by calling the navigation_buttons function when the buttonpressed isn't -1
-  If ButtonPressed = ABPS_button then call navigate_to_MAXIS_screen("stat", "ABPS")
-  If ButtonPressed = ACCI_button then call navigate_to_MAXIS_screen("stat", "ACCI")
-  If ButtonPressed = ACCT_button then call navigate_to_MAXIS_screen("stat", "ACCT")
-  If ButtonPressed = ADDR_button then call navigate_to_MAXIS_screen("stat", "ADDR")
-  If ButtonPressed = ALTP_button then call navigate_to_MAXIS_screen("stat", "ALTP")
-  If ButtonPressed = AREP_button then call navigate_to_MAXIS_screen("stat", "AREP")
-  If ButtonPressed = BILS_button then call navigate_to_MAXIS_screen("stat", "BILS")
-  If ButtonPressed = BUSI_button then call navigate_to_MAXIS_screen("stat", "BUSI")
-  If ButtonPressed = CARS_button then call navigate_to_MAXIS_screen("stat", "CARS")
-  If ButtonPressed = CASH_button then call navigate_to_MAXIS_screen("stat", "CASH")
-  If ButtonPressed = COEX_button then call navigate_to_MAXIS_screen("stat", "COEX")
-  If ButtonPressed = DCEX_button then call navigate_to_MAXIS_screen("stat", "DCEX")
-  If ButtonPressed = DIET_button then call navigate_to_MAXIS_screen("stat", "DIET")
-  If ButtonPressed = DISA_button then call navigate_to_MAXIS_screen("stat", "DISA")
-  If ButtonPressed = EATS_button then call navigate_to_MAXIS_screen("stat", "EATS")
-  If ButtonPressed = ELIG_DWP_button then call navigate_to_MAXIS_screen("elig", "DWP_")
-  If ButtonPressed = ELIG_FS_button then call navigate_to_MAXIS_screen("elig", "FS__")
-  If ButtonPressed = ELIG_GA_button then call navigate_to_MAXIS_screen("elig", "GA__")
-  If ButtonPressed = ELIG_HC_button then call navigate_to_MAXIS_screen("elig", "HC__")
-  If ButtonPressed = ELIG_MFIP_button then call navigate_to_MAXIS_screen("elig", "MFIP")
-  If ButtonPressed = ELIG_MSA_button then call navigate_to_MAXIS_screen("elig", "MSA_")
-  If ButtonPressed = ELIG_WB_button then call navigate_to_MAXIS_screen("elig", "WB__")
-  If ButtonPressed = FACI_button then call navigate_to_MAXIS_screen("stat", "FACI")
-  If ButtonPressed = FMED_button then call navigate_to_MAXIS_screen("stat", "FMED")
-  If ButtonPressed = HCRE_button then call navigate_to_MAXIS_screen("stat", "HCRE")
-  If ButtonPressed = HEST_button then call navigate_to_MAXIS_screen("stat", "HEST")
-  If ButtonPressed = IMIG_button then call navigate_to_MAXIS_screen("stat", "IMIG")
-  If ButtonPressed = INSA_button then call navigate_to_MAXIS_screen("stat", "INSA")
-  If ButtonPressed = JOBS_button then call navigate_to_MAXIS_screen("stat", "JOBS")
-  If ButtonPressed = MEDI_button then call navigate_to_MAXIS_screen("stat", "MEDI")
-  If ButtonPressed = MEMB_button then call navigate_to_MAXIS_screen("stat", "MEMB")
-  If ButtonPressed = MEMI_button then call navigate_to_MAXIS_screen("stat", "MEMI")
-  If ButtonPressed = MONT_button then call navigate_to_MAXIS_screen("stat", "MONT")
-  If ButtonPressed = OTHR_button then call navigate_to_MAXIS_screen("stat", "OTHR")
-  If ButtonPressed = PBEN_button then call navigate_to_MAXIS_screen("stat", "PBEN")
-  If ButtonPressed = PDED_button then call navigate_to_MAXIS_screen("stat", "PDED")
-  If ButtonPressed = PREG_button then call navigate_to_MAXIS_screen("stat", "PREG")
-  If ButtonPressed = PROG_button then call navigate_to_MAXIS_screen("stat", "PROG")
-  If ButtonPressed = RBIC_button then call navigate_to_MAXIS_screen("stat", "RBIC")
-  If ButtonPressed = REST_button then call navigate_to_MAXIS_screen("stat", "REST")
-  If ButtonPressed = REVW_button then call navigate_to_MAXIS_screen("stat", "REVW")
-  If ButtonPressed = SCHL_button then call navigate_to_MAXIS_screen("stat", "SCHL")
-  If ButtonPressed = SECU_button then call navigate_to_MAXIS_screen("stat", "SECU")
-  If ButtonPressed = STIN_button then call navigate_to_MAXIS_screen("stat", "STIN")
-  If ButtonPressed = STEC_button then call navigate_to_MAXIS_screen("stat", "STEC")
-  If ButtonPressed = STWK_button then call navigate_to_MAXIS_screen("stat", "STWK")
-  If ButtonPressed = SHEL_button then call navigate_to_MAXIS_screen("stat", "SHEL")
-  If ButtonPressed = SPON_button then call navigate_to_MAXIS_screen("stat", "SPON")
-  If ButtonPressed = SWKR_button then call navigate_to_MAXIS_screen("stat", "SWKR")
-  If ButtonPressed = TRAN_button then call navigate_to_MAXIS_screen("stat", "TRAN")
-  If ButtonPressed = TYPE_button then call navigate_to_MAXIS_screen("stat", "TYPE")
-  If ButtonPressed = UNEA_button then call navigate_to_MAXIS_screen("stat", "UNEA")
-End function
-
 function new_page_check
   EMGetCursor MAXIS_row, MAXIS_col
   If MAXIS_row = 17 then
@@ -2880,22 +2803,6 @@ end function
 
 Function open_URL_in_browser(URL_to_open)
 	CreateObject("WScript.Shell").Run(URL_to_open)
-End function
-
-Function panel_navigation_next
-  EMReadScreen current_panel, 1, 2, 73
-  EMReadScreen amount_of_panels, 1, 2, 78
-  If current_panel < amount_of_panels then new_panel = current_panel + 1
-  If current_panel = amount_of_panels then new_panel = current_panel
-  If amount_of_panels > 1 then EMWriteScreen "0" & new_panel, 20, 79
-End function
-
-Function panel_navigation_prev
-  EMReadScreen current_panel, 1, 2, 73
-  EMReadScreen amount_of_panels, 1, 2, 78
-  If current_panel = 1 then new_panel = current_panel
-  If current_panel > 1 then new_panel = current_panel - 1
-  If amount_of_panels > 1 then EMWriteScreen "0" & new_panel, 20, 79
 End function
 
 Function PF1
@@ -3124,170 +3031,6 @@ function script_end_procedure(closing_message)
 	If disable_StopScript = FALSE or disable_StopScript = "" then stopscript
 end function
 
-function script_end_procedure_wsh(closing_message) 'For use when running a script outside of the BlueZone Script Host
-	If closing_message <> "" then MsgBox closing_message
-	stop_time = timer
-	script_run_time = stop_time - start_time
-	If is_county_collecting_stats = True then
-		'Getting user name
-		Set objNet = CreateObject("WScript.NetWork")
-		user_ID = objNet.UserName
-
-		'Setting constants
-		Const adOpenStatic = 3
-		Const adLockOptimistic = 3
-
-		'Creating objects for Access
-		Set objConnection = CreateObject("ADODB.Connection")
-		Set objRecordSet = CreateObject("ADODB.Recordset")
-
-		'Opening DB
-		objConnection.Open "Provider = Microsoft.ACE.OLEDB.12.0; Data Source = " & "" & stats_database_path & ""
-
-		'Opening usage_log and adding a record
-		objRecordSet.Open "INSERT INTO usage_log (USERNAME, SDATE, STIME, SCRIPT_NAME, SRUNTIME, CLOSING_MSGBOX)" &  _
-		"VALUES ('" & user_ID & "', '" & date & "', '" & time & "', '" & name_of_script & "', " & script_run_time & ", '" & closing_message & "')", objConnection, adOpenStatic, adLockOptimistic
-	End if
-	Wscript.Quit
-end function
-
-'Function to sort a numeric function ascending (lowest to biggest)
-FUNCTION sort_numeric_array_ascending(values_array, separate_character, output_array)
-	'trimming and splitting the array
-	values_array = trim(values_array)
-	values_array = split(values_array, separate_character)
-	num_of_values = ubound(values_array)
-
-	REDIM placeholder_array(num_of_values, 1)
-		' position 0 is the number, position 1 is if the number has been put in the output array
-
-	'assigning the number values to the multi-dimensional placeholder array AND whether the specific value has been used for comparison yet (position 1)
-	array_position = 0
-	FOR EACH num_char IN values_array
-		IF num_char <> "" THEN
-			num_char = cdbl(num_char)
-			placeholder_array(array_position, 0) = num_char
-			placeholder_array(array_position, 1) = FALSE
-			array_position = array_position + 1
-		END IF
-	NEXT
-
-	'reseting array_position for the generation of the output array
-	array_position = 0
-	i = 0
-	all_sorted = FALSE
-	DO
-		'stating that the number has not yet been put into the sorted array
-		lowest_value = FALSE
-		value_to_watch = placeholder_array(i, 0)
-		IF placeholder_array(i, 1) = FALSE THEN
-			FOR j = 0 TO num_of_values
-				'If the value is not blank AND if we still have not assigned this value to the output array. We need
-				' to avoid a list of only the lowest values, which is what happens what you remove the placeholder_array(j, 1) bit
-				IF placeholder_array(j, 0) <> ""  AND placeholder_array(j, 1) = FALSE THEN
-					IF value_to_watch =< placeholder_array(j, 0) THEN
-						lowest_value = TRUE
-					ELSE
-						'If the function finds a value LOWER than the current one, it stops comparison and exits the FOR NEXT
-						lowest_value = FALSE
-						EXIT FOR
-					END IF
-				END IF
-			NEXT
-		END IF
-
-		'If we confirm that this is the lowest value...
-		IF lowest_value = TRUE THEN
-			'...then we assign position 1 as TRUE (so we will not use this value for comparison in the future)
-			placeholder_array(i, 1) = TRUE
-			'...we assign it to the output array...
-			output_array = output_array & value_to_watch & ","
-			'...and we move on to the next position in the array...
-			array_position = array_position + 1
-			'...until we find that we have hit the ubound for the original array. Then we stop assigning.
-			IF array_position = num_of_values THEN all_sorted = TRUE
-		END IF
-		'If we get through this specific number and find that it does not go next on the sorted list,
-		' we need to get to the next number. If we find that we have got through all the numbers and the list
-		' is not complete, we need to reset this value, and start back at the beginning of the original list.
-		' This way, we avoid skipping numbers that should be showing up on the list.
-		i = i + 1
-		IF i = num_of_values AND all_sorted = FALSE THEN i = 0
-	LOOP UNTIL all_sorted = TRUE
-
-
-	output_array = trim(output_array)
-	output_array = split(output_array, ",")
-END FUNCTION
-
-'Function for sorting numeric array descending (biggest to smallest)
-FUNCTION sort_numeric_array_descending(values_array, separate_character, output_array)
-	'trimming and splitting the array
-	values_array = trim(values_array)
-	values_array = split(values_array, separate_character)
-	num_of_values = ubound(values_array)
-
-	REDIM placeholder_array(num_of_values, 1)
-		' position 0 is the number, position 1 is if the number has been put in the output array
-
-	'assigning the number values to the multi-dimensional placeholder array AND whether the specific value has been used for comparison yet (position 1)
-	array_position = 0
-	FOR EACH num_char IN values_array
-		IF num_char <> "" THEN
-			num_char = cdbl(num_char)
-			placeholder_array(array_position, 0) = num_char
-			placeholder_array(array_position, 1) = FALSE
-			array_position = array_position + 1
-		END IF
-	NEXT
-
-	'reseting array_position for the generation of the output array
-	array_position = 0
-	i = 0
-	all_sorted = FALSE
-	DO
-		'stating that the number has not yet been put into the sorted array
-		highest_value = FALSE
-		value_to_watch = placeholder_array(i, 0)
-		IF placeholder_array(i, 1) = FALSE THEN
-			FOR j = 0 TO num_of_values
-				'If the value is not blank AND if we still have not assigned this value to the output array. We need
-				' to avoid a list of only the lowest values, which is what happens what you remove the placeholder_array(j, 1) bit
-				IF placeholder_array(j, 0) <> ""  AND placeholder_array(j, 1) = FALSE THEN
-					IF value_to_watch >= placeholder_array(j, 0) THEN
-						highest_value = TRUE
-					ELSE
-						'If the function finds a value LOWER than the current one, it stops comparison and exits the FOR NEXT
-						highest_value = FALSE
-						EXIT FOR
-					END IF
-				END IF
-			NEXT
-		END IF
-
-		'If we confirm that this is the highest value...
-		IF highest_value = TRUE THEN
-			'...then we assign position 1 as TRUE (so we will not use this value for comparison in the future)
-			placeholder_array(i, 1) = TRUE
-			'...we assign it to the output array...
-			output_array = output_array & value_to_watch & ","
-			'...and we move on to the next position in the array...
-			array_position = array_position + 1
-			'...until we find that we have hit the ubound for the original array. Then we stop assigning.
-			IF array_position = num_of_values THEN all_sorted = TRUE
-		END IF
-		'If we get through this specific number and find that it does not go next on the sorted list,
-		' we need to get to the next number. If we find that we have got through all the numbers and the list
-		' is not complete, we need to reset this value, and start back at the beginning of the original list.
-		' This way, we avoid skipping numbers that should be showing up on the list.
-		i = i + 1
-		IF i = num_of_values AND all_sorted = FALSE THEN i = 0
-	LOOP UNTIL all_sorted = TRUE
-
-	output_array = trim(output_array)
-	output_array = split(output_array, ",")
-END FUNCTION
-
 'Navigates you to a blank case note, presses PF9, and checks to make sure you're in edit mode (keeping you from writing all of the case note on an inquiry screen).
 FUNCTION start_a_blank_CASE_NOTE
 	call navigate_to_MAXIS_screen("case", "note")
@@ -3298,59 +3041,6 @@ FUNCTION start_a_blank_CASE_NOTE
 		If case_note_check <> "Case Notes (NOTE)" or mode_check <> "A" then msgbox "The script can't open a case note. Are you in inquiry? Check MAXIS and try again."
 	Loop until (mode_check = "A" or mode_check = "E")
 END FUNCTION
-
-function stat_navigation
-  EMReadScreen STAT_check, 4, 20, 21
-  If STAT_check = "STAT" then
-    If ButtonPressed = prev_panel_button then
-      EMReadScreen current_panel, 1, 2, 73
-      EMReadScreen amount_of_panels, 1, 2, 78
-      If current_panel = 1 then new_panel = current_panel
-      If current_panel > 1 then new_panel = current_panel - 1
-      If amount_of_panels > 1 then EMWriteScreen "0" & new_panel, 20, 79
-    End if
-    If ButtonPressed = next_panel_button then
-      EMReadScreen current_panel, 1, 2, 73
-      EMReadScreen amount_of_panels, 1, 2, 78
-      If current_panel < amount_of_panels then new_panel = current_panel + 1
-      If current_panel = amount_of_panels then new_panel = current_panel
-      If amount_of_panels > 1 then EMWriteScreen "0" & new_panel, 20, 79
-    End if
-    If ButtonPressed = prev_memb_button then
-      HH_memb_row = HH_memb_row - 1
-      EMReadScreen prev_HH_memb, 2, HH_memb_row, 3
-      If isnumeric(prev_HH_memb) = False then
-        HH_memb_row = HH_memb_row + 1
-      Else
-        EMWriteScreen prev_HH_memb, 20, 76
-        EMWriteScreen "01", 20, 79
-      End if
-    End if
-    If ButtonPressed = next_memb_button then
-      HH_memb_row = HH_memb_row + 1
-      EMReadScreen next_HH_memb, 2, HH_memb_row, 3
-      If isnumeric(next_HH_memb) = False then
-        HH_memb_row = HH_memb_row + 1
-      Else
-        EMWriteScreen next_HH_memb, 20, 76
-        EMWriteScreen "01", 20, 79
-      End if
-    End if
-  End if
-End function
-
-Function step_through_handling 'This function will introduce "warning screens" before each transmit, which is very helpful for testing new scripts
-	'To use this function, simply replace the "Execute text_from_the_other_script" line with:
-	'Execute replace(text_from_the_other_script, "EMWaitReady 0, 0", "step_through_handling")
-	step_through = MsgBox("Step " & step_number & chr(13) & chr(13) & "If you see something weird on your screen (like a MAXIS or PRISM error), PRESS CANCEL then email your script administrator about it. Make sure you include the step you're on.", vbOKCancel)
-	If step_number = "" then step_number = 1	'Declaring the variable
-	If step_through = vbCancel then
-		stopscript
-	Else
-		EMWaitReady 0, 0
-		step_number = step_number + 1
-	End if
-End Function
 
 function transmit
   EMSendKey "<enter>"
@@ -6091,3 +5781,55 @@ FUNCTION write_panel_to_MAXIS_WREG(wreg_fs_pwe, wreg_fset_status, wreg_defer_fs,
 
 	transmit
 END FUNCTION
+
+'--------DEPRECIATED FUNCTIONS KEPT FOR COMPATIBILITY PURPOSES, THE NEW FUNCTIONS ARE INDICATED WITHIN THE OLD FUNCTIONS
+'----------------------------DEPRECIATED FUNCTIONS ARE TO BE REMOVED IN THE AUGUST 2016 SCRIPT RELEASE
+ 
+FUNCTION memb_navigation_next
+	retirement_message = MsgBox ("This script uses memb_navigation_next, a depreciated function. If you are seeing this message, let a scripts administrator know right away: a function in a custom script may need to be updated. Without said update, this script might become unavailable on or before August 22, 2016.", vbExclamation)
+   	MAXIS_dialog_navigation
+End function
+ 
+Function memb_navigation_prev
+	retirement_message = MsgBox ("This script uses memb_navigation_prev, a depreciated function. If you are seeing this message, let a scripts administrator know right away: a function in a custom script may need to be updated. Without said update, this script might become unavailable on or before August 22, 2016.", vbExclamation)
+ 	MAXIS_dialog_navigation
+End function
+
+function navigation_buttons 'this works by calling the navigation_buttons function when the buttonpressed isn't -1
+	retirement_message = MsgBox ("This script uses navigation_buttons, a depreciated function. If you are seeing this message, let a scripts administrator know right away: a function in a custom script may need to be updated. Without said update, this script might become unavailable on or before August 22, 2016.", vbExclamation)
+	MAXIS_dialog_navigation
+End function
+
+Function panel_navigation_next
+	retirement_message = MsgBox ("This script uses panel_navigation_next, a depreciated function. If you are seeing this message, let a scripts administrator know right away: a function in a custom script may need to be updated. Without said update, this script might become unavailable on or before August 22, 2016.", vbExclamation)
+	MAXIS_dialog_navigation
+End function
+
+Function panel_navigation_prev
+	retirement_message = MsgBox ("This script uses panel_navigation_prev, a depreciated function. If you are seeing this message, let a scripts administrator know right away: a function in a custom script may need to be updated. Without said update, this script might become unavailable on or before August 22, 2016.", vbExclamation)
+	MAXIS_dialog_navigation
+End function
+
+function stat_navigation
+	retirement_message = MsgBox ("This script uses stat_navigation, a depreciated function. If you are seeing this message, let a scripts administrator know right away: a function in a custom script may need to be updated. Without said update, this script might become unavailable on or before August 22, 2016.", vbExclamation)
+	MAXIS_dialog_navigation
+End function
+
+function script_end_procedure_wsh(closing_message) 'For use when running a script outside of the BlueZone Script Host
+	retirement_message = MsgBox ("This script uses script_end_procedure_wsh, a depreciated function. If you are seeing this message, let a scripts administrator know right away: a function in a custom script may need to be updated. Without said update, this script might become unavailable on or before August 22, 2016.", vbExclamation)
+	script_end_procedure(closing_message)
+end function
+
+Function step_through_handling 'This function will introduce "warning screens" before each transmit, which is very helpful for testing new scripts
+	'To use this function, simply replace the "Execute text_from_the_other_script" line with:
+	'Execute replace(text_from_the_other_script, "EMWaitReady 0, 0", "step_through_handling")
+	retirement_message = MsgBox ("This script uses step_through_handling, a depreciated function. If you are seeing this message, let a scripts administrator know right away: a function in a custom script may need to be updated. Without said update, this script might become unavailable on or before August 22, 2016.", vbExclamation)
+	step_through = MsgBox("Step " & step_number & chr(13) & chr(13) & "If you see something weird on your screen (like a MAXIS or PRISM error), PRESS CANCEL then email your script administrator about it. Make sure you include the step you're on.", vbOKCancel)
+	If step_number = "" then step_number = 1	'Declaring the variable
+	If step_through = vbCancel then
+		stopscript
+	Else
+		EMWaitReady 0, 0
+		step_number = step_number + 1
+	End if
+End Function
