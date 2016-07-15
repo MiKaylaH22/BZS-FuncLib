@@ -2805,14 +2805,6 @@ Function open_URL_in_browser(URL_to_open)
 	CreateObject("WScript.Shell").Run(URL_to_open)
 End function
 
-Function panel_navigation_next
-  EMReadScreen current_panel, 1, 2, 73
-  EMReadScreen amount_of_panels, 1, 2, 78
-  If current_panel < amount_of_panels then new_panel = current_panel + 1
-  If current_panel = amount_of_panels then new_panel = current_panel
-  If amount_of_panels > 1 then EMWriteScreen "0" & new_panel, 20, 79
-End function
-
 Function panel_navigation_prev
   EMReadScreen current_panel, 1, 2, 73
   EMReadScreen amount_of_panels, 1, 2, 78
@@ -5893,5 +5885,10 @@ End function
 
 function navigation_buttons 'this works by calling the navigation_buttons function when the buttonpressed isn't -1
 	retirement_message = MsgBox ("This script uses navigation_buttons, a depreciated function. If you are seeing this message, let a scripts administrator know right away: a function in a custom script may need to be updated. Without said update, this script might become unavailable on or before August 22, 2016.", vbExclamation)
+	MAXIS_dialog_navigation
+End function
+
+Function panel_navigation_next
+	retirement_message = MsgBox ("This script uses panel_navigation_next, a depreciated function. If you are seeing this message, let a scripts administrator know right away: a function in a custom script may need to be updated. Without said update, this script might become unavailable on or before August 22, 2016.", vbExclamation)
 	MAXIS_dialog_navigation
 End function
