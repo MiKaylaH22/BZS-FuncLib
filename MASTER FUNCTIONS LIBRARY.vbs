@@ -39,6 +39,23 @@ county_name = ""
 
 If ButtonPressed <> "" then ButtonPressed = ""		'Defines ButtonPressed if not previously defined, allowing scripts the benefit of not having to declare ButtonPressed all the time
 
+'Preloading worker_signature, as a constant to be used in scripts---------------------------------------------------------------------------------------------------------
+
+'Needs to determine MyDocs directory before proceeding.
+Set wshshell = CreateObject("WScript.Shell")
+user_myDocs_folder = wshShell.SpecialFolders("MyDocuments") & "\"
+
+'Now it determines the signature
+With (CreateObject("Scripting.FileSystemObject"))															'Creating an FSO
+	If .FileExists(user_myDocs_folder & "workersig.txt") Then												'If the workersig.txt file exists...
+		Set get_worker_sig = CreateObject("Scripting.FileSystemObject")										'Create another FSO
+		Set worker_sig_command = get_worker_sig.OpenTextFile(user_myDocs_folder & "workersig.txt")			'Open the text file
+		worker_sig = worker_sig_command.ReadAll																'Read the text file
+		IF worker_sig <> "" THEN worker_signature = worker_sig												'If it isn't blank then the worker_signature should be populated with the contents of the file
+		worker_sig_command.Close																			'Closes the file
+	END IF
+END WITH
+
 '=========================================================================================================================================================================== FUNCTIONS RELATED TO GLOBAL CONSTANTS
 FUNCTION income_test_SNAP_categorically_elig(household_size, income_limit)
 	'See Combined Manual 0019.06
@@ -1662,7 +1679,7 @@ Function autofill_editbox_from_MAXIS(HH_member_array, panel_read_from, variable_
 			'declaring & splitting the second set of abawd months array
 			If left(second_set_info_list, 1) = "," then second_set_info_list = right(second_set_info_list, len(second_set_info_list) - 1)
 			second_months_array = Split(second_set_info_list,",")
-
+		
 			bene_mo_col = bene_mo_col - 4
     		IF bene_mo_col = 15 THEN
         		bene_yr_row = bene_yr_row - 1
@@ -1707,8 +1724,14 @@ Function autofill_editbox_from_MAXIS(HH_member_array, panel_read_from, variable_
 	If read_abawd_status = "07" THEN  abawd_status = "ABAWD = work exp participant."
 	If read_abawd_status = "08" THEN  abawd_status = "ABAWD = othr E & T service."
 	If read_abawd_status = "09" THEN  abawd_status = "ABAWD = reside in waiver area."
-	If read_abawd_status = "10" THEN  abawd_status = "ABAWD = ABAWD & has used " & abawd_counted_months & " mo." & " List of counted ABAWD months:" & abawd_info_list & ". Second set of ABAWD months used:" & second_set_info_list & "."
-	If read_abawd_status = "11" THEN  abawd_status = "ABAWD = Using 2nd set of ABAWD months. List of 2nd set used:" & second_set_info_list & "."
+	IF read_abawd_status = "10" AND abawd_counted_months = "0" THEN 
+		abawd_status = "ABAWD = ABAWD & has used " & abawd_counted_months & " mo."
+	Elseif read_abawd_status = "10" AND second_abawd_period = "0" THEN 
+		abawd_status = "ABAWD = ABAWD & has used " & abawd_counted_months & " mo. Counted ABAWD months:" & abawd_info_list & ". Second set of ABAWD months used: " & second_abawd_period & "."
+	Elseif read_abawd_status = "10" AND second_abawd_period <> "0" THEN
+		abawd_status = "ABAWD = ABAWD & has used " & abawd_counted_months & " mo. Counted ABAWD months:" & abawd_info_list & ". Second set of ABAWD months used: " & second_abawd_period & ". Counted second set months: " & second_set_info_list & "."
+	END IF 
+	If read_abawd_status = "11" THEN  abawd_status = "ABAWD = Using second set of ABAWD months. Counted second set months: " & second_set_info_list & "."
 	If read_abawd_status = "12" THEN  abawd_status = "ABAWD = RCA or GA recip."
 	If read_abawd_status = "13" THEN  abawd_status = "ABAWD = ABAWD extension."
 	If read_abawd_status = "__" THEN  abawd_status = "ABAWD = blank"
@@ -1733,7 +1756,7 @@ End function
 FUNCTION cancel_confirmation
 	If ButtonPressed = 0 then
 		cancel_confirm = MsgBox("Are you sure you want to cancel the script? Press YES to cancel. Press NO to return to the script.", vbYesNo)
-		If cancel_confirm = vbYes then script_end_procedure("CANCEL BUTTON SELECTED")     
+		If cancel_confirm = vbYes then script_end_procedure("~PT: user pressed cancel")     
         'script_end_procedure text added for statistical purposes. If script was canceled prior to completion, the statistics will reflect this.
 	End if
 END FUNCTION
@@ -1976,6 +1999,117 @@ Function create_panel_if_nonexistent()
 		End If
 	End If
 End Function
+
+
+Function dynamic_calendar_dialog(selected_dates_array, month_to_use, text_prompt, one_date_only, disable_weekends, disable_month_change, start_date, end_date)
+	'Instructions for function
+	' PARAMETERS:
+	' selected_dates_array  - is the output array it will contain dates in MM/DD/YY format
+	' month_to_use          - this can be MM/YY or MM/DD/YY format as long as it is considered a date it will work. 
+	' one_date_only         - this is a True/false parameter which will restrict the function to only allow one date to be selected if set to TRUE
+	' disable_weekends      - this is a True/false parameter which will restrict the selection of weekends if set to TRUE
+	' disable_month_change  - this is a True/false parameter which will restrict the selection of different months if set to TRUE	
+	' start_date & end_date - This will provide a range of dates which cannot be selected. These are to be entered as numbers. For example start_date = 3 and end_date = 14 the days 3 through 14 will be unavailable to select
+	
+	'dimming array to display the dates
+	DIM display_dates_array
+	DO
+		full_date_to_display = ""					'resetting variables to make sure loops work properly. 
+		selected_dates_array = ""
+		'Determining the number of days in the calendar month.
+		display_month = DatePart("M", month_to_use) & "/01/" & DatePart("YYYY", month_to_use)			'Converts whatever the month_to_use variable is to a MM/01/YYYY format
+		num_of_days = DatePart("D", (DateAdd("D", -1, (DateAdd("M", 1, display_month)))))								'Determines the number of days in a month by using DatePart to get the day of the last day of the month, and just using the day variable gives us a total
+	
+		'Redeclares the available dates array to be sized appropriately (with the right amount of dates) and another dimension for whether-or-not it was selected
+		Redim display_dates_array(num_of_days, 0)
+
+	
+		'Actually displays the dialog
+		BeginDialog dialog1, 0, 0, 280, 190, "Select Date(s)"
+			Text 5, 10, 265, 50, text_prompt
+			'This next part`creates a line showing the month displayed"
+			Text 120, 70, 55, 10, (MonthName(DatePart("M", display_month)) & " " & DatePart("YYYY", display_month))
+	
+			'Defining the vertical position starting point for the for...next which displays dates in the dialog
+			vertical_position = 85
+			'This for...next displays dates in the dialog, and has checkboxes for available dates (defined in-code as dates before the 8th)
+			for day_to_display = 1 to num_of_days																						'From first day of month to last day of month...
+				full_date_to_display = (DatePart("M", display_month) & "/" & day_to_display & "/" & DatePart("YYYY", display_month))		'Determines the full date to display in the dialog. It needs the full date to determine the day-of-week (we obviously don't want weekends)
+				horizontal_position = 15 + (40 * (WeekDay(full_date_to_display) - 1))													'horizontal position of this is the weekday numeric value (1-7) * 40, minus 1, and plus 15 pixels
+				IF WeekDay(full_date_to_display) = vbSunday AND day_to_display <> 1 THEN vertical_position = vertical_position + 15		'If the day of the week isn't Sunday and the day isn't first of the month, kick the vertical position up another 15 pixels
+	
+				'This blocks out anything that's an unavailable date, currently defined as any date before the 8th. Other dates display as a checkbox.
+				IF day_to_display <= end_date AND day_to_display >= start_date THEN
+					Text horizontal_position, vertical_position, 30, 10, " X " & day_to_display
+					display_dates_array(day_to_display, 0) = unchecked 'unchecking so selections cannot be made the range between start_date and end_date
+				ELSE
+					IF (disable_weekends = TRUE AND WeekDay(full_date_to_display) = vbSunday) OR (disable_weekends = TRUE AND WeekDay(full_date_to_display) = vbSaturday) THEN		'If the weekends are disabled this will change them to text rather than checkboxes	
+						Text horizontal_position, vertical_position, 30, 10, " X " & day_to_display
+					ELSE
+						CheckBox horizontal_position, vertical_position, 35, 10, day_to_display, display_dates_array(day_to_display, 0)
+					END IF
+				END IF
+			NEXT
+			ButtonGroup ButtonPressed
+			OkButton 175, 170, 50, 15
+			CancelButton 225, 170, 50, 15
+			IF disable_month_change = FALSE THEN
+				PushButton 85, 65, 20, 15, "<", prev_month_button					
+				PushButton 180, 65, 20, 15, ">", next_month_button
+			END IF
+		EndDialog
+	
+		IF one_date_only = TRUE THEN										'if only one date is allowed to be selected the script will act one way. Else it will allow for an large array of dates from a month to be build.
+			DO
+				selected_dates_array = ""									' declaring array at start of do loop. 
+				Dialog
+				cancel_confirmation
+				IF ButtonPressed = prev_month_button THEN month_to_use = dateadd("M", -1, month_to_use)				'changing the month_to_use based on previous or next month
+				IF ButtonPressed = next_month_button THEN month_to_use = dateadd("M", 1, month_to_use)				'this will allow us to get to a new month when the dialog is rebuild.
+				FOR i = 0 to num_of_days																			'checking each checkbox in the array to see what dates were selected. 
+					IF display_dates_array(i, 0) = 1 THEN 															'if the date has been checked
+						IF len(DatePart("M", month_to_use)) = 1 THEN												'adding a leading 0 to the month if needed
+							output_month = "0" & DatePart("M", month_to_use)
+						ELSE
+							output_month =  DatePart("M", month_to_use)
+						END IF
+						IF len(i) = 1 THEN 																			'building the output array with dates in MM/DD/YY format
+							selected_dates_array = selected_dates_array & output_month & "/0" & i & "/" & right(DatePart("YYYY", month_to_use), 2) & ";" 
+						ELSE 
+							selected_dates_array = selected_dates_array & output_month & "/" & i & "/" & right(DatePart("YYYY", month_to_use), 2) & ";"
+						END IF
+					END IF
+				NEXT
+				selected_dates_array = selected_dates_array & "end"						'this will allow us to delete the extra entry in the array
+				selected_dates_array = replace(selected_dates_array, ";end", "")
+				selected_dates_array = Split(selected_dates_array, ";")					'splitting array
+			IF Ubound(selected_dates_array) <> 0 AND (buttonpressed <> prev_month_button or buttonpressed <> next_month_button) THEN msgbox "Please select just one date."
+			LOOP until Ubound(selected_dates_array) = 0
+		ELSE
+			Dialog
+			cancel_confirmation
+			IF ButtonPressed = prev_month_button THEN month_to_use = dateadd("M", -1, month_to_use)					'changing the month_to_use based on previous or next month
+			IF ButtonPressed = next_month_button THEN month_to_use = dateadd("M", 1, month_to_use)					'this will allow us to get to a new month when the dialog is rebuild.
+			FOR i = 0 to num_of_days																				'checking each checkbox in the array to see what dates were selected. 
+				IF display_dates_array(i, 0) = 1 THEN 																'if the date has been checked
+					IF len(DatePart("M", month_to_use)) = 1 THEN 													'adding a leading 0 to the month if needed
+						output_month = "0" & DatePart("M", month_to_use)
+					ELSE
+						output_month =  DatePart("M", month_to_use)
+					END IF
+					IF len(i) = 1 THEN 																				'building the output array with dates in MM/DD/YY format addding leading 0 to DD if needed. 
+						selected_dates_array = selected_dates_array & output_month & "/0" & i & "/" & right(DatePart("YYYY", month_to_use), 2) & ";" 
+					ELSE 
+						selected_dates_array = selected_dates_array & output_month & "/" & i & "/" & right(DatePart("YYYY", month_to_use), 2) & ";"
+					END IF	
+				END IF
+			NEXT
+			selected_dates_array = selected_dates_array & "end"							'this will allow us to delete the extra entry in the array
+			selected_dates_array = replace(selected_dates_array, ";end", "")
+			selected_dates_array = Split(selected_dates_array, ";")						'splitting array
+		END IF
+	LOOP until buttonpressed = -1								'looping until someone hits the ok button, this makes the previous and next buttons work. 
+END FUNCTION
 
 Function end_excel_and_script
   objExcel.Workbooks.Close
@@ -2513,28 +2647,6 @@ FUNCTION MAXIS_footer_month_confirmation	'Must use MAXIS_footer_month & MAXIS MA
 	END IF
 END FUNCTION
 
-Function memb_navigation_next
-  HH_memb_row = HH_memb_row + 1
-  EMReadScreen next_HH_memb, 2, HH_memb_row, 3
-  If isnumeric(next_HH_memb) = False then
-    HH_memb_row = HH_memb_row + 1
-  Else
-    EMWriteScreen next_HH_memb, 20, 76
-    EMWriteScreen "01", 20, 79
-  End if
-End function
-
-Function memb_navigation_prev
-  HH_memb_row = HH_memb_row - 1
-  EMReadScreen prev_HH_memb, 2, HH_memb_row, 3
-  If isnumeric(prev_HH_memb) = False then
-    HH_memb_row = HH_memb_row + 1
-  Else
-    EMWriteScreen prev_HH_memb, 20, 76
-    EMWriteScreen "01", 20, 79
-  End if
-End function
-
 Function MMIS_RKEY_finder
   'Now we use a Do Loop to get to the start screen for MMIS.
   Do
@@ -2790,77 +2902,6 @@ Function navigate_to_PRISM_screen(x) 'x is the name of the screen
   EMWaitReady 0, 0
 End function
 
-function navigation_buttons 'this works by calling the navigation_buttons function when the buttonpressed isn't -1
-  If ButtonPressed = ABPS_button then call navigate_to_MAXIS_screen("stat", "ABPS")
-  If ButtonPressed = ACCI_button then call navigate_to_MAXIS_screen("stat", "ACCI")
-  If ButtonPressed = ACCT_button then call navigate_to_MAXIS_screen("stat", "ACCT")
-  If ButtonPressed = ADDR_button then call navigate_to_MAXIS_screen("stat", "ADDR")
-  If ButtonPressed = ALTP_button then call navigate_to_MAXIS_screen("stat", "ALTP")
-  If ButtonPressed = AREP_button then call navigate_to_MAXIS_screen("stat", "AREP")
-  If ButtonPressed = BILS_button then call navigate_to_MAXIS_screen("stat", "BILS")
-  If ButtonPressed = BUSI_button then call navigate_to_MAXIS_screen("stat", "BUSI")
-  If ButtonPressed = CARS_button then call navigate_to_MAXIS_screen("stat", "CARS")
-  If ButtonPressed = CASH_button then call navigate_to_MAXIS_screen("stat", "CASH")
-  If ButtonPressed = COEX_button then call navigate_to_MAXIS_screen("stat", "COEX")
-  If ButtonPressed = DCEX_button then call navigate_to_MAXIS_screen("stat", "DCEX")
-  If ButtonPressed = DIET_button then call navigate_to_MAXIS_screen("stat", "DIET")
-  If ButtonPressed = DISA_button then call navigate_to_MAXIS_screen("stat", "DISA")
-  If ButtonPressed = EATS_button then call navigate_to_MAXIS_screen("stat", "EATS")
-  If ButtonPressed = ELIG_DWP_button then call navigate_to_MAXIS_screen("elig", "DWP_")
-  If ButtonPressed = ELIG_FS_button then call navigate_to_MAXIS_screen("elig", "FS__")
-  If ButtonPressed = ELIG_GA_button then call navigate_to_MAXIS_screen("elig", "GA__")
-  If ButtonPressed = ELIG_HC_button then call navigate_to_MAXIS_screen("elig", "HC__")
-  If ButtonPressed = ELIG_MFIP_button then call navigate_to_MAXIS_screen("elig", "MFIP")
-  If ButtonPressed = ELIG_MSA_button then call navigate_to_MAXIS_screen("elig", "MSA_")
-  If ButtonPressed = ELIG_WB_button then call navigate_to_MAXIS_screen("elig", "WB__")
-  If ButtonPressed = FACI_button then call navigate_to_MAXIS_screen("stat", "FACI")
-  If ButtonPressed = FMED_button then call navigate_to_MAXIS_screen("stat", "FMED")
-  If ButtonPressed = HCRE_button then call navigate_to_MAXIS_screen("stat", "HCRE")
-  If ButtonPressed = HEST_button then call navigate_to_MAXIS_screen("stat", "HEST")
-  If ButtonPressed = IMIG_button then call navigate_to_MAXIS_screen("stat", "IMIG")
-  If ButtonPressed = INSA_button then call navigate_to_MAXIS_screen("stat", "INSA")
-  If ButtonPressed = JOBS_button then call navigate_to_MAXIS_screen("stat", "JOBS")
-  If ButtonPressed = MEDI_button then call navigate_to_MAXIS_screen("stat", "MEDI")
-  If ButtonPressed = MEMB_button then call navigate_to_MAXIS_screen("stat", "MEMB")
-  If ButtonPressed = MEMI_button then call navigate_to_MAXIS_screen("stat", "MEMI")
-  If ButtonPressed = MONT_button then call navigate_to_MAXIS_screen("stat", "MONT")
-  If ButtonPressed = OTHR_button then call navigate_to_MAXIS_screen("stat", "OTHR")
-  If ButtonPressed = PBEN_button then call navigate_to_MAXIS_screen("stat", "PBEN")
-  If ButtonPressed = PDED_button then call navigate_to_MAXIS_screen("stat", "PDED")
-  If ButtonPressed = PREG_button then call navigate_to_MAXIS_screen("stat", "PREG")
-  If ButtonPressed = PROG_button then call navigate_to_MAXIS_screen("stat", "PROG")
-  If ButtonPressed = RBIC_button then call navigate_to_MAXIS_screen("stat", "RBIC")
-  If ButtonPressed = REST_button then call navigate_to_MAXIS_screen("stat", "REST")
-  If ButtonPressed = REVW_button then call navigate_to_MAXIS_screen("stat", "REVW")
-  If ButtonPressed = SCHL_button then call navigate_to_MAXIS_screen("stat", "SCHL")
-  If ButtonPressed = SECU_button then call navigate_to_MAXIS_screen("stat", "SECU")
-  If ButtonPressed = STIN_button then call navigate_to_MAXIS_screen("stat", "STIN")
-  If ButtonPressed = STEC_button then call navigate_to_MAXIS_screen("stat", "STEC")
-  If ButtonPressed = STWK_button then call navigate_to_MAXIS_screen("stat", "STWK")
-  If ButtonPressed = SHEL_button then call navigate_to_MAXIS_screen("stat", "SHEL")
-  If ButtonPressed = SPON_button then call navigate_to_MAXIS_screen("stat", "SPON")
-  If ButtonPressed = SWKR_button then call navigate_to_MAXIS_screen("stat", "SWKR")
-  If ButtonPressed = TRAN_button then call navigate_to_MAXIS_screen("stat", "TRAN")
-  If ButtonPressed = TYPE_button then call navigate_to_MAXIS_screen("stat", "TYPE")
-  If ButtonPressed = UNEA_button then call navigate_to_MAXIS_screen("stat", "UNEA")
-End function
-
-function new_BS_BSI_heading
-  EMGetCursor MAXIS_row, MAXIS_col
-  If MAXIS_row = 4 then
-    EMSendKey "--------BURIAL SPACE/ITEMS---------------AMOUNT----------STATUS--------------" & "<newline>"
-    MAXIS_row = 5
-  end if
-End function
-
-function new_CAI_heading
-  EMGetCursor MAXIS_row, MAXIS_col
-  If MAXIS_row = 4 then
-    EMSendKey "--------CASH ADVANCE ITEMS---------------AMOUNT----------STATUS--------------" & "<newline>"
-    MAXIS_row = 5
-  end if
-End function
-
 function new_page_check
   EMGetCursor MAXIS_row, MAXIS_col
   If MAXIS_row = 17 then
@@ -2871,32 +2912,8 @@ function new_page_check
   End if
 end function
 
-function new_service_heading
-  EMGetCursor MAXIS_service_row, MAXIS_service_col
-  If MAXIS_service_row = 4 then
-    EMSendKey "--------------SERVICE--------------------AMOUNT----------STATUS--------------" & "<newline>"
-    MAXIS_service_row = 5
-  end if
-End function
-
 Function open_URL_in_browser(URL_to_open)
 	CreateObject("WScript.Shell").Run(URL_to_open)
-End function
-
-Function panel_navigation_next
-  EMReadScreen current_panel, 1, 2, 73
-  EMReadScreen amount_of_panels, 1, 2, 78
-  If current_panel < amount_of_panels then new_panel = current_panel + 1
-  If current_panel = amount_of_panels then new_panel = current_panel
-  If amount_of_panels > 1 then EMWriteScreen "0" & new_panel, 20, 79
-End function
-
-Function panel_navigation_prev
-  EMReadScreen current_panel, 1, 2, 73
-  EMReadScreen amount_of_panels, 1, 2, 78
-  If current_panel = 1 then new_panel = current_panel
-  If current_panel > 1 then new_panel = current_panel - 1
-  If amount_of_panels > 1 then EMWriteScreen "0" & new_panel, 20, 79
 End function
 
 Function PF1
@@ -3081,8 +3098,7 @@ END FUNCTION
 
 function script_end_procedure(closing_message)
 	stop_time = timer
-	If closing_message <> "" AND closing_message <> "CANCEL BUTTON SELECTED" then MsgBox closing_message
-    'Bypasses the closing message of "CANCEL BUTTON SELECTED" in the cancel_confirmation function if being used in scripts where chain-loading is occurring
+	If closing_message <> "" AND left(closing_message, 3) <> "~PT" then MsgBox closing_message '"~PT" forces the message to "pass through", i.e. not create a pop-up, but to continue without further diversion to the database, where it will write a record with the message
 	script_run_time = stop_time - start_time
 	If is_county_collecting_stats  = True then
 		'Getting user name
@@ -3119,174 +3135,12 @@ function script_end_procedure(closing_message)
             objRecordSet.Open "INSERT INTO usage_log (USERNAME, SDATE, STIME, SCRIPT_NAME, SRUNTIME, CLOSING_MSGBOX, STATS_COUNTER, STATS_MANUALTIME, STATS_DENOMINATION, WORKER_COUNTY_CODE, SCRIPT_SUCCESS)" &  _
             "VALUES ('" & user_ID & "', '" & date & "', '" & time & "', '" & name_of_script & "', " & abs(script_run_time) & ", '" & closing_message & "', " & abs(STATS_counter) & ", " & abs(STATS_manualtime) & ", '" & STATS_denomination & "', '" & worker_county_code & "', " & SCRIPT_success & ")", objConnection, adOpenStatic, adLockOptimistic
         End if
-
+		
+		'Closing the connection
+		objConnection.Close
 	End if
 	If disable_StopScript = FALSE or disable_StopScript = "" then stopscript
 end function
-
-function script_end_procedure_wsh(closing_message) 'For use when running a script outside of the BlueZone Script Host
-	If closing_message <> "" then MsgBox closing_message
-	stop_time = timer
-	script_run_time = stop_time - start_time
-	If is_county_collecting_stats = True then
-		'Getting user name
-		Set objNet = CreateObject("WScript.NetWork")
-		user_ID = objNet.UserName
-
-		'Setting constants
-		Const adOpenStatic = 3
-		Const adLockOptimistic = 3
-
-		'Creating objects for Access
-		Set objConnection = CreateObject("ADODB.Connection")
-		Set objRecordSet = CreateObject("ADODB.Recordset")
-
-		'Opening DB
-		objConnection.Open "Provider = Microsoft.ACE.OLEDB.12.0; Data Source = " & "" & stats_database_path & ""
-
-		'Opening usage_log and adding a record
-		objRecordSet.Open "INSERT INTO usage_log (USERNAME, SDATE, STIME, SCRIPT_NAME, SRUNTIME, CLOSING_MSGBOX)" &  _
-		"VALUES ('" & user_ID & "', '" & date & "', '" & time & "', '" & name_of_script & "', " & script_run_time & ", '" & closing_message & "')", objConnection, adOpenStatic, adLockOptimistic
-	End if
-	Wscript.Quit
-end function
-
-'Function to sort a numeric function ascending (lowest to biggest)
-FUNCTION sort_numeric_array_ascending(values_array, separate_character, output_array)
-	'trimming and splitting the array
-	values_array = trim(values_array)
-	values_array = split(values_array, separate_character)
-	num_of_values = ubound(values_array)
-
-	REDIM placeholder_array(num_of_values, 1)
-		' position 0 is the number, position 1 is if the number has been put in the output array
-
-	'assigning the number values to the multi-dimensional placeholder array AND whether the specific value has been used for comparison yet (position 1)
-	array_position = 0
-	FOR EACH num_char IN values_array
-		IF num_char <> "" THEN
-			num_char = cdbl(num_char)
-			placeholder_array(array_position, 0) = num_char
-			placeholder_array(array_position, 1) = FALSE
-			array_position = array_position + 1
-		END IF
-	NEXT
-
-	'reseting array_position for the generation of the output array
-	array_position = 0
-	i = 0
-	all_sorted = FALSE
-	DO
-		'stating that the number has not yet been put into the sorted array
-		lowest_value = FALSE
-		value_to_watch = placeholder_array(i, 0)
-		IF placeholder_array(i, 1) = FALSE THEN
-			FOR j = 0 TO num_of_values
-				'If the value is not blank AND if we still have not assigned this value to the output array. We need
-				' to avoid a list of only the lowest values, which is what happens what you remove the placeholder_array(j, 1) bit
-				IF placeholder_array(j, 0) <> ""  AND placeholder_array(j, 1) = FALSE THEN
-					IF value_to_watch =< placeholder_array(j, 0) THEN
-						lowest_value = TRUE
-					ELSE
-						'If the function finds a value LOWER than the current one, it stops comparison and exits the FOR NEXT
-						lowest_value = FALSE
-						EXIT FOR
-					END IF
-				END IF
-			NEXT
-		END IF
-
-		'If we confirm that this is the lowest value...
-		IF lowest_value = TRUE THEN
-			'...then we assign position 1 as TRUE (so we will not use this value for comparison in the future)
-			placeholder_array(i, 1) = TRUE
-			'...we assign it to the output array...
-			output_array = output_array & value_to_watch & ","
-			'...and we move on to the next position in the array...
-			array_position = array_position + 1
-			'...until we find that we have hit the ubound for the original array. Then we stop assigning.
-			IF array_position = num_of_values THEN all_sorted = TRUE
-		END IF
-		'If we get through this specific number and find that it does not go next on the sorted list,
-		' we need to get to the next number. If we find that we have got through all the numbers and the list
-		' is not complete, we need to reset this value, and start back at the beginning of the original list.
-		' This way, we avoid skipping numbers that should be showing up on the list.
-		i = i + 1
-		IF i = num_of_values AND all_sorted = FALSE THEN i = 0
-	LOOP UNTIL all_sorted = TRUE
-
-
-	output_array = trim(output_array)
-	output_array = split(output_array, ",")
-END FUNCTION
-
-'Function for sorting numeric array descending (biggest to smallest)
-FUNCTION sort_numeric_array_descending(values_array, separate_character, output_array)
-	'trimming and splitting the array
-	values_array = trim(values_array)
-	values_array = split(values_array, separate_character)
-	num_of_values = ubound(values_array)
-
-	REDIM placeholder_array(num_of_values, 1)
-		' position 0 is the number, position 1 is if the number has been put in the output array
-
-	'assigning the number values to the multi-dimensional placeholder array AND whether the specific value has been used for comparison yet (position 1)
-	array_position = 0
-	FOR EACH num_char IN values_array
-		IF num_char <> "" THEN
-			num_char = cdbl(num_char)
-			placeholder_array(array_position, 0) = num_char
-			placeholder_array(array_position, 1) = FALSE
-			array_position = array_position + 1
-		END IF
-	NEXT
-
-	'reseting array_position for the generation of the output array
-	array_position = 0
-	i = 0
-	all_sorted = FALSE
-	DO
-		'stating that the number has not yet been put into the sorted array
-		highest_value = FALSE
-		value_to_watch = placeholder_array(i, 0)
-		IF placeholder_array(i, 1) = FALSE THEN
-			FOR j = 0 TO num_of_values
-				'If the value is not blank AND if we still have not assigned this value to the output array. We need
-				' to avoid a list of only the lowest values, which is what happens what you remove the placeholder_array(j, 1) bit
-				IF placeholder_array(j, 0) <> ""  AND placeholder_array(j, 1) = FALSE THEN
-					IF value_to_watch >= placeholder_array(j, 0) THEN
-						highest_value = TRUE
-					ELSE
-						'If the function finds a value LOWER than the current one, it stops comparison and exits the FOR NEXT
-						highest_value = FALSE
-						EXIT FOR
-					END IF
-				END IF
-			NEXT
-		END IF
-
-		'If we confirm that this is the highest value...
-		IF highest_value = TRUE THEN
-			'...then we assign position 1 as TRUE (so we will not use this value for comparison in the future)
-			placeholder_array(i, 1) = TRUE
-			'...we assign it to the output array...
-			output_array = output_array & value_to_watch & ","
-			'...and we move on to the next position in the array...
-			array_position = array_position + 1
-			'...until we find that we have hit the ubound for the original array. Then we stop assigning.
-			IF array_position = num_of_values THEN all_sorted = TRUE
-		END IF
-		'If we get through this specific number and find that it does not go next on the sorted list,
-		' we need to get to the next number. If we find that we have got through all the numbers and the list
-		' is not complete, we need to reset this value, and start back at the beginning of the original list.
-		' This way, we avoid skipping numbers that should be showing up on the list.
-		i = i + 1
-		IF i = num_of_values AND all_sorted = FALSE THEN i = 0
-	LOOP UNTIL all_sorted = TRUE
-
-	output_array = trim(output_array)
-	output_array = split(output_array, ",")
-END FUNCTION
 
 'Navigates you to a blank case note, presses PF9, and checks to make sure you're in edit mode (keeping you from writing all of the case note on an inquiry screen).
 FUNCTION start_a_blank_CASE_NOTE
@@ -3298,59 +3152,6 @@ FUNCTION start_a_blank_CASE_NOTE
 		If case_note_check <> "Case Notes (NOTE)" or mode_check <> "A" then msgbox "The script can't open a case note. Are you in inquiry? Check MAXIS and try again."
 	Loop until (mode_check = "A" or mode_check = "E")
 END FUNCTION
-
-function stat_navigation
-  EMReadScreen STAT_check, 4, 20, 21
-  If STAT_check = "STAT" then
-    If ButtonPressed = prev_panel_button then
-      EMReadScreen current_panel, 1, 2, 73
-      EMReadScreen amount_of_panels, 1, 2, 78
-      If current_panel = 1 then new_panel = current_panel
-      If current_panel > 1 then new_panel = current_panel - 1
-      If amount_of_panels > 1 then EMWriteScreen "0" & new_panel, 20, 79
-    End if
-    If ButtonPressed = next_panel_button then
-      EMReadScreen current_panel, 1, 2, 73
-      EMReadScreen amount_of_panels, 1, 2, 78
-      If current_panel < amount_of_panels then new_panel = current_panel + 1
-      If current_panel = amount_of_panels then new_panel = current_panel
-      If amount_of_panels > 1 then EMWriteScreen "0" & new_panel, 20, 79
-    End if
-    If ButtonPressed = prev_memb_button then
-      HH_memb_row = HH_memb_row - 1
-      EMReadScreen prev_HH_memb, 2, HH_memb_row, 3
-      If isnumeric(prev_HH_memb) = False then
-        HH_memb_row = HH_memb_row + 1
-      Else
-        EMWriteScreen prev_HH_memb, 20, 76
-        EMWriteScreen "01", 20, 79
-      End if
-    End if
-    If ButtonPressed = next_memb_button then
-      HH_memb_row = HH_memb_row + 1
-      EMReadScreen next_HH_memb, 2, HH_memb_row, 3
-      If isnumeric(next_HH_memb) = False then
-        HH_memb_row = HH_memb_row + 1
-      Else
-        EMWriteScreen next_HH_memb, 20, 76
-        EMWriteScreen "01", 20, 79
-      End if
-    End if
-  End if
-End function
-
-Function step_through_handling 'This function will introduce "warning screens" before each transmit, which is very helpful for testing new scripts
-	'To use this function, simply replace the "Execute text_from_the_other_script" line with:
-	'Execute replace(text_from_the_other_script, "EMWaitReady 0, 0", "step_through_handling")
-	step_through = MsgBox("Step " & step_number & chr(13) & chr(13) & "If you see something weird on your screen (like a MAXIS or PRISM error), PRESS CANCEL then email your script administrator about it. Make sure you include the step you're on.", vbOKCancel)
-	If step_number = "" then step_number = 1	'Declaring the variable
-	If step_through = vbCancel then
-		stopscript
-	Else
-		EMWaitReady 0, 0
-		step_number = step_number + 1
-	End if
-End Function
 
 function transmit
   EMSendKey "<enter>"
@@ -4049,8 +3850,23 @@ Function write_panel_to_MAXIS_ACCT(acct_type, acct_numb, acct_location, acct_bal
 	Emwritescreen acct_type, 6, 44  'enters the account type code
 	Emwritescreen acct_numb, 7, 44  'enters the account number
 	Emwritescreen acct_location, 8, 44  'enters the account location
-	Emwritescreen acct_balance, 10, 46  'enters the balance
-	Emwritescreen acct_bal_ver, 10, 63  'enters the balance verification
+
+	' >>>>> Comment: Updated 06/22/2016 <<<<<
+	' >>>>> Looking for the acct_bal_ver location. This changed with asset unification...
+	' >>>>> ... but the location is not the same across all months. It needs to be variable...
+	' >>>>> ... so Krabappel knows where to write stuff and junk or whatever ...
+	' >>>>> This has been tested on training case 226398 for the benefit months 05/16 and 06/16...
+	' >>>>> ... in 05/16 the acct_bal_ver coordinates are 10, 63 and in 06/16, they are 10, 64...
+	' >>>>> ... and the code is working in both months.
+	' >>> Looking for the balance field and then we will write the verif code on the same line...
+	acct_row = 1
+	acct_col = 1
+	EMSearch "Balance: ", acct_row, acct_col
+	EMWriteScreen acct_balance, acct_row, acct_col + 11  'enters the balance
+	acct_col = 1
+	EMSearch "Ver: ", acct_row, acct_col
+	EMWriteScreen acct_bal_ver, acct_row, acct_col + 5  'enters the balance verification
+	
 	IF acct_date <> "" THEN call create_MAXIS_friendly_date(acct_date, 0, 11, 44)  'enters the account balance date in a MAXIS friendly format. mm/dd/yy
 	Emwritescreen acct_withdraw, 12, 46  'enters the withdrawl penalty
 	Emwritescreen acct_cash_count, 14, 50  'enters y/n if counted for cash
@@ -5306,7 +5122,7 @@ Function write_panel_to_MAXIS_PBEN(pben_referal_date, pben_type, pben_appl_date,
 	Call navigate_to_MAXIS_screen("STAT", "PBEN")  'navigates to the stat panel
 	call create_panel_if_nonexistent
 	Emreadscreen pben_row_check, 2, 8, 24  'reads the MAXIS screen to find out if the PBEN row has already been used.
-	If pben_row_check = "  " THEN   'if the row is blank it enters it in the 8th row.
+	If pben_row_check = "__" THEN   'if the row is blank it enters it in the 8th row.
 		Emwritescreen pben_type, 8, 24  'enters pben type code
 		call create_MAXIS_friendly_date(pben_referal_date, 0, 8, 40)  'enters referal date in MAXIS friendly format mm/dd/yy
 		call create_MAXIS_friendly_date(pben_appl_date, 0, 8, 51)  'enters appl date in  MAXIS friendly format mm/dd/yy
@@ -5315,7 +5131,7 @@ Function write_panel_to_MAXIS_PBEN(pben_referal_date, pben_type, pben_appl_date,
 		Emwritescreen pben_disp, 8, 77  'enters the status of pben application
 	else
 		EMreadscreen pben_row_check, 2, 9, 24  'if row 8 is filled already it will move to row 9 and see if it has been used.
-		IF pben_row_check = "  " THEN  'if the 9th row is blank it enters the information there.
+		IF pben_row_check = "__" THEN  'if the 9th row is blank it enters the information there.
 		'second pben row
 			Emwritescreen pben_type, 9, 24
 			call create_MAXIS_friendly_date(pben_referal_date, 0, 9, 40)
@@ -5325,7 +5141,7 @@ Function write_panel_to_MAXIS_PBEN(pben_referal_date, pben_type, pben_appl_date,
 			Emwritescreen pben_disp, 9, 77
 		else
 		Emreadscreen pben_row_check, 2, 10, 24  'if row 8 is filled already it will move to row 9 and see if it has been used.
-			IF pben-row_check = "  " THEN  'if the 9th row is blank it enters the information there.
+			IF pben-row_check = "__" THEN  'if the 9th row is blank it enters the information there.
 			'third pben row
 				Emwritescreen pben_type, 10, 24
 				call create_MAXIS_friendly_date(pben_referal_date, 0, 10, 40)
@@ -6076,3 +5892,55 @@ FUNCTION write_panel_to_MAXIS_WREG(wreg_fs_pwe, wreg_fset_status, wreg_defer_fs,
 
 	transmit
 END FUNCTION
+
+'--------DEPRECIATED FUNCTIONS KEPT FOR COMPATIBILITY PURPOSES, THE NEW FUNCTIONS ARE INDICATED WITHIN THE OLD FUNCTIONS
+'----------------------------DEPRECIATED FUNCTIONS ARE TO BE REMOVED IN THE AUGUST 2016 SCRIPT RELEASE
+ 
+FUNCTION memb_navigation_next
+	retirement_message = MsgBox ("This script uses memb_navigation_next, a depreciated function. If you are seeing this message, let a scripts administrator know right away: a function in a custom script may need to be updated. Without said update, this script might become unavailable on or before August 22, 2016.", vbExclamation)
+   	MAXIS_dialog_navigation
+End function
+ 
+Function memb_navigation_prev
+	retirement_message = MsgBox ("This script uses memb_navigation_prev, a depreciated function. If you are seeing this message, let a scripts administrator know right away: a function in a custom script may need to be updated. Without said update, this script might become unavailable on or before August 22, 2016.", vbExclamation)
+ 	MAXIS_dialog_navigation
+End function
+
+function navigation_buttons 'this works by calling the navigation_buttons function when the buttonpressed isn't -1
+	retirement_message = MsgBox ("This script uses navigation_buttons, a depreciated function. If you are seeing this message, let a scripts administrator know right away: a function in a custom script may need to be updated. Without said update, this script might become unavailable on or before August 22, 2016.", vbExclamation)
+	MAXIS_dialog_navigation
+End function
+
+Function panel_navigation_next
+	retirement_message = MsgBox ("This script uses panel_navigation_next, a depreciated function. If you are seeing this message, let a scripts administrator know right away: a function in a custom script may need to be updated. Without said update, this script might become unavailable on or before August 22, 2016.", vbExclamation)
+	MAXIS_dialog_navigation
+End function
+
+Function panel_navigation_prev
+	retirement_message = MsgBox ("This script uses panel_navigation_prev, a depreciated function. If you are seeing this message, let a scripts administrator know right away: a function in a custom script may need to be updated. Without said update, this script might become unavailable on or before August 22, 2016.", vbExclamation)
+	MAXIS_dialog_navigation
+End function
+
+function stat_navigation
+	retirement_message = MsgBox ("This script uses stat_navigation, a depreciated function. If you are seeing this message, let a scripts administrator know right away: a function in a custom script may need to be updated. Without said update, this script might become unavailable on or before August 22, 2016.", vbExclamation)
+	MAXIS_dialog_navigation
+End function
+
+function script_end_procedure_wsh(closing_message) 'For use when running a script outside of the BlueZone Script Host
+	retirement_message = MsgBox ("This script uses script_end_procedure_wsh, a depreciated function. If you are seeing this message, let a scripts administrator know right away: a function in a custom script may need to be updated. Without said update, this script might become unavailable on or before August 22, 2016.", vbExclamation)
+	script_end_procedure(closing_message)
+end function
+
+Function step_through_handling 'This function will introduce "warning screens" before each transmit, which is very helpful for testing new scripts
+	'To use this function, simply replace the "Execute text_from_the_other_script" line with:
+	'Execute replace(text_from_the_other_script, "EMWaitReady 0, 0", "step_through_handling")
+	retirement_message = MsgBox ("This script uses step_through_handling, a depreciated function. If you are seeing this message, let a scripts administrator know right away: a function in a custom script may need to be updated. Without said update, this script might become unavailable on or before August 22, 2016.", vbExclamation)
+	step_through = MsgBox("Step " & step_number & chr(13) & chr(13) & "If you see something weird on your screen (like a MAXIS or PRISM error), PRESS CANCEL then email your script administrator about it. Make sure you include the step you're on.", vbOKCancel)
+	If step_number = "" then step_number = 1	'Declaring the variable
+	If step_through = vbCancel then
+		stopscript
+	Else
+		EMWaitReady 0, 0
+		step_number = step_number + 1
+	End if
+End Function
