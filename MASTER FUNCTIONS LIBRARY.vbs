@@ -453,6 +453,15 @@ Function add_JOBS_to_variable(variable_name_for_JOBS)
 	EMReadScreen date_of_pic_calc, 8, 5, 34
 	date_of_pic_calc = replace(date_of_pic_calc, " ", "/")
     transmit
+'Navigats to GRH PIC
+	EMWriteScreen "x", 19, 71
+	transmit
+	EMReadScreen GRH_JOBS_amt, 8, 16, 69
+	GRH_JOBS_amt = trim(GRH_JOBS_amt)
+	EMReadScreen GRH_pay_frequency, 1, 3, 63
+	EMReadScreen GRH_date_of_pic_calc, 8, 3, 30
+	GRH_date_of_pic_calc = replace(GRH_date_of_pic_calc, " ", "/")
+	PF3
 '  Reads the information on the retro side of JOBS
     EMReadScreen retro_JOBS_amt, 8, 17, 38
     retro_JOBS_amt = trim(retro_JOBS_amt)
@@ -488,9 +497,14 @@ Function add_JOBS_to_variable(variable_name_for_JOBS)
     IF snap_pay_frequency = "3" THEN snap_pay_frequency = "biweekly"
     IF snap_pay_frequency = "4" THEN snap_pay_frequency = "weekly"
     IF snap_pay_frequency = "5" THEN snap_pay_frequency = "non-monthly"
+	If GRH_pay_frequency = "1" then GRH_pay_frequency = "monthly"
+    If GRH_pay_frequency = "2" then GRH_pay_frequency = "semimonthly"
+    If GRH_pay_frequency = "3" then GRH_pay_frequency = "biweekly"
+    If GRH_pay_frequency = "4" then GRH_pay_frequency = "weekly"
     variable_name_for_JOBS = variable_name_for_JOBS & "EI from " & trim(new_JOBS_type) & ", " & JOBS_month  & " amts:; "
-    If SNAP_JOBS_amt <> "" then variable_name_for_JOBS = variable_name_for_JOBS & "- PIC: $" & SNAP_JOBS_amt & "/" & snap_pay_frequency & ", calculated " & date_of_pic_calc & "; "
-    If retro_JOBS_amt <> "" then variable_name_for_JOBS = variable_name_for_JOBS & "- Retrospective: $" & retro_JOBS_amt & " total; "
+    If SNAP_JOBS_amt <> "" then variable_name_for_JOBS = variable_name_for_JOBS & "- SNAP PIC: $" & SNAP_JOBS_amt & "/" & snap_pay_frequency & ", calculated " & date_of_pic_calc & "; "
+    If GRH_JOBS_amt <> "" then variable_name_for_JOBS = variable_name_for_JOBS & "- GRH PIC: $" & GRH_JOBS_amt & "/" & GRH_pay_frequency & ", calculated " & GRH_date_of_pic_calc & "; "
+	If retro_JOBS_amt <> "" then variable_name_for_JOBS = variable_name_for_JOBS & "- Retrospective: $" & retro_JOBS_amt & " total; "
     IF prospective_JOBS_amt <> "" THEN variable_name_for_JOBS = variable_name_for_JOBS & "- Prospective: $" & prospective_JOBS_amt & " total; "
     'Leaving out HC income estimator if footer month is not Current month + 1
     current_month_for_hc_est = dateadd("m", "1", date)
