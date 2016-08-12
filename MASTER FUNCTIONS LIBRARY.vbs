@@ -3208,8 +3208,7 @@ FUNCTION run_from_GitHub(url)
 			NEXT
 			Execute script_contents									'Executes the remaining script code
 		ELSE														'Error message, tells user to try to reach github.com, otherwise instructs to contact Veronica with details (and stops script).
-			critical_error_msgbox = MsgBox ("Something has gone wrong. The Functions Library code stored on GitHub was not able to be reached." & vbNewLine & vbNewLine &_
-											"FuncLib URL: " & FuncLib_URL & vbNewLine & vbNewLine &_
+			critical_error_msgbox = MsgBox ("Something has gone wrong. The code stored on GitHub was not able to be reached." & vbNewLine & vbNewLine &_
 											"The script has stopped. Please check your Internet connection. Consult a scripts administrator with any questions.", _
 											vbOKonly + vbCritical, "BlueZone Scripts Critical Error")
 			script_end_procedure("Script ended due to error connecting to GitHub.")
