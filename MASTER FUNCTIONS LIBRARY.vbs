@@ -35,7 +35,7 @@ CM_plus_2_mo =  right("0" &             DatePart("m",           DateAdd("m", 2, 
 CM_plus_2_yr =  right(                  DatePart("yyyy",        DateAdd("m", 2, date)            ), 2)
 
 If worker_county_code   = "" then worker_county_code = "MULTICOUNTY"
-county_name = ""
+IF PRISM_script <> true then county_name = ""		'VKC NOTE 08/12/2016: ADDED IF...THEN CONDITION BECAUSE PRISM IS STILL USING THIS VARIABLE IN ALL SCRIPTS.vbs. IT WILL BE REMOVED AND THIS CAN BE RESTORED.
 
 If ButtonPressed <> "" then ButtonPressed = ""		'Defines ButtonPressed if not previously defined, allowing scripts the benefit of not having to declare ButtonPressed all the time
 
@@ -71,7 +71,7 @@ FUNCTION income_test_SNAP_categorically_elig(household_size, income_limit)
 	IF household_size > 8 THEN income_limit = 5623 + (572 * (household_size- 8))
 
 	valid_through_date = #10/01/2016#
-	IF DateDiff("D", date, valid_through_date) <= 0 THEN 
+	IF DateDiff("D", date, valid_through_date) <= 0 THEN
 		out_of_date_warning = MsgBox ("This script appears to be using out of date income limits. Please contact a scripts administrator to have this updated." & vbNewLine & vbNewLine & "Press OK to continue the script. Press CANCEL to stop the script.", vbOKCancel + vbCritical + vbSystemModal, "NOTICE!!!")
 		IF out_of_date_warning = vbCancel THEN script_end_procedure("")
 	END IF
@@ -92,7 +92,7 @@ FUNCTION income_test_SNAP_gross(household_size, income_limit)
 	IF household_size > 8 THEN income_limit = 4430 + (451 * (household_size- 8))
 
 	valid_through_date = #10/01/2016#
-	IF DateDiff("D", date, valid_through_date) <= 0 THEN 
+	IF DateDiff("D", date, valid_through_date) <= 0 THEN
 		out_of_date_warning = MsgBox ("This script appears to be using out of date income limits. Please contact a scripts administrator to have this updated." & vbNewLine & vbNewLine & "Press OK to continue the script. Press CANCEL to stop the script.", vbOKCancel + vbCritical + vbSystemModal, "NOTICE!!!")
 		IF out_of_date_warning = vbCancel THEN script_end_procedure("")
 	END IF
@@ -112,7 +112,7 @@ FUNCTION income_test_SNAP_net(household_size, income_limit)
 	IF household_size > 8 THEN income_limit = 3408 + (347 * (household_size- 8))
 
 	valid_through_date = #10/01/2016#
-	IF DateDiff("D", date, valid_through_date) <= 0 THEN 
+	IF DateDiff("D", date, valid_through_date) <= 0 THEN
 		out_of_date_warning = MsgBox ("This script appears to be using out of date income limits. Please contact a scripts administrator to have this updated." & vbNewLine & vbNewLine & "Press OK to continue the script. Press CANCEL to stop the script.", vbOKCancel + vbCritical + vbSystemModal, "NOTICE!!!")
 		IF out_of_date_warning = vbCancel THEN script_end_procedure("")
 	END IF
@@ -120,29 +120,29 @@ END FUNCTION
 
 FUNCTION ten_day_cutoff_check(MAXIS_footer_month, MAXIS_footer_year, ten_day_cutoff)
 	'All 10-day cutoff dates are provided in POLI/TEMP TE19.132
-	IF MAXIS_footer_month = "01" AND MAXIS_footer_year = "16" THEN 
+	IF MAXIS_footer_month = "01" AND MAXIS_footer_year = "16" THEN
 		ten_day_cutoff = #01/21/2016#
 	ELSEIF MAXIS_footer_month = "02" AND MAXIS_footer_year = "16" THEN
 		ten_day_cutoff = #02/18/2016#
-	ELSEIF MAXIS_footer_month = "03" AND MAXIS_footer_year = "16" THEN 
+	ELSEIF MAXIS_footer_month = "03" AND MAXIS_footer_year = "16" THEN
 		ten_day_cutoff = #03/21/2016#
-	ELSEIF MAXIS_footer_month = "04" AND MAXIS_footer_year = "16" THEN 
+	ELSEIF MAXIS_footer_month = "04" AND MAXIS_footer_year = "16" THEN
 		ten_day_cutoff = #04/20/2016#
 	ELSEIF MAXIS_footer_month = "05" AND MAXIS_footer_year = "16" THEN
 		ten_day_cutoff = #05/19/2016#
-	ELSEIF MAXIS_footer_month = "06" AND MAXIS_footer_year = "16" THEN 
+	ELSEIF MAXIS_footer_month = "06" AND MAXIS_footer_year = "16" THEN
 		ten_day_cutoff = #06/20/2016#
-	ELSEIF MAXIS_footer_month = "07" AND MAXIS_footer_year = "16" THEN 
+	ELSEIF MAXIS_footer_month = "07" AND MAXIS_footer_year = "16" THEN
 		ten_day_cutoff = #07/21/2016#
-	ELSEIF MAXIS_footer_month = "08" AND MAXIS_footer_year = "16" THEN 
+	ELSEIF MAXIS_footer_month = "08" AND MAXIS_footer_year = "16" THEN
 		ten_day_cutoff = #08/19/2016#
-	ELSEIF MAXIS_footer_month = "09" AND MAXIS_footer_year = "16" THEN 
+	ELSEIF MAXIS_footer_month = "09" AND MAXIS_footer_year = "16" THEN
 		ten_day_cutoff = #09/20/2016#
-	ELSEIF MAXIS_footer_month = "10" AND MAXIS_footer_year = "16" THEN 
+	ELSEIF MAXIS_footer_month = "10" AND MAXIS_footer_year = "16" THEN
 		ten_day_cutoff = #10/20/2016#
-	ELSEIF MAXIS_footer_month = "11" AND MAXIS_footer_year = "16" THEN 
+	ELSEIF MAXIS_footer_month = "11" AND MAXIS_footer_year = "16" THEN
 		ten_day_cutoff = #11/18/2016#
-	ELSEIF MAXIS_footer_month = "12" AND MAXIS_footer_year = "16" THEN 
+	ELSEIF MAXIS_footer_month = "12" AND MAXIS_footer_year = "16" THEN
 		ten_day_cutoff = #12/21/2016#
 	ELSE
 		MsgBox "You have entered a date (" & MAXIS_footer_month & "/" & MAXIS_footer_year & ") not supported by this function. Please contact a scripts administrator to determine if the script requires updating.", vbInformation + vbSystemModal, "NOTICE"
@@ -1668,7 +1668,7 @@ Function autofill_editbox_from_MAXIS(HH_member_array, panel_read_from, variable_
 	 		If bene_mo_col = "55" then counted_date_month = "10"
 	 		If bene_mo_col = "59" then counted_date_month = "11"
 	 		If bene_mo_col = "63" then counted_date_month = "12"
-	 		'reading to see if a month is counted month or not	
+	 		'reading to see if a month is counted month or not
   		  	EMReadScreen is_counted_month, 1, bene_yr_row, bene_mo_col
 			'counting and checking for counted ABAWD months
 			IF is_counted_month = "X" or is_counted_month = "M" THEN
@@ -1677,11 +1677,11 @@ Function autofill_editbox_from_MAXIS(HH_member_array, panel_read_from, variable_
 				abawd_info_list = abawd_info_list & ", " & abawd_counted_months_string			'adding variable to list to add to array
 				abawd_counted_months = abawd_counted_months + 1				'adding counted months
 			END IF
-			
+
 			'declaring & splitting the abawd months array
 			If left(abawd_info_list, 1) = "," then abawd_info_list = right(abawd_info_list, len(abawd_info_list) - 1)
 			abawd_months_array = Split(abawd_info_list, ",")
-			
+
 			'counting and checking for second set of ABAWD months
 			IF is_counted_month = "Y" or is_counted_month = "N" THEN
 				EMReadScreen counted_date_year, 2, bene_yr_row, 14			'reading counted year date
@@ -1693,7 +1693,7 @@ Function autofill_editbox_from_MAXIS(HH_member_array, panel_read_from, variable_
 			'declaring & splitting the second set of abawd months array
 			If left(second_set_info_list, 1) = "," then second_set_info_list = right(second_set_info_list, len(second_set_info_list) - 1)
 			second_months_array = Split(second_set_info_list,",")
-		
+
 			bene_mo_col = bene_mo_col - 4
     		IF bene_mo_col = 15 THEN
         		bene_yr_row = bene_yr_row - 1
@@ -1702,7 +1702,7 @@ Function autofill_editbox_from_MAXIS(HH_member_array, panel_read_from, variable_
     		month_count = month_count + 1
   	   LOOP until month_count = 36
   		PF3
-		
+
 	EmreadScreen read_WREG_status, 2, 8, 50
 	If read_WREG_status = "03" THEN  WREG_status = "WREG = incap"
 	If read_WREG_status = "04" THEN  WREG_status = "WREG = resp for incap HH memb"
@@ -1738,13 +1738,13 @@ Function autofill_editbox_from_MAXIS(HH_member_array, panel_read_from, variable_
 	If read_abawd_status = "07" THEN  abawd_status = "ABAWD = work exp participant."
 	If read_abawd_status = "08" THEN  abawd_status = "ABAWD = othr E & T service."
 	If read_abawd_status = "09" THEN  abawd_status = "ABAWD = reside in waiver area."
-	IF read_abawd_status = "10" AND abawd_counted_months = "0" THEN 
+	IF read_abawd_status = "10" AND abawd_counted_months = "0" THEN
 		abawd_status = "ABAWD = ABAWD & has used " & abawd_counted_months & " mo."
-	Elseif read_abawd_status = "10" AND second_abawd_period = "0" THEN 
+	Elseif read_abawd_status = "10" AND second_abawd_period = "0" THEN
 		abawd_status = "ABAWD = ABAWD & has used " & abawd_counted_months & " mo. Counted ABAWD months:" & abawd_info_list & ". Second set of ABAWD months used: " & second_abawd_period & "."
 	Elseif read_abawd_status = "10" AND second_abawd_period <> "0" THEN
 		abawd_status = "ABAWD = ABAWD & has used " & abawd_counted_months & " mo. Counted ABAWD months:" & abawd_info_list & ". Second set of ABAWD months used: " & second_abawd_period & ". Counted second set months: " & second_set_info_list & "."
-	END IF 
+	END IF
 	If read_abawd_status = "11" THEN  abawd_status = "ABAWD = Using second set of ABAWD months. Counted second set months: " & second_set_info_list & "."
 	If read_abawd_status = "12" THEN  abawd_status = "ABAWD = RCA or GA recip."
 	If read_abawd_status = "13" THEN  abawd_status = "ABAWD = ABAWD extension."
@@ -1770,7 +1770,7 @@ End function
 FUNCTION cancel_confirmation
 	If ButtonPressed = 0 then
 		cancel_confirm = MsgBox("Are you sure you want to cancel the script? Press YES to cancel. Press NO to return to the script.", vbYesNo)
-		If cancel_confirm = vbYes then script_end_procedure("~PT: user pressed cancel")     
+		If cancel_confirm = vbYes then script_end_procedure("~PT: user pressed cancel")
         'script_end_procedure text added for statistical purposes. If script was canceled prior to completion, the statistics will reflect this.
 	End if
 END FUNCTION
@@ -1880,10 +1880,10 @@ FUNCTION create_array_of_all_active_x_numbers_by_supervisor(array_name, supervis
 	supervisor_array = replace(supervisor_array, " ", "")
 	supervisor_array = split(supervisor_array, ",")
 	FOR EACH unit_supervisor IN supervisor_array
-		IF unit_supervisor <> "" THEN 
+		IF unit_supervisor <> "" THEN
 			'Entering the supervisor number and sending a transmit
 			CALL write_value_and_transmit(unit_supervisor, 21, 12)
-			
+
 			MAXIS_row = 7
 			DO
 				EMReadScreen worker_ID, 8, MAXIS_row, 5
@@ -1891,7 +1891,7 @@ FUNCTION create_array_of_all_active_x_numbers_by_supervisor(array_name, supervis
 				IF worker_ID = "" THEN EXIT DO
 				array_name = trim(array_name & " " & worker_ID)
 				MAXIS_row = MAXIS_row + 1
-				IF MAXIS_row = 19 THEN 
+				IF MAXIS_row = 19 THEN
 					PF8
 					MAXIS_row = 7
 				END IF
@@ -2019,31 +2019,31 @@ Function dynamic_calendar_dialog(selected_dates_array, month_to_use, text_prompt
 	'Instructions for function
 	' PARAMETERS:
 	' selected_dates_array  - is the output array it will contain dates in MM/DD/YY format
-	' month_to_use          - this can be MM/YY or MM/DD/YY format as long as it is considered a date it will work. 
+	' month_to_use          - this can be MM/YY or MM/DD/YY format as long as it is considered a date it will work.
 	' one_date_only         - this is a True/false parameter which will restrict the function to only allow one date to be selected if set to TRUE
 	' disable_weekends      - this is a True/false parameter which will restrict the selection of weekends if set to TRUE
-	' disable_month_change  - this is a True/false parameter which will restrict the selection of different months if set to TRUE	
+	' disable_month_change  - this is a True/false parameter which will restrict the selection of different months if set to TRUE
 	' start_date & end_date - This will provide a range of dates which cannot be selected. These are to be entered as numbers. For example start_date = 3 and end_date = 14 the days 3 through 14 will be unavailable to select
-	
+
 	'dimming array to display the dates
 	DIM display_dates_array
 	DO
-		full_date_to_display = ""					'resetting variables to make sure loops work properly. 
+		full_date_to_display = ""					'resetting variables to make sure loops work properly.
 		selected_dates_array = ""
 		'Determining the number of days in the calendar month.
 		display_month = DatePart("M", month_to_use) & "/01/" & DatePart("YYYY", month_to_use)			'Converts whatever the month_to_use variable is to a MM/01/YYYY format
 		num_of_days = DatePart("D", (DateAdd("D", -1, (DateAdd("M", 1, display_month)))))								'Determines the number of days in a month by using DatePart to get the day of the last day of the month, and just using the day variable gives us a total
-	
+
 		'Redeclares the available dates array to be sized appropriately (with the right amount of dates) and another dimension for whether-or-not it was selected
 		Redim display_dates_array(num_of_days, 0)
 
-	
+
 		'Actually displays the dialog
 		BeginDialog dialog1, 0, 0, 280, 190, "Select Date(s)"
 			Text 5, 10, 265, 50, text_prompt
 			'This next part`creates a line showing the month displayed"
 			Text 120, 70, 55, 10, (MonthName(DatePart("M", display_month)) & " " & DatePart("YYYY", display_month))
-	
+
 			'Defining the vertical position starting point for the for...next which displays dates in the dialog
 			vertical_position = 85
 			'This for...next displays dates in the dialog, and has checkboxes for available dates (defined in-code as dates before the 8th)
@@ -2051,13 +2051,13 @@ Function dynamic_calendar_dialog(selected_dates_array, month_to_use, text_prompt
 				full_date_to_display = (DatePart("M", display_month) & "/" & day_to_display & "/" & DatePart("YYYY", display_month))		'Determines the full date to display in the dialog. It needs the full date to determine the day-of-week (we obviously don't want weekends)
 				horizontal_position = 15 + (40 * (WeekDay(full_date_to_display) - 1))													'horizontal position of this is the weekday numeric value (1-7) * 40, minus 1, and plus 15 pixels
 				IF WeekDay(full_date_to_display) = vbSunday AND day_to_display <> 1 THEN vertical_position = vertical_position + 15		'If the day of the week isn't Sunday and the day isn't first of the month, kick the vertical position up another 15 pixels
-	
+
 				'This blocks out anything that's an unavailable date, currently defined as any date before the 8th. Other dates display as a checkbox.
 				IF day_to_display <= end_date AND day_to_display >= start_date THEN
 					Text horizontal_position, vertical_position, 30, 10, " X " & day_to_display
 					display_dates_array(day_to_display, 0) = unchecked 'unchecking so selections cannot be made the range between start_date and end_date
 				ELSE
-					IF (disable_weekends = TRUE AND WeekDay(full_date_to_display) = vbSunday) OR (disable_weekends = TRUE AND WeekDay(full_date_to_display) = vbSaturday) THEN		'If the weekends are disabled this will change them to text rather than checkboxes	
+					IF (disable_weekends = TRUE AND WeekDay(full_date_to_display) = vbSunday) OR (disable_weekends = TRUE AND WeekDay(full_date_to_display) = vbSaturday) THEN		'If the weekends are disabled this will change them to text rather than checkboxes
 						Text horizontal_position, vertical_position, 30, 10, " X " & day_to_display
 					ELSE
 						CheckBox horizontal_position, vertical_position, 35, 10, day_to_display, display_dates_array(day_to_display, 0)
@@ -2068,19 +2068,19 @@ Function dynamic_calendar_dialog(selected_dates_array, month_to_use, text_prompt
 			OkButton 175, 170, 50, 15
 			CancelButton 225, 170, 50, 15
 			IF disable_month_change = FALSE THEN
-				PushButton 85, 65, 20, 15, "<", prev_month_button					
+				PushButton 85, 65, 20, 15, "<", prev_month_button
 				PushButton 180, 65, 20, 15, ">", next_month_button
 			END IF
 		EndDialog
-	
+
 		IF one_date_only = TRUE THEN										'if only one date is allowed to be selected the script will act one way. Else it will allow for an large array of dates from a month to be build.
 			DO
-				selected_dates_array = ""									' declaring array at start of do loop. 
+				selected_dates_array = ""									' declaring array at start of do loop.
 				Dialog
 				cancel_confirmation
 				IF ButtonPressed = prev_month_button THEN month_to_use = dateadd("M", -1, month_to_use)				'changing the month_to_use based on previous or next month
 				IF ButtonPressed = next_month_button THEN month_to_use = dateadd("M", 1, month_to_use)				'this will allow us to get to a new month when the dialog is rebuild.
-				FOR i = 0 to num_of_days																			'checking each checkbox in the array to see what dates were selected. 
+				FOR i = 0 to num_of_days																			'checking each checkbox in the array to see what dates were selected.
 					IF display_dates_array(i, 0) = 1 THEN 															'if the date has been checked
 						IF len(DatePart("M", month_to_use)) = 1 THEN												'adding a leading 0 to the month if needed
 							output_month = "0" & DatePart("M", month_to_use)
@@ -2088,8 +2088,8 @@ Function dynamic_calendar_dialog(selected_dates_array, month_to_use, text_prompt
 							output_month =  DatePart("M", month_to_use)
 						END IF
 						IF len(i) = 1 THEN 																			'building the output array with dates in MM/DD/YY format
-							selected_dates_array = selected_dates_array & output_month & "/0" & i & "/" & right(DatePart("YYYY", month_to_use), 2) & ";" 
-						ELSE 
+							selected_dates_array = selected_dates_array & output_month & "/0" & i & "/" & right(DatePart("YYYY", month_to_use), 2) & ";"
+						ELSE
 							selected_dates_array = selected_dates_array & output_month & "/" & i & "/" & right(DatePart("YYYY", month_to_use), 2) & ";"
 						END IF
 					END IF
@@ -2104,25 +2104,25 @@ Function dynamic_calendar_dialog(selected_dates_array, month_to_use, text_prompt
 			cancel_confirmation
 			IF ButtonPressed = prev_month_button THEN month_to_use = dateadd("M", -1, month_to_use)					'changing the month_to_use based on previous or next month
 			IF ButtonPressed = next_month_button THEN month_to_use = dateadd("M", 1, month_to_use)					'this will allow us to get to a new month when the dialog is rebuild.
-			FOR i = 0 to num_of_days																				'checking each checkbox in the array to see what dates were selected. 
+			FOR i = 0 to num_of_days																				'checking each checkbox in the array to see what dates were selected.
 				IF display_dates_array(i, 0) = 1 THEN 																'if the date has been checked
 					IF len(DatePart("M", month_to_use)) = 1 THEN 													'adding a leading 0 to the month if needed
 						output_month = "0" & DatePart("M", month_to_use)
 					ELSE
 						output_month =  DatePart("M", month_to_use)
 					END IF
-					IF len(i) = 1 THEN 																				'building the output array with dates in MM/DD/YY format addding leading 0 to DD if needed. 
-						selected_dates_array = selected_dates_array & output_month & "/0" & i & "/" & right(DatePart("YYYY", month_to_use), 2) & ";" 
-					ELSE 
+					IF len(i) = 1 THEN 																				'building the output array with dates in MM/DD/YY format addding leading 0 to DD if needed.
+						selected_dates_array = selected_dates_array & output_month & "/0" & i & "/" & right(DatePart("YYYY", month_to_use), 2) & ";"
+					ELSE
 						selected_dates_array = selected_dates_array & output_month & "/" & i & "/" & right(DatePart("YYYY", month_to_use), 2) & ";"
-					END IF	
+					END IF
 				END IF
 			NEXT
 			selected_dates_array = selected_dates_array & "end"							'this will allow us to delete the extra entry in the array
 			selected_dates_array = replace(selected_dates_array, ";end", "")
 			selected_dates_array = Split(selected_dates_array, ";")						'splitting array
 		END IF
-	LOOP until buttonpressed = -1								'looping until someone hits the ok button, this makes the previous and next buttons work. 
+	LOOP until buttonpressed = -1								'looping until someone hits the ok button, this makes the previous and next buttons work.
 END FUNCTION
 
 Function end_excel_and_script
@@ -2209,7 +2209,7 @@ Function get_county_code		'Determines county_name from worker_county_code, and a
 			If two_digit_county_code_variable = "91" then worker_county_code = "PW"	'For DHS folks without proxy
 		End If
 	End if
-    
+
     'Determining county name
     if worker_county_code = "x101" then
         county_name = "Aitkin County"
@@ -2389,7 +2389,7 @@ Function get_county_code		'Determines county_name from worker_county_code, and a
         county_name = "Mille Lacs Band"
     elseif worker_county_code = "x192" then
         county_name = "White Earth Nation"
-    elseif worker_county_code = "PWVTS" then 
+    elseif worker_county_code = "PWVTS" then
     	county_name = "Pine Tech"
     end if
 End function
@@ -2626,7 +2626,7 @@ FUNCTION MAXIS_footer_finder(MAXIS_footer_month, MAXIS_footer_year)'Grabbing the
 		EMReadScreen MAXIS_footer_year, 2, 20, 46
 	ELSE
 		EMReadScreen MEMO_check, 4, 2, 47
-		IF MEMO_check = "MEMO" Then	
+		IF MEMO_check = "MEMO" Then
 			EMReadScreen MAXIS_footer_month, 2, 19, 54
 			EMReadScreen MAXIS_footer_year, 2, 49, 57
 		ELSE
@@ -2693,31 +2693,31 @@ FUNCTION month_change(interval, starting_month, starting_year, result_month, res
 	result_month = abs(starting_month)
 	result_year = abs(starting_year)
 	valid_month = FALSE
-	IF result_month = 1 OR result_month = 2 OR result_month = 3 OR result_month = 4 OR result_month = 5 OR result_month = 6 OR result_month = 7 OR result_month = 8 OR result_month = 9 OR result_month = 10 OR result_month = 11 OR result_month = 12 Then valid_month = TRUE 
-	If valid_month = FALSE Then 
+	IF result_month = 1 OR result_month = 2 OR result_month = 3 OR result_month = 4 OR result_month = 5 OR result_month = 6 OR result_month = 7 OR result_month = 8 OR result_month = 9 OR result_month = 10 OR result_month = 11 OR result_month = 12 Then valid_month = TRUE
+	If valid_month = FALSE Then
 		Month_Input_Error_Msg = MsgBox("The month to start from is not a number between 1 and 12, these are the only valid entries for this function. Your data will have the wrong month." & vbnewline & "The month input was: " & result_month & vbnewline & vbnewline & "Do you wish to continue?", vbYesNo + vbSystemModal, "Input Error")
 		If Month_Input_Error_Msg = VBNo Then script_end_procedure("")
 	End If
-	Do 
-		If left(interval, 1) = "-" Then 
+	Do
+		If left(interval, 1) = "-" Then
 			result_month = result_month - 1
-			If result_month = 0 then 
+			If result_month = 0 then
 				result_month = 12
 				result_year = result_year - 1
-			End If 
+			End If
 			interval = interval + 1
-		Else 
+		Else
 			result_month = result_month + 1
-			If result_month = 13 then 
+			If result_month = 13 then
 				result_month = 1
 				result_year = result_year + 1
-			End if 
+			End if
 			interval = interval - 1
-		End If 
+		End If
 	Loop until interval = 0
 	result_month = right("00" & result_month, 2)
 	result_year = right(result_year, 2)
-END FUNCTION 
+END FUNCTION
 
 FUNCTION navigate_to_MAXIS(maxis_mode)  'This function is to be used when navigating back to MAXIS from another function in BlueZone (MMIS, PRISM, INFOPAC, etc.)
 	attn
@@ -3149,7 +3149,7 @@ function script_end_procedure(closing_message)
             objRecordSet.Open "INSERT INTO usage_log (USERNAME, SDATE, STIME, SCRIPT_NAME, SRUNTIME, CLOSING_MSGBOX, STATS_COUNTER, STATS_MANUALTIME, STATS_DENOMINATION, WORKER_COUNTY_CODE, SCRIPT_SUCCESS)" &  _
             "VALUES ('" & user_ID & "', '" & date & "', '" & time & "', '" & name_of_script & "', " & abs(script_run_time) & ", '" & closing_message & "', " & abs(STATS_counter) & ", " & abs(STATS_manualtime) & ", '" & STATS_denomination & "', '" & worker_county_code & "', " & SCRIPT_success & ")", objConnection, adOpenStatic, adLockOptimistic
         End if
-		
+
 		'Closing the connection
 		objConnection.Close
 	End if
@@ -3880,7 +3880,7 @@ Function write_panel_to_MAXIS_ACCT(acct_type, acct_numb, acct_location, acct_bal
 	acct_col = 1
 	EMSearch "Ver: ", acct_row, acct_col
 	EMWriteScreen acct_bal_ver, acct_row, acct_col + 5  'enters the balance verification
-	
+
 	IF acct_date <> "" THEN call create_MAXIS_friendly_date(acct_date, 0, 11, 44)  'enters the account balance date in a MAXIS friendly format. mm/dd/yy
 	Emwritescreen acct_withdraw, 12, 46  'enters the withdrawl penalty
 	Emwritescreen acct_cash_count, 14, 50  'enters y/n if counted for cash
