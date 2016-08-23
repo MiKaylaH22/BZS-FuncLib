@@ -454,17 +454,14 @@ Function add_JOBS_to_variable(variable_name_for_JOBS)
 	date_of_pic_calc = replace(date_of_pic_calc, " ", "/")
     transmit
 'Navigats to GRH PIC
-	EMReadscreen GRH_PIC_check, 3, 19, 73 	'This must check to see if the GRH PIC is there or not. If fun on months 06/16 and before it will cause an error if it pf3s on the home panel. 
-	IF GRH_PIC_check = "GRH" THEN
-		EMWriteScreen "x", 19, 71
-		transmit 
-		EMReadScreen GRH_JOBS_amt, 8, 16, 69
-		GRH_JOBS_amt = trim(GRH_JOBS_amt)
-		EMReadScreen GRH_pay_frequency, 1, 3, 63
-		EMReadScreen GRH_date_of_pic_calc, 8, 3, 30
-		GRH_date_of_pic_calc = replace(GRH_date_of_pic_calc, " ", "/")
-		PF3
-	END IF
+	EMWriteScreen "x", 19, 71
+	transmit
+	EMReadScreen GRH_JOBS_amt, 8, 16, 69
+	GRH_JOBS_amt = trim(GRH_JOBS_amt)
+	EMReadScreen GRH_pay_frequency, 1, 3, 63
+	EMReadScreen GRH_date_of_pic_calc, 8, 3, 30
+	GRH_date_of_pic_calc = replace(GRH_date_of_pic_calc, " ", "/")
+	PF3
 '  Reads the information on the retro side of JOBS
     EMReadScreen retro_JOBS_amt, 8, 17, 38
     retro_JOBS_amt = trim(retro_JOBS_amt)
