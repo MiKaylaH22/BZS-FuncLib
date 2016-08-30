@@ -1130,6 +1130,125 @@ Function autofill_editbox_from_MAXIS(HH_member_array, panel_read_from, variable_
     EATS_info = trim(EATS_info)
     if right(EATS_info, 1) = "," then EATS_info = left(EATS_info, len(EATS_info) - 1)
     If EATS_info <> "" then variable_written_to = variable_written_to & ", p/p sep from memb(s) " & EATS_info & "."
+ Elseif panel_read_from = "EMPS" then '----------------------------------------------------------------------------------------------------EMPS
+    	For each HH_member in HH_member_array
+  		'blanking out variables for the next HH member
+  		EMPS_info = ""
+  		ES_exemptions = ""
+  		ES_info = ""
+  		EMWriteScreen HH_member, 20, 76
+  		EMWriteScreen "01", 20, 79
+  		transmit
+  		EMReadScreen EMPS_total, 1, 2, 78
+  		If EMPS_total <> 0 then
+  			'orientation info (EMPS_info variable)-------------------------------------------------------------------------
+  			EMReadScreen EMPS_orientation_date, 8, 5, 39
+  			IF EMPS_orientation_date = "__ __ __" then 
+  				EMPS_orientation_date = "none"
+  			ElseIf EMPS_orientation_date <> "__ __ __" then 
+  				EMPS_orientation_date = replace(EMPS_orientation_date, " ", "/")
+  				EMPS_info = EMPS_info & " Fin orient: " & EMPS_orientation_date & ","
+  			END IF 
+  	  		EMReadScreen EMPS_orientation_attended, 1, 5, 65
+  			IF EMPS_orientation_attended <> "_" then EMPS_info = EMPS_info & " Attended orient: " & EMPS_orientation_attended & ","
+  			'Good cause (EMPS_info variable)
+  			EMReadScreen EMPS_good_cause, 2, 5, 79
+  			IF EMPS_good_cause <> "__" then 
+  				If EMPS_good_cause = "01" then EMPS_good_cause = "01-No Good Cause"
+  				If EMPS_good_cause = "02" then EMPS_good_cause = "02-No Child Care"
+  				If EMPS_good_cause = "03" then EMPS_good_cause = "03-Ill or Injured"
+  				If EMPS_good_cause = "04" then EMPS_good_cause = "04-Care Ill/Incap. Family Member"
+  				If EMPS_good_cause = "05" then EMPS_good_cause = "05-Lack of Transportation"
+  				If EMPS_good_cause = "06" then EMPS_good_cause = "06-Emergency"
+  				If EMPS_good_cause = "07" then EMPS_good_cause = "07-Judicial Proceedings"
+  				If EMPS_good_cause = "08" then EMPS_good_cause = "08-Conflicts with Work/School"
+  				If EMPS_good_cause = "09" then EMPS_good_cause = "09-Other Impediments"
+  				If EMPS_good_cause = "10" then EMPS_good_cause = "10-Special Medical Criteria "
+  				If EMPS_good_cause = "20" then EMPS_good_cause = "20-Exempt--Only/1st Caregiver Employed 35+ Hours"
+  				If EMPS_good_cause = "21" then EMPS_good_cause = "21-Exempt--2nd Caregiver Employed 20+ Hours"
+  				If EMPS_good_cause = "22" then EMPS_good_cause = "22-Exempt--Preg/Parenting Caregiver < Age 20"
+  				If EMPS_good_cause = "23" then EMPS_good_cause = "23-Exempt--Special Medical Criteria"
+  				IF EMPS_good_cause <> "__" then EMPS_info = EMPS_info & " Good cause: " & EMPS_good_cause & ","
+  			END IF
+  			
+  			'sanction dates (EMPS_info variable)
+  			EMReadScreen EMPS_sanc_begin, 8, 6, 39
+  			If EMPS_sanc_begin <> "__ 01 __" then 
+  				EMPS_sanc_begin = replace(EMPS_sanc_begin, "_", "/")
+  				sanction_date = sanction_date & EMPS_sanc_begin
+  			END IF 
+  			EMReadScreen EMPS_sanc_end, 8, 6, 65
+  			If EMPS_sanc_end <> "__ 01 __" then 
+  				EMPS_sanc_end = replace(EMPS_sanc_end, "_", "/")
+  				sanction_date = sanction_date & "-" & EMPS_sanc_end
+  			END IF 
+  			IF sanction_date <> "" then EMPS_info = EMPS_info & " Sanction dates: " & sanction_date & ","
+  			'cleaning up ES_info variable
+  			If right(EMPS_info, 1) = "," then EMPS_info = left(EMPS_info, len(EMPS_info) - 1)
+  			IF trim(EMPS_info) <> "" then EMPS_info = EMPS_info & "."
+  			
+  			'other sanction dates (ES_exemptions variable)--------------------------------------------------------------------------------
+  			EMReadScreen EMPS_memb_at_home, 1, 8, 76
+  			IF EMPS_memb_at_home = "Y" then ES_exemptions = ES_exemptions & " Special med criteria: " & EMPS_memb_at_home & ","
+  			EMReadScreen EMPS_care_family, 1, 9, 76
+  			IF EMPS_care_family = "Y" then ES_exemptions = ES_exemptions & " Care of ill/incap memb: " & EMPS_care_family & ","
+  			EMReadScreen EMPS_crisis, 1, 10, 76
+  			IF EMPS_crisis = "Y" then ES_exemptions = ES_exemptions & " Family crisis: " & EMPS_crisis & ","
+  			EMReadScreen EMPS_hard_employ, 2, 11, 76
+  			IF EMPS_hard_employ = "Y" then ES_exemptions = ES_exemptions & " Hard to employ: " & EMPS_hard_employ & ","
+  			
+  			'EMPS under 1 coding and dates used(ES_exemptions variable)
+  			EMReadScreen EMPS_under1, 1, 12, 76	
+  			IF EMPS_under1 = "Y" then 
+  				ES_exemptions = ES_exemptions & " FT child under 1: " & EMPS_under1 & ","
+  				EMWriteScreen "x", 12, 39
+  				transmit
+  				MAXIS_row = 7
+  				MAXIS_col = 22 
+  				DO 
+  					EMReadScreen exemption_date, 9, MAXIS_row, MAXIS_col 
+  					If trim(exemption_date) = "" then exit do
+  					If exemption_date <> "__ / ____" then
+  						child_under1_dates = child_under1_dates & exemption_date & ", "
+  						MAXIS_col = MAXIS_col + 11
+  						If MAXIS_col = 66 then 
+  							MAXIS_row = MAXIS_row + 1
+  							MAXIS_col = 22
+  						END IF 
+  					END IF
+  				LOOP until exemption_date = "__ / ____" or (MAXIS_row = 9 and MAXIS_col = 66)
+  				PF3
+  				'cleaning up excess comma at the end of child_under1_dates variable
+  				If right(child_under1_dates,  2) = ", " then child_under1_dates = left(child_under1_dates, len(child_under1_dates) - 2)
+  				If trim(child_under1_dates) = "" then child_under1_dates = " N/A"
+  				ES_exemptions = ES_exemptions & " Child under 1 exeption dates: " & child_under1_dates & ","
+  			END IF
+  			
+  			'cleaning up ES_exemptions variable
+  			If right(ES_exemptions, 1) = "," then ES_exemptions = left(ES_exemptions, len(ES_exemptions) - 1)
+  			IF trim(ES_exemptions) <> "" then ES_exemptions = ES_exemptions & "."
+  			
+  			'Reading ES Information (for ES_info variable)
+  			EMReadScreen ES_status, 40, 15, 40
+  			ES_status = trim(ES_status)
+  			IF ES_status <> "" then ES_info = ES_info & " ES status: " & ES_status & ","
+  			EMReadScreen ES_referral_date, 8, 16, 40
+  			If ES_referral_date <> "__ __ __" then 
+  				ES_referral_date = replace(ES_referral_date, " ", "/")
+  				ES_info = ES_info & " ES referral date: " & ES_referral_date & ","
+  			END IF 
+  			EMReadScreen DWP_plan_date, 8, 17, 40
+  			IF DWP_plan_date <> "__ __ __" then 
+  				DWP_plan_date = replace(DWP_plan_date, "_", "/")
+  				ES_info = ES_info & " DWP plan date: " & DWP_plan_date & ","
+  			END IF 
+  			'cleaning up ES_info variable
+  			If right(ES_info, 1) = "," then ES_info = left(ES_info, len(ES_info) - 1)
+  			
+  			variable_written_to = variable_written_to & "Member " & HH_member & "- "
+  			variable_written_to = variable_written_to & EMPS_info & ES_exemptions & ES_info & "; "
+  		END IF
+  	next
   Elseif panel_read_from = "FACI" then '----------------------------------------------------------------------------------------------------FACI
 	For each HH_member in HH_member_array
       EMWriteScreen HH_member, 20, 76
