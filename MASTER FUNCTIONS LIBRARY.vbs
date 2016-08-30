@@ -57,18 +57,30 @@ With (CreateObject("Scripting.FileSystemObject"))															'Creating an FSO
 END WITH
 
 '=========================================================================================================================================================================== FUNCTIONS RELATED TO GLOBAL CONSTANTS
-FUNCTION income_test_SNAP_categorically_elig(household_size, income_limit)
+FUNCTION income_test_SNAP_categorically_elig(household_size, income_limit) '165% FPG
 	'See Combined Manual 0019.06
 	'When using this function, you can pass (ubound(hh_array) + 1) for household_size
-	IF household_size = 1 THEN income_limit = 1619
-	IF household_size = 2 THEN income_limit = 2191
-	IF household_size = 3 THEN income_limit = 2763
-	IF household_size = 4 THEN income_limit = 3335
-	IF household_size = 5 THEN income_limit = 3907
-	IF household_size = 6 THEN income_limit = 4479
-	IF household_size = 7 THEN income_limit = 5051
-	IF household_size = 8 THEN income_limit = 5623
-	IF household_size > 8 THEN income_limit = 5623 + (572 * (household_size- 8))
+	IF ((MAXIS_footer_month * 1) >= 10 AND (MAXIS_footer_year * 1) >= "16") OR (MAXIS_footer_year = "17") THEN  'This will allow the function to be used during the transition period when both income limits can be used. 
+		IF household_size = 1 THEN income_limit = 1634										'Going forward you should only have to change the years and this should hold.
+		IF household_size = 2 THEN income_limit = 2203										'Multipled the footer months by 1 to insure they become numeric
+		IF household_size = 3 THEN income_limit = 2772
+		IF household_size = 4 THEN income_limit = 3342
+		IF household_size = 5 THEN income_limit = 3911
+		IF household_size = 6 THEN income_limit = 4480
+		IF household_size = 7 THEN income_limit = 5051
+		IF household_size = 8 THEN income_limit = 5623
+		IF household_size > 8 THEN income_limit = 5623 + (572 * (household_size- 8))
+	ELSE
+		IF household_size = 1 THEN income_limit = 1619
+		IF household_size = 2 THEN income_limit = 2191
+		IF household_size = 3 THEN income_limit = 2763
+		IF household_size = 4 THEN income_limit = 3335
+		IF household_size = 5 THEN income_limit = 3907
+		IF household_size = 6 THEN income_limit = 4479
+		IF household_size = 7 THEN income_limit = 5051
+		IF household_size = 8 THEN income_limit = 5623
+		IF household_size > 8 THEN income_limit = 5623 + (572 * (household_size- 8))
+	END IF
 
 	valid_through_date = #10/01/2016#
 	IF DateDiff("D", date, valid_through_date) <= 0 THEN
@@ -77,19 +89,31 @@ FUNCTION income_test_SNAP_categorically_elig(household_size, income_limit)
 	END IF
 END FUNCTION
 
-FUNCTION income_test_SNAP_gross(household_size, income_limit)
+FUNCTION income_test_SNAP_gross(household_size, income_limit) '130% FPG
 	'See Combined Manual 0019.06
 	'Also used for sponsor income
 	'When using this function, you can pass (ubound(hh_array) + 1) for household_size
-	IF household_size = 1 THEN income_limit = 1276
-	IF household_size = 2 THEN income_limit = 1726
-	IF household_size = 3 THEN income_limit = 2177
-	IF household_size = 4 THEN income_limit = 2628
-	IF household_size = 5 THEN income_limit = 3078
-	IF household_size = 6 THEN income_limit = 3529
-	IF household_size = 7 THEN income_limit = 3980
-	IF household_size = 8 THEN income_limit = 4430
-	IF household_size > 8 THEN income_limit = 4430 + (451 * (household_size- 8))
+	IF ((MAXIS_footer_month * 1) >= 10 AND (MAXIS_footer_year * 1) >= "16") OR (MAXIS_footer_year = "17") THEN  'This will allow the function to be used during the transition period when both income limits can be used. 
+		IF household_size = 1 THEN income_limit = 1287										'Going forward you should only have to change the years and this should hold.
+		IF household_size = 2 THEN income_limit = 1736										'Multipled the footer months by 1 to insure they become numeric
+		IF household_size = 3 THEN income_limit = 2184
+		IF household_size = 4 THEN income_limit = 2633
+		IF household_size = 5 THEN income_limit = 3081
+		IF household_size = 6 THEN income_limit = 3530
+		IF household_size = 7 THEN income_limit = 3980
+		IF household_size = 8 THEN income_limit = 4430
+		IF household_size > 8 THEN income_limit = 4430 + (451 * (household_size- 8))
+	ELSE
+		IF household_size = 1 THEN income_limit = 1276
+		IF household_size = 2 THEN income_limit = 1726
+		IF household_size = 3 THEN income_limit = 2177
+		IF household_size = 4 THEN income_limit = 2628
+		IF household_size = 5 THEN income_limit = 3078
+		IF household_size = 6 THEN income_limit = 3529
+		IF household_size = 7 THEN income_limit = 3980
+		IF household_size = 8 THEN income_limit = 4430
+		IF household_size > 8 THEN income_limit = 4430 + (451 * (household_size- 8))
+	END IF
 
 	valid_through_date = #10/01/2016#
 	IF DateDiff("D", date, valid_through_date) <= 0 THEN
@@ -101,15 +125,27 @@ END FUNCTION
 FUNCTION income_test_SNAP_net(household_size, income_limit)
 	'See Combined Manual 0020.12
 	'When using this function, you can pass (ubound(hh_array) + 1) for household_size
-	IF household_size = 1 THEN income_limit = 981
-	IF household_size = 2 THEN income_limit = 1328
-	IF household_size = 3 THEN income_limit = 1675
-	IF household_size = 4 THEN income_limit = 2021
-	IF household_size = 5 THEN income_limit = 2368
-	IF household_size = 6 THEN income_limit = 2715
-	IF household_size = 7 THEN income_limit = 3061
-	IF household_size = 8 THEN income_limit = 3408
-	IF household_size > 8 THEN income_limit = 3408 + (347 * (household_size- 8))
+	IF ((MAXIS_footer_month * 1) >= 10 AND (MAXIS_footer_year * 1) >= "16") OR (MAXIS_footer_year = "17") THEN  'This will allow the function to be used during the transition period when both income limits can be used. 
+		IF household_size = 1 THEN income_limit = 990										'Going forward you should only have to change the years and this should hold.
+		IF household_size = 2 THEN income_limit = 1335										'Multipled the footer months by 1 to insure they become numeric
+		IF household_size = 3 THEN income_limit = 1680
+		IF household_size = 4 THEN income_limit = 2025
+		IF household_size = 5 THEN income_limit = 2370
+		IF household_size = 6 THEN income_limit = 2715
+		IF household_size = 7 THEN income_limit = 3061
+		IF household_size = 8 THEN income_limit = 3408
+		IF household_size > 8 THEN income_limit = 3408 + (347 * (household_size- 8))
+	ELSE
+		IF household_size = 1 THEN income_limit = 981
+		IF household_size = 2 THEN income_limit = 1328
+		IF household_size = 3 THEN income_limit = 1675
+		IF household_size = 4 THEN income_limit = 2021
+		IF household_size = 5 THEN income_limit = 2368
+		IF household_size = 6 THEN income_limit = 2715
+		IF household_size = 7 THEN income_limit = 3061
+		IF household_size = 8 THEN income_limit = 3408
+		IF household_size > 8 THEN income_limit = 3408 + (347 * (household_size- 8))
+	END IF
 
 	valid_through_date = #10/01/2016#
 	IF DateDiff("D", date, valid_through_date) <= 0 THEN
@@ -2652,16 +2688,20 @@ FUNCTION MAXIS_dialog_navigation
 	If ButtonPressed = ACCI_button then call navigate_to_MAXIS_screen("stat", "ACCI")
 	If ButtonPressed = ACCT_button then call navigate_to_MAXIS_screen("stat", "ACCT")
 	If ButtonPressed = ADDR_button then call navigate_to_MAXIS_screen("stat", "ADDR")
+	If ButtonPressed = ADME_button then call navigate_to_MAXIS_screen("stat", "ADME")
 	If ButtonPressed = ALTP_button then call navigate_to_MAXIS_screen("stat", "ALTP")
 	If ButtonPressed = AREP_button then call navigate_to_MAXIS_screen("stat", "AREP")
 	If ButtonPressed = BILS_button then call navigate_to_MAXIS_screen("stat", "BILS")
+	If ButtonPressed = BUDG_button then call navigate_to_MAXIS_screen("stat", "BUDG")
 	If ButtonPressed = BUSI_button then call navigate_to_MAXIS_screen("stat", "BUSI")
 	If ButtonPressed = CARS_button then call navigate_to_MAXIS_screen("stat", "CARS")
 	If ButtonPressed = CASH_button then call navigate_to_MAXIS_screen("stat", "CASH")
 	If ButtonPressed = COEX_button then call navigate_to_MAXIS_screen("stat", "COEX")
 	If ButtonPressed = DCEX_button then call navigate_to_MAXIS_screen("stat", "DCEX")
+	If ButtonPressed = DFLN_button then call navigate_to_MAXIS_screen("stat", "DFLN")
 	If ButtonPressed = DIET_button then call navigate_to_MAXIS_screen("stat", "DIET")
 	If ButtonPressed = DISA_button then call navigate_to_MAXIS_screen("stat", "DISA")
+	If ButtonPressed = DISQ_button then call navigate_to_MAXIS_screen("stat", "DISQ")
 	If ButtonPressed = EATS_button then call navigate_to_MAXIS_screen("stat", "EATS")
 	If ButtonPressed = ELIG_DWP_button then call navigate_to_MAXIS_screen("elig", "DWP_")
 	If ButtonPressed = ELIG_FS_button then call navigate_to_MAXIS_screen("elig", "FS__")
@@ -2671,6 +2711,8 @@ FUNCTION MAXIS_dialog_navigation
 	If ButtonPressed = ELIG_MSA_button then call navigate_to_MAXIS_screen("elig", "MSA_")
 	If ButtonPressed = ELIG_WB_button then call navigate_to_MAXIS_screen("elig", "WB__")
 	If ButtonPressed = ELIG_GRH_button then call navigate_to_MAXIS_screen("elig", "GRH_")
+	If ButtonPressed = EMMA_button then call navigate_to_MAXIS_screen("stat", "EMMA")
+	If ButtonPressed = EMPS_button then call navigate_to_MAXIS_screen("stat", "EMPS")
 	If ButtonPressed = FACI_button then call navigate_to_MAXIS_screen("stat", "FACI")
 	If ButtonPressed = FMED_button then call navigate_to_MAXIS_screen("stat", "FMED")
 	If ButtonPressed = HCMI_button then call navigate_to_MAXIS_screen("stat", "HCMI")
@@ -2682,29 +2724,36 @@ FUNCTION MAXIS_dialog_navigation
 	If ButtonPressed = MEDI_button then call navigate_to_MAXIS_screen("stat", "MEDI")
 	If ButtonPressed = MEMB_button then call navigate_to_MAXIS_screen("stat", "MEMB")
 	If ButtonPressed = MEMI_button then call navigate_to_MAXIS_screen("stat", "MEMI")
+	If ButtonPressed = MMSA_button then call navigate_to_MAXIS_screen("stat", "MMSA")
 	If ButtonPressed = MONT_button then call navigate_to_MAXIS_screen("stat", "MONT")
 	If ButtonPressed = OTHR_button then call navigate_to_MAXIS_screen("stat", "OTHR")
+	If ButtonPressed = PACT_button then call navigate_to_MAXIS_screen("stat", "PACT")
+	If ButtonPressed = PARE_button then call navigate_to_MAXIS_screen("stat", "PARE")
 	If ButtonPressed = PBEN_button then call navigate_to_MAXIS_screen("stat", "PBEN")
 	If ButtonPressed = PDED_button then call navigate_to_MAXIS_screen("stat", "PDED")
 	If ButtonPressed = PREG_button then call navigate_to_MAXIS_screen("stat", "PREG")
 	If ButtonPressed = PROG_button then call navigate_to_MAXIS_screen("stat", "PROG")
 	If ButtonPressed = RBIC_button then call navigate_to_MAXIS_screen("stat", "RBIC")
+	If ButtonPressed = REMO_button then call navigate_to_MAXIS_screen("stat", "REMO")
 	If ButtonPressed = REST_button then call navigate_to_MAXIS_screen("stat", "REST")
 	If ButtonPressed = REVW_button then call navigate_to_MAXIS_screen("stat", "REVW")
+	If ButtonPressed = SANC_button then call navigate_to_MAXIS_screen("stat", "SANC")
 	If ButtonPressed = SCHL_button then call navigate_to_MAXIS_screen("stat", "SCHL")
 	If ButtonPressed = SECU_button then call navigate_to_MAXIS_screen("stat", "SECU")
-	If ButtonPressed = SPON_button then call navigate_to_MAXIS_screen("stat", "SPON")
-	If ButtonPressed = STIN_button then call navigate_to_MAXIS_screen("stat", "STIN")
-	If ButtonPressed = STEC_button then call navigate_to_MAXIS_screen("stat", "STEC")
-	If ButtonPressed = STWK_button then call navigate_to_MAXIS_screen("stat", "STWK")
 	If ButtonPressed = SHEL_button then call navigate_to_MAXIS_screen("stat", "SHEL")
+	If ButtonPressed = SIBL_button then call navigate_to_MAXIS_screen("stat", "SIBL")
+	If ButtonPressed = SPON_button then call navigate_to_MAXIS_screen("stat", "SPON")
+	If ButtonPressed = STEC_button then call navigate_to_MAXIS_screen("stat", "STEC")
+	If ButtonPressed = STIN_button then call navigate_to_MAXIS_screen("stat", "STIN")
+	If ButtonPressed = STWK_button then call navigate_to_MAXIS_screen("stat", "STWK")
 	If ButtonPressed = SWKR_button then call navigate_to_MAXIS_screen("stat", "SWKR")
+	If ButtonPressed = TIME_button then call navigate_to_MAXIS_screen("stat", "TIME")
 	If ButtonPressed = TRAN_button then call navigate_to_MAXIS_screen("stat", "TRAN")
 	If ButtonPressed = TYPE_button then call navigate_to_MAXIS_screen("stat", "TYPE")
 	If ButtonPressed = UNEA_button then call navigate_to_MAXIS_screen("stat", "UNEA")
     If ButtonPressed = WKEX_button then call navigate_to_MAXIS_screen("stat", "WKEX")
+	If ButtonPressed = WREG_button then call navigate_to_MAXIS_screen("stat", "WREG")
 END FUNCTION
-
 
 FUNCTION MAXIS_footer_finder(MAXIS_footer_month, MAXIS_footer_year)'Grabbing the footer month/year
 	'Does this to check to see if we're on SELF screen
