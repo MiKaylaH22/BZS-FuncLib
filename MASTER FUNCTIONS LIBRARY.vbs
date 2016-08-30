@@ -1180,14 +1180,18 @@ Function autofill_editbox_from_MAXIS(HH_member_array, panel_read_from, variable_
 		transmit
 		EMReadScreen EMPS_total, 1, 2, 78
 		If EMPS_total <> 0 then
-			'orientation info (EMPS_info variable)-------------------------------------------------------------------------
+			'orientation info (EMPS_info variable)
 			EMReadScreen EMPS_orientation_date, 8, 5, 39
 			If EMPS_orientation_date <> "__ __ __" then 
 				EMPS_orientation_date = replace(EMPS_orientation_date, " ", "/")
 				EMPS_info = EMPS_info & " Fin orient: " & EMPS_orientation_date & ","
 			END IF 
 	  		EMReadScreen EMPS_orientation_attended, 1, 5, 65
-			IF EMPS_orientation_attended <> "_" then EMPS_info = EMPS_info & " Attended orient: " & EMPS_orientation_attended & ","
+			IF EMPS_orientation_attended <> "_" then 
+				If EMPS_orientation_attended = "Y" then EMPS_orientation_attended = "Yes"
+				If EMPS_orientation_attended = "N" then EMPS_orientation_attended = "No"
+				EMPS_info = EMPS_info & " Attended orient: " & EMPS_orientation_attended & ","
+			END IF
 			'Good cause (EMPS_info variable)
 			EMReadScreen EMPS_good_cause, 2, 5, 79
 			IF EMPS_good_cause <> "__" then 
@@ -1220,11 +1224,11 @@ Function autofill_editbox_from_MAXIS(HH_member_array, panel_read_from, variable_
 				sanction_date = sanction_date & "-" & EMPS_sanc_end
 			END IF 
 			IF sanction_date <> "" then EMPS_info = EMPS_info & " Sanction dates: " & sanction_date & ","
-			'cleaning up ES_info variable
+			'cleaning up ES_exemptions variable
 			If right(EMPS_info, 1) = "," then EMPS_info = left(EMPS_info, len(EMPS_info) - 1)
-			IF EMPS_info <> "" then EMPS_info = EMPS_info & "."
+			IF EMPS_info <> "" then EMPS_info = EMPS_info & ". "
 			
-			'other sanction dates (ES_exemptions variable)--------------------------------------------------------------------------------
+			'other sanction dates (ES_exemptions variable)
 			EMReadScreen EMPS_memb_at_home, 1, 8, 76
 			IF EMPS_memb_at_home = "Y" then ES_exemptions = ES_exemptions & " Special med criteria: " & EMPS_memb_at_home & ","
 			EMReadScreen EMPS_care_family, 1, 9, 76
@@ -1236,34 +1240,54 @@ Function autofill_editbox_from_MAXIS(HH_member_array, panel_read_from, variable_
 			
 			'EMPS under 1 coding and dates used(ES_exemptions variable)
 			EMReadScreen EMPS_under1, 1, 12, 76	
+			ES_exemptions = ES_exemptions & " FT child under 1: " & EMPS_under1 & ","
 			IF EMPS_under1 = "Y" then 
-				ES_exemptions = ES_exemptions & " FT child under 1: " & EMPS_under1 & ","
-				EMWriteScreen "x", 12, 39
-				transmit
-				MAXIS_row = 7
-				MAXIS_col = 22 
-				DO 
-					EMReadScreen exemption_date, 9, MAXIS_row, MAXIS_col 
-					If exemption_date <> "__ / ____" then 
-						child_under1_dates = child_under1_dates & exemption_date & ", "
-						MAXIS_col = MAXIS_col + 11
-						If MAXIS_col = 66 then 
-							MAXIS_row = MAXIS_row + 1
-							MAXIS_col = 22
-						END IF 
-					END IF
-				LOOP until exemption_date = "__ / ____"
-				PF3
-				'cleaning up excess comma at the end of child_under1_dates variable
-				If right(child_under1_dates,  2) = ", " then child_under1_dates = left(child_under1_dates, len(child_under1_dates) - 2)
-				If trim(child_under1_dates) = "" then child_under1_dates = " N/A"
+			EMWriteScreen "x", 12, 39
+			transmit
+			MAXIS_row = 7
+			MAXIS_col = 22 
+			DO 
+				EMReadScreen exemption_date, 9, MAXIS_row, MAXIS_col 
+				If exemption_date <> "__ / ____" then 
+					child_under1_dates = child_under1_dates & exemption_date & ", "
+					MAXIS_col = MAXIS_col + 11
+					If MAXIS_col = 66 then 
+						MAXIS_row = MAXIS_row + 1
+						MAXIS_col = 22
+					END IF 
+				END IF
+			LOOP until exemption_date = "__ / ____"
+			PF3
+			'cleaning up excess comma at the end of child_under1_dates variable
+			If left(child_under1_dates, 1) = "," then child_under1_dates = right(child_under1_dates, len(child_under1_dates) - 1)
+			If child_under1_dates = "" then child_under1_dates = " N/A"
 				ES_exemptions = ES_exemptions & " Child under 1 exeption dates: " & child_under1_dates & ","
 			END IF
-			
+				
+			'Care of child under 12 weeks coding and dates used (ES_exemptions variable)
+			EMReadScreen EMPS_under_12wks, 1, 13, 76
+			ES_exemptions = ES_exemptions & " FT child under 12 weeks : " & EMPS_under_12wks & ","
+			IF EMPS_under_12wks = "Y" then 
+				EMWriteScreen "x", 13, 39
+				transmit
+				MAXIS_col = 20
+				DO 
+					EMReadScreen exemption_date, 9, 9, MAXIS_col 
+					If exemption_date <> "__ / ____" then 
+						child_under_12weeks = child_under_12weeks & exemption_date & ", "
+						MAXIS_col = MAXIS_col + 11
+					END IF 
+				LOOP until exemption_date = "__ / ____" or MAXIS_col = 66
+				PF3
+				'cleaning up excess comma at the end of child_under1_dates variable
+				If left(child_under_12weeks, 1) = "," then child_under_12weeks = right(child_under_12weeks, len(child_under_12weeks) - 1)
+				If child_under_12weeks = "" then child_under_12weeks = " N/A"
+				ES_exemptions = ES_exemptions & " Child under 12 weeks : " & child_under_12weeks & ","
+			END IF
 			'cleaning up ES_exemptions variable
 			If right(ES_exemptions, 1) = "," then ES_exemptions = left(ES_exemptions, len(ES_exemptions) - 1)
-			IF ES_exemptions <> "" then ES_exemptions = ES_exemptions & "."
-			
+			IF ES_exemptions <> "" then ES_exemptions = ES_exemptions & ". "
+		 	
 			'Reading ES Information (for ES_info variable)
 			EMReadScreen ES_status, 35, 15, 43
 			ES_status = trim(ES_status)
@@ -1282,7 +1306,7 @@ Function autofill_editbox_from_MAXIS(HH_member_array, panel_read_from, variable_
 			If right(ES_info, 1) = "," then ES_info = left(ES_info, len(ES_info) - 1)
 			
 			variable_written_to = variable_written_to & "Member " & HH_member & "- "
-			variable_written_to = variable_written_to & EMPS_info & ES_exemptions & ES_info & "; "
+			variable_written_to = variable_written_to & EMPS_info & ESES_exeptions & ES_info & "; "
 		END IF
 	next
   Elseif panel_read_from = "FMED" then '----------------------------------------------------------------------------------------------------FMED
