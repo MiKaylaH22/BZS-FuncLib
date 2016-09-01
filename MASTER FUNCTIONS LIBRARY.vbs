@@ -480,6 +480,8 @@ Function add_JOBS_to_variable(variable_name_for_JOBS)
       new_JOBS_type = new_JOBS_type & first_letter & other_letters & " "
     End if
   Next
+  EMReadScreen jobs_hourly_wage, 6, 6, 75   'reading hourly wage field
+  jobs_hourly_wage = replace(jobs_hourly_wage, "_", "")   'trimming any underscores
 ' Navigates to the FS PIC
     EMWriteScreen "x", 19, 38
     transmit
@@ -545,6 +547,7 @@ Function add_JOBS_to_variable(variable_name_for_JOBS)
     If GRH_JOBS_amt <> "" then variable_name_for_JOBS = variable_name_for_JOBS & "- GRH PIC: $" & GRH_JOBS_amt & "/" & GRH_pay_frequency & ", calculated " & GRH_date_of_pic_calc & "; "
 	If retro_JOBS_amt <> "" then variable_name_for_JOBS = variable_name_for_JOBS & "- Retrospective: $" & retro_JOBS_amt & " total; "
     IF prospective_JOBS_amt <> "" THEN variable_name_for_JOBS = variable_name_for_JOBS & "- Prospective: $" & prospective_JOBS_amt & " total; "
+    IF isnumeric(jobs_hourly_wage) THEN variable_name_for_JOBS = variable_name_for_JOBS & "- Hourly Wage: $" & jobs_hourly_wage & "; "
     'Leaving out HC income estimator if footer month is not Current month + 1
     current_month_for_hc_est = dateadd("m", "1", date)
     current_month_for_hc_est = datepart("m", current_month_for_hc_est)
@@ -1548,6 +1551,8 @@ Function autofill_editbox_from_MAXIS(HH_member_array, panel_read_from, variable_
       If school_type = "03" then school_type = "GED"
       If school_type = "07" then school_type = "IEP"
       If school_type = "08" or school_type = "09" or school_type = "10" then school_type = "post-secondary"
+	If school_type = "12" then school_type = "adult basic education"
+      If school_type = "13" then school_type = "English as a 2nd language"
       If school_type = "06" or school_type = "__" or school_type = "?_" then
         school_type = ""
       Else
@@ -5263,9 +5268,13 @@ FUNCTION write_panel_to_MAXIS_JOBS(jobs_number, jobs_inc_type, jobs_inc_verif, j
 	ELSE
 		PF9
 	END IF
-
-	EMWriteScreen jobs_inc_type, 5, 38
-	EMWriteScreen jobs_inc_verif, 6, 38
+	IF ((MAXIS_footer_month * 1) >= 10 AND (MAXIS_footer_year * 1) >= "16") OR (MAXIS_footer_year = "17") THEN
+		EMWriteScreen jobs_inc_type, 5, 34
+		EMWriteScreen jobs_inc_verif, 6, 34
+	ELSE
+		EMWriteScreen jobs_inc_type, 5, 38
+		EMWriteScreen jobs_inc_verif, 6, 38
+	END IF
 	EMWriteScreen jobs_employer_name, 7, 42
 	call create_MAXIS_friendly_date(jobs_inc_start, 0, 9, 35)
 	EMWriteScreen jobs_pay_freq, 18, 35
