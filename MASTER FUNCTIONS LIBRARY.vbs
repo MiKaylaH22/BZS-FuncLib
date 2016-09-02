@@ -1292,11 +1292,19 @@ Function autofill_editbox_from_MAXIS(HH_member_array, panel_read_from, variable_
   				ES_referral_date = replace(ES_referral_date, " ", "/")
   				ES_info = ES_info & " ES referral date: " & ES_referral_date & ","
   			END IF 
+			
   			EMReadScreen DWP_plan_date, 8, 17, 40
   			IF DWP_plan_date <> "__ __ __" then 
   				DWP_plan_date = replace(DWP_plan_date, "_", "/")
   				ES_info = ES_info & " DWP plan date: " & DWP_plan_date & ","
-  			END IF 
+  			END IF
+			 
+			EMReadScreen 18_19_ES_option, 2, 16, 76
+			If 18_19_ES_option <> "__" then 
+				IF 18_19_ES_option = "SC" then 18_19_ES_option = "Secondary Education"
+				IF 18_19_ES_option = "EM" then 18_19_ES_option = "Employment"
+				ES_info = ES_info & " 18/19 yr old ES option: " & 18_19_ES_option & ","
+			END if 
   			'cleaning up ES_info variable
   			If right(ES_info, 1) = "," then ES_info = left(ES_info, len(ES_info) - 1)
   			
