@@ -1227,15 +1227,31 @@ Function autofill_editbox_from_MAXIS(HH_member_array, panel_read_from, variable_
   			IF trim(EMPS_info) <> "" then EMPS_info = EMPS_info & "."
   			
   			'other sanction dates (ES_exemptions variable)--------------------------------------------------------------------------------
-  			EMReadScreen EMPS_memb_at_home, 1, 8, 76
-  			IF EMPS_memb_at_home = "Y" then ES_exemptions = ES_exemptions & " Special med criteria: " & EMPS_memb_at_home & ","
-  			EMReadScreen EMPS_care_family, 1, 9, 76
+  			'special medical criteria
+			EMReadScreen EMPS_memb_at_home, 1, 8, 76
+  			IF EMPS_memb_at_home <> "N" then
+				If EMPS_memb_at_home = "1" then EMPS_memb_at_home = "Home-Health/Waiver service"
+				IF EMPS_memb_at_home = "2" then EMPS_memb_at_home = "Child w/ severe emotional dist"
+				IF EMPS_memb_at_home = "3" then EMPS_memb_at_home = "Adult/Serious Persistent MI"	
+				ES_exemptions = ES_exemptions & " Special med criteria: " & EMPS_memb_at_home & ","
+  			END IF 
+			
+			EMReadScreen EMPS_care_family, 1, 9, 76
   			IF EMPS_care_family = "Y" then ES_exemptions = ES_exemptions & " Care of ill/incap memb: " & EMPS_care_family & ","
   			EMReadScreen EMPS_crisis, 1, 10, 76
   			IF EMPS_crisis = "Y" then ES_exemptions = ES_exemptions & " Family crisis: " & EMPS_crisis & ","
-  			EMReadScreen EMPS_hard_employ, 2, 11, 76
-  			IF EMPS_hard_employ = "Y" then ES_exemptions = ES_exemptions & " Hard to employ: " & EMPS_hard_employ & ","
   			
+			'hard to employ 
+			EMReadScreen EMPS_hard_employ, 2, 11, 76
+  			IF EMPS_hard_employ <> "NO" then 
+				IF EMPS_hard_employ = "IQ" then EMPS_hard_employ = "IQ tested at < 80"
+				IF EMPS_hard_employ = "LD" then EMPS_hard_employ = "Learning Disabled"
+				IF EMPS_hard_employ = "MI" then EMPS_hard_employ = "Mentally ill"
+				IF EMPS_hard_employ = "DD" then EMPS_hard_employ = "Dev Disabled"
+				IF EMPS_hard_employ = "UN" then EMPS_hard_employ = "Unemployable"
+				ES_exemptions = ES_exemptions & " Hard to employ: " & EMPS_hard_employ & ","
+  			END IF 
+			
   			'EMPS under 1 coding and dates used(ES_exemptions variable)
   			EMReadScreen EMPS_under1, 1, 12, 76	
   			IF EMPS_under1 = "Y" then 
@@ -1276,12 +1292,21 @@ Function autofill_editbox_from_MAXIS(HH_member_array, panel_read_from, variable_
   				ES_referral_date = replace(ES_referral_date, " ", "/")
   				ES_info = ES_info & " ES referral date: " & ES_referral_date & ","
   			END IF 
+			
   			EMReadScreen DWP_plan_date, 8, 17, 40
   			IF DWP_plan_date <> "__ __ __" then 
   				DWP_plan_date = replace(DWP_plan_date, "_", "/")
   				ES_info = ES_info & " DWP plan date: " & DWP_plan_date & ","
   			END IF 
-  			'cleaning up ES_info variable
+  			
+			EMReadScreen minor_ES_option, 2, 16, 76
+			If minor_ES_option <> "__" then 
+				IF minor_ES_option = "SC" then minor_ES_option = "Secondary Education"
+				IF minor_ES_option = "EM" then minor_ES_option = "Employment"
+				ES_info = ES_info & " 18/19 yr old ES option: " & minor_ES_option & ","
+			END if 
+	
+			'cleaning up ES_info variable
   			If right(ES_info, 1) = "," then ES_info = left(ES_info, len(ES_info) - 1)
   			
   			variable_written_to = variable_written_to & "Member " & HH_member & "- "
