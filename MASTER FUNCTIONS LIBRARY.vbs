@@ -3533,6 +3533,7 @@ FUNCTION start_a_blank_CASE_NOTE
 		PF9
 		EMReadScreen case_note_check, 17, 2, 33
 		EMReadScreen mode_check, 1, 20, 09
+		If case_note_check <> "Case Notes (NOTE)" or mode_check <> "A" then msgbox "The script can't open a case note. Reasons may include:" & vbnewline & vbnewline & "* You may be in inquiry" & vbnewline & "* You may not have authorization to case note this case (e.g.: out-of-county case)" & vbnewline & vbnewline & "Check MAXIS and/or navigate to CASE/NOTE, and try again. You can press the STOP SCRIPT button on the power pad to stop the script."
 	Loop until (mode_check = "A" or mode_check = "E")
 END FUNCTION
 
