@@ -60,7 +60,7 @@ END WITH
 FUNCTION income_test_SNAP_categorically_elig(household_size, income_limit) '165% FPG
 	'See Combined Manual 0019.06
 	'When using this function, you can pass (ubound(hh_array) + 1) for household_size
-	IF ((MAXIS_footer_month * 1) >= 10 AND (MAXIS_footer_year * 1) >= "16") OR (MAXIS_footer_year = "17") THEN  'This will allow the function to be used during the transition period when both income limits can be used. 
+	IF ((MAXIS_footer_month * 1) >= 10 AND (MAXIS_footer_year * 1) >= "16") OR (MAXIS_footer_year = "17") THEN  'This will allow the function to be used during the transition period when both income limits can be used.
 		IF household_size = 1 THEN income_limit = 1634										'Going forward you should only have to change the years and this should hold.
 		IF household_size = 2 THEN income_limit = 2203										'Multipled the footer months by 1 to insure they become numeric
 		IF household_size = 3 THEN income_limit = 2772
@@ -93,7 +93,7 @@ FUNCTION income_test_SNAP_gross(household_size, income_limit) '130% FPG
 	'See Combined Manual 0019.06
 	'Also used for sponsor income
 	'When using this function, you can pass (ubound(hh_array) + 1) for household_size
-	IF ((MAXIS_footer_month * 1) >= 10 AND (MAXIS_footer_year * 1) >= "16") OR (MAXIS_footer_year = "17") THEN  'This will allow the function to be used during the transition period when both income limits can be used. 
+	IF ((MAXIS_footer_month * 1) >= 10 AND (MAXIS_footer_year * 1) >= "16") OR (MAXIS_footer_year = "17") THEN  'This will allow the function to be used during the transition period when both income limits can be used.
 		IF household_size = 1 THEN income_limit = 1287										'Going forward you should only have to change the years and this should hold.
 		IF household_size = 2 THEN income_limit = 1736										'Multipled the footer months by 1 to insure they become numeric
 		IF household_size = 3 THEN income_limit = 2184
@@ -125,7 +125,7 @@ END FUNCTION
 FUNCTION income_test_SNAP_net(household_size, income_limit)
 	'See Combined Manual 0020.12
 	'When using this function, you can pass (ubound(hh_array) + 1) for household_size
-	IF ((MAXIS_footer_month * 1) >= 10 AND (MAXIS_footer_year * 1) >= "16") OR (MAXIS_footer_year = "17") THEN  'This will allow the function to be used during the transition period when both income limits can be used. 
+	IF ((MAXIS_footer_month * 1) >= 10 AND (MAXIS_footer_year * 1) >= "16") OR (MAXIS_footer_year = "17") THEN  'This will allow the function to be used during the transition period when both income limits can be used.
 		IF household_size = 1 THEN income_limit = 990										'Going forward you should only have to change the years and this should hold.
 		IF household_size = 2 THEN income_limit = 1335										'Multipled the footer months by 1 to insure they become numeric
 		IF household_size = 3 THEN income_limit = 1680
@@ -492,10 +492,10 @@ Function add_JOBS_to_variable(variable_name_for_JOBS)
 	date_of_pic_calc = replace(date_of_pic_calc, " ", "/")
     transmit
 'Navigats to GRH PIC
-	EMReadscreen GRH_PIC_check, 3, 19, 73 	'This must check to see if the GRH PIC is there or not. If fun on months 06/16 and before it will cause an error if it pf3s on the home panel. 
+	EMReadscreen GRH_PIC_check, 3, 19, 73 	'This must check to see if the GRH PIC is there or not. If fun on months 06/16 and before it will cause an error if it pf3s on the home panel.
 	IF GRH_PIC_check = "GRH" THEN
 		EMWriteScreen "x", 19, 71
-		transmit 
+		transmit
 		EMReadScreen GRH_JOBS_amt, 8, 16, 69
 		GRH_JOBS_amt = trim(GRH_JOBS_amt)
 		EMReadScreen GRH_pay_frequency, 1, 3, 63
@@ -1182,17 +1182,17 @@ Function autofill_editbox_from_MAXIS(HH_member_array, panel_read_from, variable_
   		If EMPS_total <> 0 then
   			'orientation info (EMPS_info variable)-------------------------------------------------------------------------
   			EMReadScreen EMPS_orientation_date, 8, 5, 39
-  			IF EMPS_orientation_date = "__ __ __" then 
+  			IF EMPS_orientation_date = "__ __ __" then
   				EMPS_orientation_date = "none"
-  			ElseIf EMPS_orientation_date <> "__ __ __" then 
+  			ElseIf EMPS_orientation_date <> "__ __ __" then
   				EMPS_orientation_date = replace(EMPS_orientation_date, " ", "/")
   				EMPS_info = EMPS_info & " Fin orient: " & EMPS_orientation_date & ","
-  			END IF 
+  			END IF
   	  		EMReadScreen EMPS_orientation_attended, 1, 5, 65
   			IF EMPS_orientation_attended <> "_" then EMPS_info = EMPS_info & " Attended orient: " & EMPS_orientation_attended & ","
   			'Good cause (EMPS_info variable)
   			EMReadScreen EMPS_good_cause, 2, 5, 79
-  			IF EMPS_good_cause <> "__" then 
+  			IF EMPS_good_cause <> "__" then
   				If EMPS_good_cause = "01" then EMPS_good_cause = "01-No Good Cause"
   				If EMPS_good_cause = "02" then EMPS_good_cause = "02-No Child Care"
   				If EMPS_good_cause = "03" then EMPS_good_cause = "03-Ill or Injured"
@@ -1209,67 +1209,67 @@ Function autofill_editbox_from_MAXIS(HH_member_array, panel_read_from, variable_
   				If EMPS_good_cause = "23" then EMPS_good_cause = "23-Exempt--Special Medical Criteria"
   				IF EMPS_good_cause <> "__" then EMPS_info = EMPS_info & " Good cause: " & EMPS_good_cause & ","
   			END IF
-  			
+
   			'sanction dates (EMPS_info variable)
   			EMReadScreen EMPS_sanc_begin, 8, 6, 39
-  			If EMPS_sanc_begin <> "__ 01 __" then 
+  			If EMPS_sanc_begin <> "__ 01 __" then
   				EMPS_sanc_begin = replace(EMPS_sanc_begin, "_", "/")
   				sanction_date = sanction_date & EMPS_sanc_begin
-  			END IF 
+  			END IF
   			EMReadScreen EMPS_sanc_end, 8, 6, 65
-  			If EMPS_sanc_end <> "__ 01 __" then 
+  			If EMPS_sanc_end <> "__ 01 __" then
   				EMPS_sanc_end = replace(EMPS_sanc_end, "_", "/")
   				sanction_date = sanction_date & "-" & EMPS_sanc_end
-  			END IF 
+  			END IF
   			IF sanction_date <> "" then EMPS_info = EMPS_info & " Sanction dates: " & sanction_date & ","
   			'cleaning up ES_info variable
   			If right(EMPS_info, 1) = "," then EMPS_info = left(EMPS_info, len(EMPS_info) - 1)
   			IF trim(EMPS_info) <> "" then EMPS_info = EMPS_info & "."
-  			
+
   			'other sanction dates (ES_exemptions variable)--------------------------------------------------------------------------------
   			'special medical criteria
 			EMReadScreen EMPS_memb_at_home, 1, 8, 76
   			IF EMPS_memb_at_home <> "N" then
 				If EMPS_memb_at_home = "1" then EMPS_memb_at_home = "Home-Health/Waiver service"
 				IF EMPS_memb_at_home = "2" then EMPS_memb_at_home = "Child w/ severe emotional dist"
-				IF EMPS_memb_at_home = "3" then EMPS_memb_at_home = "Adult/Serious Persistent MI"	
+				IF EMPS_memb_at_home = "3" then EMPS_memb_at_home = "Adult/Serious Persistent MI"
 				ES_exemptions = ES_exemptions & " Special med criteria: " & EMPS_memb_at_home & ","
-  			END IF 
-			
+  			END IF
+
 			EMReadScreen EMPS_care_family, 1, 9, 76
   			IF EMPS_care_family = "Y" then ES_exemptions = ES_exemptions & " Care of ill/incap memb: " & EMPS_care_family & ","
   			EMReadScreen EMPS_crisis, 1, 10, 76
   			IF EMPS_crisis = "Y" then ES_exemptions = ES_exemptions & " Family crisis: " & EMPS_crisis & ","
-  			
-			'hard to employ 
+
+			'hard to employ
 			EMReadScreen EMPS_hard_employ, 2, 11, 76
-  			IF EMPS_hard_employ <> "NO" then 
+  			IF EMPS_hard_employ <> "NO" then
 				IF EMPS_hard_employ = "IQ" then EMPS_hard_employ = "IQ tested at < 80"
 				IF EMPS_hard_employ = "LD" then EMPS_hard_employ = "Learning Disabled"
 				IF EMPS_hard_employ = "MI" then EMPS_hard_employ = "Mentally ill"
 				IF EMPS_hard_employ = "DD" then EMPS_hard_employ = "Dev Disabled"
 				IF EMPS_hard_employ = "UN" then EMPS_hard_employ = "Unemployable"
 				ES_exemptions = ES_exemptions & " Hard to employ: " & EMPS_hard_employ & ","
-  			END IF 
-			
+  			END IF
+
   			'EMPS under 1 coding and dates used(ES_exemptions variable)
-  			EMReadScreen EMPS_under1, 1, 12, 76	
-  			IF EMPS_under1 = "Y" then 
+  			EMReadScreen EMPS_under1, 1, 12, 76
+  			IF EMPS_under1 = "Y" then
   				ES_exemptions = ES_exemptions & " FT child under 1: " & EMPS_under1 & ","
   				EMWriteScreen "x", 12, 39
   				transmit
   				MAXIS_row = 7
-  				MAXIS_col = 22 
-  				DO 
-  					EMReadScreen exemption_date, 9, MAXIS_row, MAXIS_col 
+  				MAXIS_col = 22
+  				DO
+  					EMReadScreen exemption_date, 9, MAXIS_row, MAXIS_col
   					If trim(exemption_date) = "" then exit do
   					If exemption_date <> "__ / ____" then
   						child_under1_dates = child_under1_dates & exemption_date & ", "
   						MAXIS_col = MAXIS_col + 11
-  						If MAXIS_col = 66 then 
+  						If MAXIS_col = 66 then
   							MAXIS_row = MAXIS_row + 1
   							MAXIS_col = 22
-  						END IF 
+  						END IF
   					END IF
   				LOOP until exemption_date = "__ / ____" or (MAXIS_row = 9 and MAXIS_col = 66)
   				PF3
@@ -1278,37 +1278,37 @@ Function autofill_editbox_from_MAXIS(HH_member_array, panel_read_from, variable_
   				If trim(child_under1_dates) = "" then child_under1_dates = " N/A"
   				ES_exemptions = ES_exemptions & " Child under 1 exeption dates: " & child_under1_dates & ","
   			END IF
-  			
+
   			'cleaning up ES_exemptions variable
   			If right(ES_exemptions, 1) = "," then ES_exemptions = left(ES_exemptions, len(ES_exemptions) - 1)
   			IF trim(ES_exemptions) <> "" then ES_exemptions = ES_exemptions & "."
-  			
+
   			'Reading ES Information (for ES_info variable)
   			EMReadScreen ES_status, 40, 15, 40
   			ES_status = trim(ES_status)
   			IF ES_status <> "" then ES_info = ES_info & " ES status: " & ES_status & ","
   			EMReadScreen ES_referral_date, 8, 16, 40
-  			If ES_referral_date <> "__ __ __" then 
+  			If ES_referral_date <> "__ __ __" then
   				ES_referral_date = replace(ES_referral_date, " ", "/")
   				ES_info = ES_info & " ES referral date: " & ES_referral_date & ","
-  			END IF 
-			
+  			END IF
+
   			EMReadScreen DWP_plan_date, 8, 17, 40
-  			IF DWP_plan_date <> "__ __ __" then 
+  			IF DWP_plan_date <> "__ __ __" then
   				DWP_plan_date = replace(DWP_plan_date, "_", "/")
   				ES_info = ES_info & " DWP plan date: " & DWP_plan_date & ","
-  			END IF 
-  			
+  			END IF
+
 			EMReadScreen minor_ES_option, 2, 16, 76
-			If minor_ES_option <> "__" then 
+			If minor_ES_option <> "__" then
 				IF minor_ES_option = "SC" then minor_ES_option = "Secondary Education"
 				IF minor_ES_option = "EM" then minor_ES_option = "Employment"
 				ES_info = ES_info & " 18/19 yr old ES option: " & minor_ES_option & ","
-			END if 
-	
+			END if
+
 			'cleaning up ES_info variable
   			If right(ES_info, 1) = "," then ES_info = left(ES_info, len(ES_info) - 1)
-  			
+
   			variable_written_to = variable_written_to & "Member " & HH_member & "- "
   			variable_written_to = variable_written_to & EMPS_info & ES_exemptions & ES_info & "; "
   		END IF
@@ -3451,7 +3451,7 @@ function script_end_procedure(closing_message)
     		objConnection.Open "Provider = SQLOLEDB.1;Data Source= " & "" & stats_database_path & ""
 		ELSE
 			objConnection.Open "Provider = Microsoft.ACE.OLEDB.12.0; Data Source = " & "" & stats_database_path & ""
-		END IF 
+		END IF
 
         'Adds some data for users of the old database, but adds lots more data for users of the new.
         If STATS_enhanced_db = false or STATS_enhanced_db = "" then     'For users of the old db
@@ -3814,6 +3814,57 @@ Function write_bullet_and_variable_in_CCOL_NOTE(bullet, variable)
 	EMSetCursor noting_row + 1, 3
 
 End function
+
+FUNCTION write_date(date_variable, date_format_variable, screen_row, screen_col)
+	If instr(ucase(date_format_variable), "MM") <> 0 then
+		month_format = "MM"
+		month_location = instr(ucase(date_format_variable), "MM")
+	Elseif instr(ucase(date_format_variable), "M") <> 0 then
+		month_format = "M"
+		month_location = instr(ucase(date_format_variable), "M")
+	Else
+		month_format = ""
+		month_location = 0
+	End if
+
+	If instr(ucase(date_format_variable), "DD") <> 0 then
+		day_format = "DD"
+		day_location = instr(ucase(date_format_variable), "DD")
+	Elseif instr(ucase(date_format_variable), "D") <> 0 then
+		day_format = "D"
+		day_location = instr(ucase(date_format_variable), "D")
+	Else
+		day_format = ""
+		day_location = 0
+	End if
+
+	If instr(ucase(date_format_variable), "YYYY") <> 0 then
+		year_format = "YYYY"
+		year_location = instr(ucase(date_format_variable), "YYYY")
+	Elseif instr(ucase(date_format_variable), "YY") <> 0 then
+		year_format = "YY"
+		year_location = instr(ucase(date_format_variable), "YY")
+	Else
+		year_format = ""
+		year_location = 0
+	End if
+
+	var_month = datepart("m", date_variable)
+	IF len(var_month) = 1 THEN var_month = "0" & var_month
+
+	var_day = datepart("d", date_variable)
+	IF len(var_day) = 1 THEN var_day = "0" & var_day
+
+	If year_type = "YY" then
+		var_year = right(datepart("yyyy", date_variable), 2)
+	ElseIf year_type = "YYYY" then
+		var_year = datepart("yyyy", date_variable)
+	END IF
+
+	EMWriteScreen var_month & "/", screen_row, screen_col
+	EMWriteScreen var_day & "/", screen_row, screen_col + 3
+	EMWriteScreen var_year, screen_row, screen_col + 6
+END FUNCTION
 
 'This function will open the ES_statistics database, check for an existing case and edit it with new info, or add a new entry if there is no existing case in the database.
 Function write_MAXIS_info_to_ES_database(ESCaseNbr, ESMembNbr, ESMembName, EsSanctionPercentage, ESEmpsStatus, ESTANFMosUsed, ESExtensionReason, ESDisaEnd, ESPrimaryActivity, ESDate, ESSite, ESCounselor, ESActive, insert_string)
