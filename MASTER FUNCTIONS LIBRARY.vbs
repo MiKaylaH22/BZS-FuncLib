@@ -3380,6 +3380,13 @@ FUNCTION proceed_confirmation(result_of_msgbox)
 	End if
 END FUNCTION
 
+'This function clears out PRISM global variables
+function regl
+	EMWriteScreen "REGL", 21, 18		'This writes REGL to the command line
+	transmit							'Sends the REGL command
+	transmit							'Transmits past the REGL screen
+end function
+
 function run_another_script(script_path)
   Set run_another_script_fso = CreateObject("Scripting.FileSystemObject")
   Set fso_command = run_another_script_fso.OpenTextFile(script_path)
