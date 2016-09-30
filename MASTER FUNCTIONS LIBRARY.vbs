@@ -57,18 +57,30 @@ With (CreateObject("Scripting.FileSystemObject"))															'Creating an FSO
 END WITH
 
 '=========================================================================================================================================================================== FUNCTIONS RELATED TO GLOBAL CONSTANTS
-FUNCTION income_test_SNAP_categorically_elig(household_size, income_limit)
+FUNCTION income_test_SNAP_categorically_elig(household_size, income_limit) '165% FPG
 	'See Combined Manual 0019.06
 	'When using this function, you can pass (ubound(hh_array) + 1) for household_size
-	IF household_size = 1 THEN income_limit = 1619
-	IF household_size = 2 THEN income_limit = 2191
-	IF household_size = 3 THEN income_limit = 2763
-	IF household_size = 4 THEN income_limit = 3335
-	IF household_size = 5 THEN income_limit = 3907
-	IF household_size = 6 THEN income_limit = 4479
-	IF household_size = 7 THEN income_limit = 5051
-	IF household_size = 8 THEN income_limit = 5623
-	IF household_size > 8 THEN income_limit = 5623 + (572 * (household_size- 8))
+	IF ((MAXIS_footer_month * 1) >= 10 AND (MAXIS_footer_year * 1) >= "16") OR (MAXIS_footer_year = "17") THEN  'This will allow the function to be used during the transition period when both income limits can be used. 
+		IF household_size = 1 THEN income_limit = 1634										'Going forward you should only have to change the years and this should hold.
+		IF household_size = 2 THEN income_limit = 2203										'Multipled the footer months by 1 to insure they become numeric
+		IF household_size = 3 THEN income_limit = 2772
+		IF household_size = 4 THEN income_limit = 3342
+		IF household_size = 5 THEN income_limit = 3911
+		IF household_size = 6 THEN income_limit = 4480
+		IF household_size = 7 THEN income_limit = 5051
+		IF household_size = 8 THEN income_limit = 5623
+		IF household_size > 8 THEN income_limit = 5623 + (572 * (household_size- 8))
+	ELSE
+		IF household_size = 1 THEN income_limit = 1619
+		IF household_size = 2 THEN income_limit = 2191
+		IF household_size = 3 THEN income_limit = 2763
+		IF household_size = 4 THEN income_limit = 3335
+		IF household_size = 5 THEN income_limit = 3907
+		IF household_size = 6 THEN income_limit = 4479
+		IF household_size = 7 THEN income_limit = 5051
+		IF household_size = 8 THEN income_limit = 5623
+		IF household_size > 8 THEN income_limit = 5623 + (572 * (household_size- 8))
+	END IF
 
 	valid_through_date = #10/01/2016#
 	IF DateDiff("D", date, valid_through_date) <= 0 THEN
@@ -77,19 +89,31 @@ FUNCTION income_test_SNAP_categorically_elig(household_size, income_limit)
 	END IF
 END FUNCTION
 
-FUNCTION income_test_SNAP_gross(household_size, income_limit)
+FUNCTION income_test_SNAP_gross(household_size, income_limit) '130% FPG
 	'See Combined Manual 0019.06
 	'Also used for sponsor income
 	'When using this function, you can pass (ubound(hh_array) + 1) for household_size
-	IF household_size = 1 THEN income_limit = 1276
-	IF household_size = 2 THEN income_limit = 1726
-	IF household_size = 3 THEN income_limit = 2177
-	IF household_size = 4 THEN income_limit = 2628
-	IF household_size = 5 THEN income_limit = 3078
-	IF household_size = 6 THEN income_limit = 3529
-	IF household_size = 7 THEN income_limit = 3980
-	IF household_size = 8 THEN income_limit = 4430
-	IF household_size > 8 THEN income_limit = 4430 + (451 * (household_size- 8))
+	IF ((MAXIS_footer_month * 1) >= 10 AND (MAXIS_footer_year * 1) >= "16") OR (MAXIS_footer_year = "17") THEN  'This will allow the function to be used during the transition period when both income limits can be used. 
+		IF household_size = 1 THEN income_limit = 1287										'Going forward you should only have to change the years and this should hold.
+		IF household_size = 2 THEN income_limit = 1736										'Multipled the footer months by 1 to insure they become numeric
+		IF household_size = 3 THEN income_limit = 2184
+		IF household_size = 4 THEN income_limit = 2633
+		IF household_size = 5 THEN income_limit = 3081
+		IF household_size = 6 THEN income_limit = 3530
+		IF household_size = 7 THEN income_limit = 3980
+		IF household_size = 8 THEN income_limit = 4430
+		IF household_size > 8 THEN income_limit = 4430 + (451 * (household_size- 8))
+	ELSE
+		IF household_size = 1 THEN income_limit = 1276
+		IF household_size = 2 THEN income_limit = 1726
+		IF household_size = 3 THEN income_limit = 2177
+		IF household_size = 4 THEN income_limit = 2628
+		IF household_size = 5 THEN income_limit = 3078
+		IF household_size = 6 THEN income_limit = 3529
+		IF household_size = 7 THEN income_limit = 3980
+		IF household_size = 8 THEN income_limit = 4430
+		IF household_size > 8 THEN income_limit = 4430 + (451 * (household_size- 8))
+	END IF
 
 	valid_through_date = #10/01/2016#
 	IF DateDiff("D", date, valid_through_date) <= 0 THEN
@@ -101,15 +125,27 @@ END FUNCTION
 FUNCTION income_test_SNAP_net(household_size, income_limit)
 	'See Combined Manual 0020.12
 	'When using this function, you can pass (ubound(hh_array) + 1) for household_size
-	IF household_size = 1 THEN income_limit = 981
-	IF household_size = 2 THEN income_limit = 1328
-	IF household_size = 3 THEN income_limit = 1675
-	IF household_size = 4 THEN income_limit = 2021
-	IF household_size = 5 THEN income_limit = 2368
-	IF household_size = 6 THEN income_limit = 2715
-	IF household_size = 7 THEN income_limit = 3061
-	IF household_size = 8 THEN income_limit = 3408
-	IF household_size > 8 THEN income_limit = 3408 + (347 * (household_size- 8))
+	IF ((MAXIS_footer_month * 1) >= 10 AND (MAXIS_footer_year * 1) >= "16") OR (MAXIS_footer_year = "17") THEN  'This will allow the function to be used during the transition period when both income limits can be used. 
+		IF household_size = 1 THEN income_limit = 990										'Going forward you should only have to change the years and this should hold.
+		IF household_size = 2 THEN income_limit = 1335										'Multipled the footer months by 1 to insure they become numeric
+		IF household_size = 3 THEN income_limit = 1680
+		IF household_size = 4 THEN income_limit = 2025
+		IF household_size = 5 THEN income_limit = 2370
+		IF household_size = 6 THEN income_limit = 2715
+		IF household_size = 7 THEN income_limit = 3061
+		IF household_size = 8 THEN income_limit = 3408
+		IF household_size > 8 THEN income_limit = 3408 + (347 * (household_size- 8))
+	ELSE
+		IF household_size = 1 THEN income_limit = 981
+		IF household_size = 2 THEN income_limit = 1328
+		IF household_size = 3 THEN income_limit = 1675
+		IF household_size = 4 THEN income_limit = 2021
+		IF household_size = 5 THEN income_limit = 2368
+		IF household_size = 6 THEN income_limit = 2715
+		IF household_size = 7 THEN income_limit = 3061
+		IF household_size = 8 THEN income_limit = 3408
+		IF household_size > 8 THEN income_limit = 3408 + (347 * (household_size- 8))
+	END IF
 
 	valid_through_date = #10/01/2016#
 	IF DateDiff("D", date, valid_through_date) <= 0 THEN
@@ -444,6 +480,8 @@ Function add_JOBS_to_variable(variable_name_for_JOBS)
       new_JOBS_type = new_JOBS_type & first_letter & other_letters & " "
     End if
   Next
+  EMReadScreen jobs_hourly_wage, 6, 6, 75   'reading hourly wage field
+  jobs_hourly_wage = replace(jobs_hourly_wage, "_", "")   'trimming any underscores
 ' Navigates to the FS PIC
     EMWriteScreen "x", 19, 38
     transmit
@@ -509,6 +547,7 @@ Function add_JOBS_to_variable(variable_name_for_JOBS)
     If GRH_JOBS_amt <> "" then variable_name_for_JOBS = variable_name_for_JOBS & "- GRH PIC: $" & GRH_JOBS_amt & "/" & GRH_pay_frequency & ", calculated " & GRH_date_of_pic_calc & "; "
 	If retro_JOBS_amt <> "" then variable_name_for_JOBS = variable_name_for_JOBS & "- Retrospective: $" & retro_JOBS_amt & " total; "
     IF prospective_JOBS_amt <> "" THEN variable_name_for_JOBS = variable_name_for_JOBS & "- Prospective: $" & prospective_JOBS_amt & " total; "
+    IF isnumeric(jobs_hourly_wage) THEN variable_name_for_JOBS = variable_name_for_JOBS & "- Hourly Wage: $" & jobs_hourly_wage & "; "
     'Leaving out HC income estimator if footer month is not Current month + 1
     current_month_for_hc_est = dateadd("m", "1", date)
     current_month_for_hc_est = datepart("m", current_month_for_hc_est)
@@ -1130,6 +1169,150 @@ Function autofill_editbox_from_MAXIS(HH_member_array, panel_read_from, variable_
     EATS_info = trim(EATS_info)
     if right(EATS_info, 1) = "," then EATS_info = left(EATS_info, len(EATS_info) - 1)
     If EATS_info <> "" then variable_written_to = variable_written_to & ", p/p sep from memb(s) " & EATS_info & "."
+ Elseif panel_read_from = "EMPS" then '----------------------------------------------------------------------------------------------------EMPS
+    	For each HH_member in HH_member_array
+  		'blanking out variables for the next HH member
+  		EMPS_info = ""
+  		ES_exemptions = ""
+  		ES_info = ""
+  		EMWriteScreen HH_member, 20, 76
+  		EMWriteScreen "01", 20, 79
+  		transmit
+  		EMReadScreen EMPS_total, 1, 2, 78
+  		If EMPS_total <> 0 then
+  			'orientation info (EMPS_info variable)-------------------------------------------------------------------------
+  			EMReadScreen EMPS_orientation_date, 8, 5, 39
+  			IF EMPS_orientation_date = "__ __ __" then 
+  				EMPS_orientation_date = "none"
+  			ElseIf EMPS_orientation_date <> "__ __ __" then 
+  				EMPS_orientation_date = replace(EMPS_orientation_date, " ", "/")
+  				EMPS_info = EMPS_info & " Fin orient: " & EMPS_orientation_date & ","
+  			END IF 
+  	  		EMReadScreen EMPS_orientation_attended, 1, 5, 65
+  			IF EMPS_orientation_attended <> "_" then EMPS_info = EMPS_info & " Attended orient: " & EMPS_orientation_attended & ","
+  			'Good cause (EMPS_info variable)
+  			EMReadScreen EMPS_good_cause, 2, 5, 79
+  			IF EMPS_good_cause <> "__" then 
+  				If EMPS_good_cause = "01" then EMPS_good_cause = "01-No Good Cause"
+  				If EMPS_good_cause = "02" then EMPS_good_cause = "02-No Child Care"
+  				If EMPS_good_cause = "03" then EMPS_good_cause = "03-Ill or Injured"
+  				If EMPS_good_cause = "04" then EMPS_good_cause = "04-Care Ill/Incap. Family Member"
+  				If EMPS_good_cause = "05" then EMPS_good_cause = "05-Lack of Transportation"
+  				If EMPS_good_cause = "06" then EMPS_good_cause = "06-Emergency"
+  				If EMPS_good_cause = "07" then EMPS_good_cause = "07-Judicial Proceedings"
+  				If EMPS_good_cause = "08" then EMPS_good_cause = "08-Conflicts with Work/School"
+  				If EMPS_good_cause = "09" then EMPS_good_cause = "09-Other Impediments"
+  				If EMPS_good_cause = "10" then EMPS_good_cause = "10-Special Medical Criteria "
+  				If EMPS_good_cause = "20" then EMPS_good_cause = "20-Exempt--Only/1st Caregiver Employed 35+ Hours"
+  				If EMPS_good_cause = "21" then EMPS_good_cause = "21-Exempt--2nd Caregiver Employed 20+ Hours"
+  				If EMPS_good_cause = "22" then EMPS_good_cause = "22-Exempt--Preg/Parenting Caregiver < Age 20"
+  				If EMPS_good_cause = "23" then EMPS_good_cause = "23-Exempt--Special Medical Criteria"
+  				IF EMPS_good_cause <> "__" then EMPS_info = EMPS_info & " Good cause: " & EMPS_good_cause & ","
+  			END IF
+  			
+  			'sanction dates (EMPS_info variable)
+  			EMReadScreen EMPS_sanc_begin, 8, 6, 39
+  			If EMPS_sanc_begin <> "__ 01 __" then 
+  				EMPS_sanc_begin = replace(EMPS_sanc_begin, "_", "/")
+  				sanction_date = sanction_date & EMPS_sanc_begin
+  			END IF 
+  			EMReadScreen EMPS_sanc_end, 8, 6, 65
+  			If EMPS_sanc_end <> "__ 01 __" then 
+  				EMPS_sanc_end = replace(EMPS_sanc_end, "_", "/")
+  				sanction_date = sanction_date & "-" & EMPS_sanc_end
+  			END IF 
+  			IF sanction_date <> "" then EMPS_info = EMPS_info & " Sanction dates: " & sanction_date & ","
+  			'cleaning up ES_info variable
+  			If right(EMPS_info, 1) = "," then EMPS_info = left(EMPS_info, len(EMPS_info) - 1)
+  			IF trim(EMPS_info) <> "" then EMPS_info = EMPS_info & "."
+  			
+  			'other sanction dates (ES_exemptions variable)--------------------------------------------------------------------------------
+  			'special medical criteria
+			EMReadScreen EMPS_memb_at_home, 1, 8, 76
+  			IF EMPS_memb_at_home <> "N" then
+				If EMPS_memb_at_home = "1" then EMPS_memb_at_home = "Home-Health/Waiver service"
+				IF EMPS_memb_at_home = "2" then EMPS_memb_at_home = "Child w/ severe emotional dist"
+				IF EMPS_memb_at_home = "3" then EMPS_memb_at_home = "Adult/Serious Persistent MI"	
+				ES_exemptions = ES_exemptions & " Special med criteria: " & EMPS_memb_at_home & ","
+  			END IF 
+			
+			EMReadScreen EMPS_care_family, 1, 9, 76
+  			IF EMPS_care_family = "Y" then ES_exemptions = ES_exemptions & " Care of ill/incap memb: " & EMPS_care_family & ","
+  			EMReadScreen EMPS_crisis, 1, 10, 76
+  			IF EMPS_crisis = "Y" then ES_exemptions = ES_exemptions & " Family crisis: " & EMPS_crisis & ","
+  			
+			'hard to employ 
+			EMReadScreen EMPS_hard_employ, 2, 11, 76
+  			IF EMPS_hard_employ <> "NO" then 
+				IF EMPS_hard_employ = "IQ" then EMPS_hard_employ = "IQ tested at < 80"
+				IF EMPS_hard_employ = "LD" then EMPS_hard_employ = "Learning Disabled"
+				IF EMPS_hard_employ = "MI" then EMPS_hard_employ = "Mentally ill"
+				IF EMPS_hard_employ = "DD" then EMPS_hard_employ = "Dev Disabled"
+				IF EMPS_hard_employ = "UN" then EMPS_hard_employ = "Unemployable"
+				ES_exemptions = ES_exemptions & " Hard to employ: " & EMPS_hard_employ & ","
+  			END IF 
+			
+  			'EMPS under 1 coding and dates used(ES_exemptions variable)
+  			EMReadScreen EMPS_under1, 1, 12, 76	
+  			IF EMPS_under1 = "Y" then 
+  				ES_exemptions = ES_exemptions & " FT child under 1: " & EMPS_under1 & ","
+  				EMWriteScreen "x", 12, 39
+  				transmit
+  				MAXIS_row = 7
+  				MAXIS_col = 22 
+  				DO 
+  					EMReadScreen exemption_date, 9, MAXIS_row, MAXIS_col 
+  					If trim(exemption_date) = "" then exit do
+  					If exemption_date <> "__ / ____" then
+  						child_under1_dates = child_under1_dates & exemption_date & ", "
+  						MAXIS_col = MAXIS_col + 11
+  						If MAXIS_col = 66 then 
+  							MAXIS_row = MAXIS_row + 1
+  							MAXIS_col = 22
+  						END IF 
+  					END IF
+  				LOOP until exemption_date = "__ / ____" or (MAXIS_row = 9 and MAXIS_col = 66)
+  				PF3
+  				'cleaning up excess comma at the end of child_under1_dates variable
+  				If right(child_under1_dates,  2) = ", " then child_under1_dates = left(child_under1_dates, len(child_under1_dates) - 2)
+  				If trim(child_under1_dates) = "" then child_under1_dates = " N/A"
+  				ES_exemptions = ES_exemptions & " Child under 1 exeption dates: " & child_under1_dates & ","
+  			END IF
+  			
+  			'cleaning up ES_exemptions variable
+  			If right(ES_exemptions, 1) = "," then ES_exemptions = left(ES_exemptions, len(ES_exemptions) - 1)
+  			IF trim(ES_exemptions) <> "" then ES_exemptions = ES_exemptions & "."
+  			
+  			'Reading ES Information (for ES_info variable)
+  			EMReadScreen ES_status, 40, 15, 40
+  			ES_status = trim(ES_status)
+  			IF ES_status <> "" then ES_info = ES_info & " ES status: " & ES_status & ","
+  			EMReadScreen ES_referral_date, 8, 16, 40
+  			If ES_referral_date <> "__ __ __" then 
+  				ES_referral_date = replace(ES_referral_date, " ", "/")
+  				ES_info = ES_info & " ES referral date: " & ES_referral_date & ","
+  			END IF 
+			
+  			EMReadScreen DWP_plan_date, 8, 17, 40
+  			IF DWP_plan_date <> "__ __ __" then 
+  				DWP_plan_date = replace(DWP_plan_date, "_", "/")
+  				ES_info = ES_info & " DWP plan date: " & DWP_plan_date & ","
+  			END IF 
+  			
+			EMReadScreen minor_ES_option, 2, 16, 76
+			If minor_ES_option <> "__" then 
+				IF minor_ES_option = "SC" then minor_ES_option = "Secondary Education"
+				IF minor_ES_option = "EM" then minor_ES_option = "Employment"
+				ES_info = ES_info & " 18/19 yr old ES option: " & minor_ES_option & ","
+			END if 
+	
+			'cleaning up ES_info variable
+  			If right(ES_info, 1) = "," then ES_info = left(ES_info, len(ES_info) - 1)
+  			
+  			variable_written_to = variable_written_to & "Member " & HH_member & "- "
+  			variable_written_to = variable_written_to & EMPS_info & ES_exemptions & ES_info & "; "
+  		END IF
+  	next
   Elseif panel_read_from = "FACI" then '----------------------------------------------------------------------------------------------------FACI
 	For each HH_member in HH_member_array
       EMWriteScreen HH_member, 20, 76
@@ -1512,6 +1695,8 @@ Function autofill_editbox_from_MAXIS(HH_member_array, panel_read_from, variable_
       If school_type = "03" then school_type = "GED"
       If school_type = "07" then school_type = "IEP"
       If school_type = "08" or school_type = "09" or school_type = "10" then school_type = "post-secondary"
+	If school_type = "12" then school_type = "adult basic education"
+      If school_type = "13" then school_type = "English as a 2nd language"
       If school_type = "06" or school_type = "__" or school_type = "?_" then
         school_type = ""
       Else
@@ -2652,16 +2837,20 @@ FUNCTION MAXIS_dialog_navigation
 	If ButtonPressed = ACCI_button then call navigate_to_MAXIS_screen("stat", "ACCI")
 	If ButtonPressed = ACCT_button then call navigate_to_MAXIS_screen("stat", "ACCT")
 	If ButtonPressed = ADDR_button then call navigate_to_MAXIS_screen("stat", "ADDR")
+	If ButtonPressed = ADME_button then call navigate_to_MAXIS_screen("stat", "ADME")
 	If ButtonPressed = ALTP_button then call navigate_to_MAXIS_screen("stat", "ALTP")
 	If ButtonPressed = AREP_button then call navigate_to_MAXIS_screen("stat", "AREP")
 	If ButtonPressed = BILS_button then call navigate_to_MAXIS_screen("stat", "BILS")
+	If ButtonPressed = BUDG_button then call navigate_to_MAXIS_screen("stat", "BUDG")
 	If ButtonPressed = BUSI_button then call navigate_to_MAXIS_screen("stat", "BUSI")
 	If ButtonPressed = CARS_button then call navigate_to_MAXIS_screen("stat", "CARS")
 	If ButtonPressed = CASH_button then call navigate_to_MAXIS_screen("stat", "CASH")
 	If ButtonPressed = COEX_button then call navigate_to_MAXIS_screen("stat", "COEX")
 	If ButtonPressed = DCEX_button then call navigate_to_MAXIS_screen("stat", "DCEX")
+	If ButtonPressed = DFLN_button then call navigate_to_MAXIS_screen("stat", "DFLN")
 	If ButtonPressed = DIET_button then call navigate_to_MAXIS_screen("stat", "DIET")
 	If ButtonPressed = DISA_button then call navigate_to_MAXIS_screen("stat", "DISA")
+	If ButtonPressed = DISQ_button then call navigate_to_MAXIS_screen("stat", "DISQ")
 	If ButtonPressed = EATS_button then call navigate_to_MAXIS_screen("stat", "EATS")
 	If ButtonPressed = ELIG_DWP_button then call navigate_to_MAXIS_screen("elig", "DWP_")
 	If ButtonPressed = ELIG_FS_button then call navigate_to_MAXIS_screen("elig", "FS__")
@@ -2671,6 +2860,8 @@ FUNCTION MAXIS_dialog_navigation
 	If ButtonPressed = ELIG_MSA_button then call navigate_to_MAXIS_screen("elig", "MSA_")
 	If ButtonPressed = ELIG_WB_button then call navigate_to_MAXIS_screen("elig", "WB__")
 	If ButtonPressed = ELIG_GRH_button then call navigate_to_MAXIS_screen("elig", "GRH_")
+	If ButtonPressed = EMMA_button then call navigate_to_MAXIS_screen("stat", "EMMA")
+	If ButtonPressed = EMPS_button then call navigate_to_MAXIS_screen("stat", "EMPS")
 	If ButtonPressed = FACI_button then call navigate_to_MAXIS_screen("stat", "FACI")
 	If ButtonPressed = FMED_button then call navigate_to_MAXIS_screen("stat", "FMED")
 	If ButtonPressed = HCMI_button then call navigate_to_MAXIS_screen("stat", "HCMI")
@@ -2682,29 +2873,36 @@ FUNCTION MAXIS_dialog_navigation
 	If ButtonPressed = MEDI_button then call navigate_to_MAXIS_screen("stat", "MEDI")
 	If ButtonPressed = MEMB_button then call navigate_to_MAXIS_screen("stat", "MEMB")
 	If ButtonPressed = MEMI_button then call navigate_to_MAXIS_screen("stat", "MEMI")
+	If ButtonPressed = MMSA_button then call navigate_to_MAXIS_screen("stat", "MMSA")
 	If ButtonPressed = MONT_button then call navigate_to_MAXIS_screen("stat", "MONT")
 	If ButtonPressed = OTHR_button then call navigate_to_MAXIS_screen("stat", "OTHR")
+	If ButtonPressed = PACT_button then call navigate_to_MAXIS_screen("stat", "PACT")
+	If ButtonPressed = PARE_button then call navigate_to_MAXIS_screen("stat", "PARE")
 	If ButtonPressed = PBEN_button then call navigate_to_MAXIS_screen("stat", "PBEN")
 	If ButtonPressed = PDED_button then call navigate_to_MAXIS_screen("stat", "PDED")
 	If ButtonPressed = PREG_button then call navigate_to_MAXIS_screen("stat", "PREG")
 	If ButtonPressed = PROG_button then call navigate_to_MAXIS_screen("stat", "PROG")
 	If ButtonPressed = RBIC_button then call navigate_to_MAXIS_screen("stat", "RBIC")
+	If ButtonPressed = REMO_button then call navigate_to_MAXIS_screen("stat", "REMO")
 	If ButtonPressed = REST_button then call navigate_to_MAXIS_screen("stat", "REST")
 	If ButtonPressed = REVW_button then call navigate_to_MAXIS_screen("stat", "REVW")
+	If ButtonPressed = SANC_button then call navigate_to_MAXIS_screen("stat", "SANC")
 	If ButtonPressed = SCHL_button then call navigate_to_MAXIS_screen("stat", "SCHL")
 	If ButtonPressed = SECU_button then call navigate_to_MAXIS_screen("stat", "SECU")
-	If ButtonPressed = SPON_button then call navigate_to_MAXIS_screen("stat", "SPON")
-	If ButtonPressed = STIN_button then call navigate_to_MAXIS_screen("stat", "STIN")
-	If ButtonPressed = STEC_button then call navigate_to_MAXIS_screen("stat", "STEC")
-	If ButtonPressed = STWK_button then call navigate_to_MAXIS_screen("stat", "STWK")
 	If ButtonPressed = SHEL_button then call navigate_to_MAXIS_screen("stat", "SHEL")
+	If ButtonPressed = SIBL_button then call navigate_to_MAXIS_screen("stat", "SIBL")
+	If ButtonPressed = SPON_button then call navigate_to_MAXIS_screen("stat", "SPON")
+	If ButtonPressed = STEC_button then call navigate_to_MAXIS_screen("stat", "STEC")
+	If ButtonPressed = STIN_button then call navigate_to_MAXIS_screen("stat", "STIN")
+	If ButtonPressed = STWK_button then call navigate_to_MAXIS_screen("stat", "STWK")
 	If ButtonPressed = SWKR_button then call navigate_to_MAXIS_screen("stat", "SWKR")
+	If ButtonPressed = TIME_button then call navigate_to_MAXIS_screen("stat", "TIME")
 	If ButtonPressed = TRAN_button then call navigate_to_MAXIS_screen("stat", "TRAN")
 	If ButtonPressed = TYPE_button then call navigate_to_MAXIS_screen("stat", "TYPE")
 	If ButtonPressed = UNEA_button then call navigate_to_MAXIS_screen("stat", "UNEA")
     If ButtonPressed = WKEX_button then call navigate_to_MAXIS_screen("stat", "WKEX")
+	If ButtonPressed = WREG_button then call navigate_to_MAXIS_screen("stat", "WREG")
 END FUNCTION
-
 
 FUNCTION MAXIS_footer_finder(MAXIS_footer_month, MAXIS_footer_year)'Grabbing the footer month/year
 	'Does this to check to see if we're on SELF screen
@@ -3182,6 +3380,13 @@ FUNCTION proceed_confirmation(result_of_msgbox)
 	End if
 END FUNCTION
 
+'This function clears out PRISM global variables
+function regl
+	EMWriteScreen "REGL", 21, 18		'This writes REGL to the command line
+	transmit							'Sends the REGL command
+	transmit							'Transmits past the REGL screen
+end function
+
 function run_another_script(script_path)
   Set run_another_script_fso = CreateObject("Scripting.FileSystemObject")
   Set fso_command = run_another_script_fso.OpenTextFile(script_path)
@@ -3249,7 +3454,11 @@ function script_end_procedure(closing_message)
 		closing_message = replace(closing_message, "'", "")
 
 		'Opening DB
-		objConnection.Open "Provider = Microsoft.ACE.OLEDB.12.0; Data Source = " & "" & stats_database_path & ""
+		IF using_SQL_database = TRUE then
+    		objConnection.Open "Provider = SQLOLEDB.1;Data Source= " & "" & stats_database_path & ""
+		ELSE
+			objConnection.Open "Provider = Microsoft.ACE.OLEDB.12.0; Data Source = " & "" & stats_database_path & ""
+		END IF 
 
         'Adds some data for users of the old database, but adds lots more data for users of the new.
         If STATS_enhanced_db = false or STATS_enhanced_db = "" then     'For users of the old db
@@ -3331,7 +3540,7 @@ FUNCTION start_a_blank_CASE_NOTE
 		PF9
 		EMReadScreen case_note_check, 17, 2, 33
 		EMReadScreen mode_check, 1, 20, 09
-		If case_note_check <> "Case Notes (NOTE)" or mode_check <> "A" then msgbox "The script can't open a case note. Are you in inquiry? Check MAXIS and try again."
+		If case_note_check <> "Case Notes (NOTE)" or mode_check <> "A" then msgbox "The script can't open a case note. Reasons may include:" & vbnewline & vbnewline & "* You may be in inquiry" & vbnewline & "* You may not have authorization to case note this case (e.g.: out-of-county case)" & vbnewline & vbnewline & "Check MAXIS and/or navigate to CASE/NOTE, and try again. You can press the STOP SCRIPT button on the power pad to stop the script."
 	Loop until (mode_check = "A" or mode_check = "E")
 END FUNCTION
 
@@ -5214,9 +5423,13 @@ FUNCTION write_panel_to_MAXIS_JOBS(jobs_number, jobs_inc_type, jobs_inc_verif, j
 	ELSE
 		PF9
 	END IF
-
-	EMWriteScreen jobs_inc_type, 5, 38
-	EMWriteScreen jobs_inc_verif, 6, 38
+	IF ((MAXIS_footer_month * 1) >= 10 AND (MAXIS_footer_year * 1) >= "16") OR (MAXIS_footer_year = "17") THEN
+		EMWriteScreen jobs_inc_type, 5, 34
+		EMWriteScreen jobs_inc_verif, 6, 34
+	ELSE
+		EMWriteScreen jobs_inc_type, 5, 38
+		EMWriteScreen jobs_inc_verif, 6, 38
+	END IF
 	EMWriteScreen jobs_employer_name, 7, 42
 	call create_MAXIS_friendly_date(jobs_inc_start, 0, 9, 35)
 	EMWriteScreen jobs_pay_freq, 18, 35
