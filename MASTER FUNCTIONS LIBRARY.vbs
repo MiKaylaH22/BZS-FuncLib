@@ -467,13 +467,13 @@ Function add_CARS_to_variable(CARS_variable)
 End function
 
 Function add_JOBS_to_variable(variable_name_for_JOBS)
-  EMReadScreen JOBS_month, 5, 20, 55
-  JOBS_month = replace(JOBS_month, " ", "/")
-  EMReadScreen JOBS_type, 30, 7, 42
+  EMReadScreen JOBS_month, 5, 20, 55									'reads Footer month
+  JOBS_month = replace(JOBS_month, " ", "/")					'Cleans up the read number by putting a / in place of the blank space between MM YY
+  EMReadScreen JOBS_type, 30, 7, 42										'Reads up name of the employer and then cleans it up
   JOBS_type = replace(JOBS_type, "_", ""	)
   JOBS_type = trim(JOBS_type)
   JOBS_type = split(JOBS_type)
-  For each JOBS_part in JOBS_type
+  For each JOBS_part in JOBS_type											'Correcting case on the name of the employer as it reads in all CAPS
     If JOBS_part <> "" then
       first_letter = ucase(left(JOBS_part, 1))
       other_letters = LCase(right(JOBS_part, len(JOBS_part) -1))
@@ -526,6 +526,7 @@ Function add_JOBS_to_variable(variable_name_for_JOBS)
 
   EMReadScreen JOBS_ver, 1, 6, 38
   EMReadScreen JOBS_income_end_date, 8, 9, 49
+	'This now cleans up the variables converting codes read from the panel into words for the final variable to be used in the output.
   If JOBS_income_end_date <> "__ __ __" then JOBS_income_end_date = replace(JOBS_income_end_date, " ", "/")
   If IsDate(JOBS_income_end_date) = True then
     variable_name_for_JOBS = variable_name_for_JOBS & new_JOBS_type & "(ended " & JOBS_income_end_date & "); "
@@ -1690,7 +1691,7 @@ Function autofill_editbox_from_MAXIS(HH_member_array, panel_read_from, variable_
 			EMWriteScreen HH_member, 20, 76
 			EMWriteScreen "01", 20, 79
 			transmit
-			EMReadScreen school_type, 2, 7, 40
+			EMReadScreen school_type, 2, 7, 40							'Reading the school type code and converting it into words
 			If school_type = "01" then school_type = "elementary school"
 			If school_type = "11" then school_type = "middle school"
 			If school_type = "02" then school_type = "high school"
@@ -1699,16 +1700,16 @@ Function autofill_editbox_from_MAXIS(HH_member_array, panel_read_from, variable_
 			If school_type = "08" or school_type = "09" or school_type = "10" then school_type = "post-secondary"
 			If school_type = "12" then school_type = "adult basic education"
 			If school_type = "13" then school_type = "English as a 2nd language"
-			If school_type = "06" or school_type = "__" or school_type = "?_" then
+			If school_type = "06" or school_type = "__" or school_type = "?_" then  'if the school type is blank, child not in school, or postponed default type to blank.
 				school_type = ""
 			Else
 				EMReadScreen SCHL_ver, 2, 6, 63
-				If SCHL_ver = "?_" or SCHL_ver = "NO" then
+				If SCHL_ver = "?_" or SCHL_ver = "NO" then								'If the verification field is postponed or NO it defaults to no proof provided
 					school_proof_type = ", no proof provided"
 				Else
 					school_proof_type = ""
 				End if
-				EMReadScreen FS_eligibility_status_SCHL, 2, 16, 63
+				EMReadScreen FS_eligibility_status_SCHL, 2, 16, 63				'Reading the FS eligibility status and converting it to words
 				IF FS_eligibility_status_SCHL = "01" THEN FS_eligibility_status_SCHL = ", FS Elig Status: < 18 or 50+"
 				IF FS_eligibility_status_SCHL = "02" THEN FS_eligibility_status_SCHL = ", FS Elig Status: Disabled"
 				IF FS_eligibility_status_SCHL = "03" THEN FS_eligibility_status_SCHL = ", FS Elig Status: Not Attenting Higher Ed or Attending < 1/2"
@@ -1720,6 +1721,7 @@ Function autofill_editbox_from_MAXIS(HH_member_array, panel_read_from, variable_
 				IF FS_eligibility_status_SCHL = "10" THEN FS_eligibility_status_SCHL = ", FS Elig Status: Full Time Single Parent with Child under 12"
 				IF FS_eligibility_status_SCHL = "99" THEN FS_eligibility_status_SCHL = ", FS Elig Status: Not Eligible"
 				IF FS_eligibility_status_SCHL = "__" or FS_eligibility_status_SCHL = "?_" THEN FS_eligibility_status_SCHL = ""
+				'formatting the output variable for the function
 				variable_written_to = variable_written_to & "Member " & HH_member & "- "
 				variable_written_to = variable_written_to & school_type & school_proof_type & FS_eligibility_status_SCHL & "; "
 			End if
