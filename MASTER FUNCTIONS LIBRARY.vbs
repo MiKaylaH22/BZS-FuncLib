@@ -3509,7 +3509,7 @@ FUNCTION select_cso_caseload(ButtonPressed, cso_id, cso_name)
 
 			BeginDialog select_cso_dlg, 0, 0, 286, 145, " - Select CSO Caseload"
 			EditBox 70, 55, 65, 15, cso_id
-			Text 70, 80, 90, 10, cso_name
+			Text 70, 80, 155, 10, cso_name
 			ButtonGroup ButtonPressed
 				OkButton 130, 125, 50, 15
 				PushButton 180, 125, 50, 15, "UPDATE CSO", update_cso_button
