@@ -1954,9 +1954,13 @@ Function autofill_editbox_from_MAXIS(HH_member_array, panel_read_from, variable_
 	If read_abawd_status = "13" THEN  abawd_status = "ABAWD = ABAWD Banked Months."
 	If read_abawd_status = "__" THEN  abawd_status = "ABAWD = blank"
 
-	If read_abawd_status = "13" THEN   'If the ABAWD code of 13 (banked months) is used we want to look at the amount of banked months used. 
+	If read_abawd_status = "13" THEN   'If the ABAWD code of 13 (banked months) is used we want to look at the amount of banked months used.
 		EMReadScreen banked_months_wreg, 1, 14, 50  'if a blank is found (can be found for partial/prorated months) then don't add the banked month counter.
-		IF banked_months_wreg <> "_" THEN banked_months_wreg = banked_months_wreg & " month(s) banked."
+		IF banked_months_wreg = "_" THEN
+			banked_months_wreg = ""
+		ELSE
+			banked_months_wreg = banked_months_wreg & " month(s) banked."
+		END IF
 	END IF
 	variable_written_to = variable_written_to & "Member " & HH_member & "- " & WREG_status & ", " & abawd_status & ", " & banked_months_wreg & "; "
      END IF
