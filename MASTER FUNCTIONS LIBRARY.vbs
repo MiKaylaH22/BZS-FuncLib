@@ -1993,6 +1993,140 @@ FUNCTION change_client_name_to_FML(client_name)
 	change_client_name_to_FML = client_name 'To make this a return function, this statement must set the value of the function name
 END FUNCTION
 
+function changelog_display()
+
+	'Needs to determine MyDocs directory before proceeding.
+	Set wshshell = CreateObject("WScript.Shell")
+	user_myDocs_folder = wshShell.SpecialFolders("MyDocuments") & "\"
+
+	'Now determines name of file
+	local_changelog_path = user_myDocs_folder & "scripts-local-changelog-entries.txt"
+
+	Const ForReading = 1
+	Const ForWriting = 2
+	Const ForAppending = 8
+
+	Dim objFSO
+	Set objFSO = CreateObject("Scripting.FileSystemObject")
+
+	'Before doing comparisons, it needs to see what the most recent item added to the list was.
+	last_item_added_to_changelog = split(changelog(0), " | ")
+
+	With objFSO
+
+		'Creating an object for the stream of text which we'll use frequently
+		Dim objTextStream
+
+		'If the file doesn't exist, it needs to create it here and initialize it here! After this, it can just exit as the file will now be initialized
+
+		If .FileExists(local_changelog_path) = False then
+			'Setting the object to open the text file for appending the new data
+			Set objTextStream = .OpenTextFile(local_changelog_path, ForWriting, true)
+
+			'Write the contents of the text file
+			objTextStream.WriteLine date & " | " & name_of_script & " | " & last_item_added_to_changelog(1)
+
+			'Close the object so it can be opened again shortly
+			objTextStream.Close
+
+			'Since the file was new, we can simply exit the function
+			exit function
+		End if
+
+		'Setting the object to open the text file for reading the data already in the file
+		Set objTextStream = .OpenTextFile(local_changelog_path, ForReading)
+
+		'Reading the entire text file into a string
+		every_line_in_text_file = objTextStream.ReadAll
+
+		'Splitting the text file contents into an array which will be sorted
+		local_changelog_array = split(every_line_in_text_file, vbNewLine)
+
+		'Looks to see if the script has been used before!
+		'for each local_changelog_item in local_changelog_array
+		for i = 0 to ubound(local_changelog_array)
+			If local_changelog_array(i) <> "" then 'some are likely blank
+				'splits the local_changelog_array(i) into an array: 0 -> date, 1 -> name_of_script, 2 -> text_of_change
+				local_changelog_item_array = split(local_changelog_array(i), " | ")
+
+				'Looking to see if the script is in fact in the local changelog list. If it is, we will then check the text against the listed changes to see what needs to be displayed.
+				if local_changelog_item_array(1) = name_of_script then
+					script_in_local_changelog = true
+					if local_changelog_item_array(2) <> last_item_added_to_changelog(1) then
+						display_changelog = true
+						local_changelog_text_of_change = trim(local_changelog_item_array(2))
+						line_in_local_changelog_array_to_delete = i
+					Else
+						display_changelog = false
+					End if
+				End if
+			End if
+		next
+
+		'Close the file
+		objTextStream.Close
+
+		'If the script is not in the local changelog, it needs to be added. If this is the case, it shouldn't display the changelog at all, because it'll be the first time the script was run.
+		If script_in_local_changelog <> true then
+
+			'Setting the object to open the text file for appending the new data
+			Set objTextStream = .OpenTextFile(local_changelog_path, ForAppending, true)
+
+			'Write the contents of the text file
+			objTextStream.WriteLine date & " | " & name_of_script & " | " & last_item_added_to_changelog(1)
+
+			'Close the file and clean up
+			objTextStream.Close
+
+			'Setting this to false. We don't want to display the changelog if the script has never been added to the local list of changelog events
+			display_changelog = false
+
+		End if
+
+		'So, if the script IS in the local changelog, and needs to be displayed, it takes special handling to ensure that's done.
+		If display_changelog = true then
+
+			'Splitting the changelog into different variables for making things prettier
+			For each changelog_entry in changelog
+				date_of_change = left(changelog_entry, instr(changelog_entry, " | ") - 1)
+				scriptwriter_of_change = trim(right(changelog_entry, len(changelog_entry) - instrrev(changelog_entry, "|") ))
+				text_of_change = replace(replace(replace(changelog_entry, scriptwriter_of_change, ""), date_of_change, ""), " | ", "")
+
+				'If the text_of_change is the same as that stored in the local changelog, that means the user is up-to-date to this point, and the script should exit without displaying any more updates. Otherwise, add it to the contents.
+				if trim(text_of_change) = trim(local_changelog_text_of_change) then
+				 	exit for
+				else
+					changelog_msgbox = changelog_msgbox & "-----" & cdate(date_of_change) & "-----" & vbNewLine & text_of_change & vbNewLine & "Completed by " & scriptwriter_of_change & vbNewLine & vbNewLine
+				end if
+
+			Next
+
+			If changelog_msgbox <> "" then
+				MsgBox "Recent changes in this script: " & vbNewLine & vbNewLine & changelog_msgbox
+			End if
+
+			'Now we need to determine what the most recent change is, in order to add this to our text file
+			string_to_enter_into_local_changelog = date & " | " & name_of_script & " | " & last_item_added_to_changelog(1)
+
+			'Lastly, if it displayed a changelog, it should go through and update the record to remove the old entry and replace it with this one.
+			Set objTextStream = .OpenTextFile(local_changelog_path, ForWriting, true)						'Opening the file one last time
+			for i = 0 to ubound(local_changelog_array)
+				If i = line_in_local_changelog_array_to_delete then local_changelog_array(i) = string_to_enter_into_local_changelog
+				if local_changelog_array(i) <> "" then objTextStream.WriteLine local_changelog_array(i)
+			next
+
+		end if
+
+		Set objTextStream = Nothing
+	End with
+
+end function
+
+function changelog_update(date_of_change, text_of_change, scriptwriter_of_change)
+	ReDim Preserve changelog(UBound(changelog) + 1)
+	changelog(ubound(changelog)) = date_of_change & " | " & text_of_change & " | " & scriptwriter_of_change
+end function
+
 Function check_for_MAXIS(end_script)
 	Do
 		transmit
