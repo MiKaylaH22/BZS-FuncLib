@@ -467,13 +467,13 @@ Function add_CARS_to_variable(CARS_variable)
 End function
 
 Function add_JOBS_to_variable(variable_name_for_JOBS)
-  EMReadScreen JOBS_month, 5, 20, 55
-  JOBS_month = replace(JOBS_month, " ", "/")
-  EMReadScreen JOBS_type, 30, 7, 42
+  EMReadScreen JOBS_month, 5, 20, 55									'reads Footer month
+  JOBS_month = replace(JOBS_month, " ", "/")					'Cleans up the read number by putting a / in place of the blank space between MM YY
+  EMReadScreen JOBS_type, 30, 7, 42										'Reads up name of the employer and then cleans it up
   JOBS_type = replace(JOBS_type, "_", ""	)
   JOBS_type = trim(JOBS_type)
   JOBS_type = split(JOBS_type)
-  For each JOBS_part in JOBS_type
+  For each JOBS_part in JOBS_type											'Correcting case on the name of the employer as it reads in all CAPS
     If JOBS_part <> "" then
       first_letter = ucase(left(JOBS_part, 1))
       other_letters = LCase(right(JOBS_part, len(JOBS_part) -1))
@@ -487,6 +487,8 @@ Function add_JOBS_to_variable(variable_name_for_JOBS)
     transmit
     EMReadScreen SNAP_JOBS_amt, 8, 17, 56
     SNAP_JOBS_amt = trim(SNAP_JOBS_amt)
+		EMReadScreen jobs_SNAP_prospective_amt, 8, 18, 56
+		jobs_SNAP_prospective_amt = trim(jobs_SNAP_prospective_amt)  'prospective amount from PIC screen
     EMReadScreen snap_pay_frequency, 1, 5, 64
 	EMReadScreen date_of_pic_calc, 8, 5, 34
 	date_of_pic_calc = replace(date_of_pic_calc, " ", "/")
@@ -524,6 +526,7 @@ Function add_JOBS_to_variable(variable_name_for_JOBS)
 
   EMReadScreen JOBS_ver, 1, 6, 38
   EMReadScreen JOBS_income_end_date, 8, 9, 49
+	'This now cleans up the variables converting codes read from the panel into words for the final variable to be used in the output.
   If JOBS_income_end_date <> "__ __ __" then JOBS_income_end_date = replace(JOBS_income_end_date, " ", "/")
   If IsDate(JOBS_income_end_date) = True then
     variable_name_for_JOBS = variable_name_for_JOBS & new_JOBS_type & "(ended " & JOBS_income_end_date & "); "
@@ -543,7 +546,7 @@ Function add_JOBS_to_variable(variable_name_for_JOBS)
     If GRH_pay_frequency = "3" then GRH_pay_frequency = "biweekly"
     If GRH_pay_frequency = "4" then GRH_pay_frequency = "weekly"
     variable_name_for_JOBS = variable_name_for_JOBS & "EI from " & trim(new_JOBS_type) & ", " & JOBS_month  & " amts:; "
-    If SNAP_JOBS_amt <> "" then variable_name_for_JOBS = variable_name_for_JOBS & "- SNAP PIC: $" & SNAP_JOBS_amt & "/" & snap_pay_frequency & ", calculated " & date_of_pic_calc & "; "
+    If SNAP_JOBS_amt <> "" then variable_name_for_JOBS = variable_name_for_JOBS & "- SNAP PIC: $" & SNAP_JOBS_amt & "/" & snap_pay_frequency & ", SNAP PIC Prospective: $" & jobs_SNAP_prospective_amt & ", calculated " & date_of_pic_calc & "; "
     If GRH_JOBS_amt <> "" then variable_name_for_JOBS = variable_name_for_JOBS & "- GRH PIC: $" & GRH_JOBS_amt & "/" & GRH_pay_frequency & ", calculated " & GRH_date_of_pic_calc & "; "
 	If retro_JOBS_amt <> "" then variable_name_for_JOBS = variable_name_for_JOBS & "- Retrospective: $" & retro_JOBS_amt & " total; "
     IF prospective_JOBS_amt <> "" THEN variable_name_for_JOBS = variable_name_for_JOBS & "- Prospective: $" & prospective_JOBS_amt & " total; "
@@ -1685,31 +1688,44 @@ Function autofill_editbox_from_MAXIS(HH_member_array, panel_read_from, variable_
     End if
   Elseif panel_read_from = "SCHL" then '----------------------------------------------------------------------------------------------------SCHL
 	For each HH_member in HH_member_array
-      EMWriteScreen HH_member, 20, 76
-      EMWriteScreen "01", 20, 79
-      transmit
-      EMReadScreen school_type, 2, 7, 40
-      If school_type = "01" then school_type = "elementary school"
-      If school_type = "11" then school_type = "middle school"
-      If school_type = "02" then school_type = "high school"
-      If school_type = "03" then school_type = "GED"
-      If school_type = "07" then school_type = "IEP"
-      If school_type = "08" or school_type = "09" or school_type = "10" then school_type = "post-secondary"
-	If school_type = "12" then school_type = "adult basic education"
-      If school_type = "13" then school_type = "English as a 2nd language"
-      If school_type = "06" or school_type = "__" or school_type = "?_" then
-        school_type = ""
-      Else
-        EMReadScreen SCHL_ver, 2, 6, 63
-        If SCHL_ver = "?_" or SCHL_ver = "NO" then
-          school_proof_type = ", no proof provided"
-        Else
-          school_proof_type = ""
-        End if
-        variable_written_to = variable_written_to & "Member " & HH_member & "- "
-        variable_written_to = variable_written_to & school_type & school_proof_type & "; "
-      End if
-    Next
+			EMWriteScreen HH_member, 20, 76
+			EMWriteScreen "01", 20, 79
+			transmit
+			EMReadScreen school_type, 2, 7, 40							'Reading the school type code and converting it into words
+			If school_type = "01" then school_type = "elementary school"
+			If school_type = "11" then school_type = "middle school"
+			If school_type = "02" then school_type = "high school"
+			If school_type = "03" then school_type = "GED"
+			If school_type = "07" then school_type = "IEP"
+			If school_type = "08" or school_type = "09" or school_type = "10" then school_type = "post-secondary"
+			If school_type = "12" then school_type = "adult basic education"
+			If school_type = "13" then school_type = "English as a 2nd language"
+			If school_type = "06" or school_type = "__" or school_type = "?_" then  'if the school type is blank, child not in school, or postponed default type to blank.
+				school_type = ""
+			Else
+				EMReadScreen SCHL_ver, 2, 6, 63
+				If SCHL_ver = "?_" or SCHL_ver = "NO" then								'If the verification field is postponed or NO it defaults to no proof provided
+					school_proof_type = ", no proof provided"
+				Else
+					school_proof_type = ""
+				End if
+				EMReadScreen FS_eligibility_status_SCHL, 2, 16, 63				'Reading the FS eligibility status and converting it to words
+				IF FS_eligibility_status_SCHL = "01" THEN FS_eligibility_status_SCHL = ", FS Elig Status: < 18 or 50+"
+				IF FS_eligibility_status_SCHL = "02" THEN FS_eligibility_status_SCHL = ", FS Elig Status: Disabled"
+				IF FS_eligibility_status_SCHL = "03" THEN FS_eligibility_status_SCHL = ", FS Elig Status: Not Attenting Higher Ed or Attending < 1/2"
+				IF FS_eligibility_status_SCHL = "04" THEN FS_eligibility_status_SCHL = ", FS Elig Status: Employed 20 Hours/Wk"
+				IF FS_eligibility_status_SCHL = "05" THEN FS_eligibility_status_SCHL = ", FS Elig Status: Fed/State Work Study Program"
+				IF FS_eligibility_status_SCHL = "06" THEN FS_eligibility_status_SCHL = ", FS Elig Status: Dependant Under 6"
+				IF FS_eligibility_status_SCHL = "07" THEN FS_eligibility_status_SCHL = ", FS Elig Status: Dependant 6-11, daycare not available"
+				IF FS_eligibility_status_SCHL = "09" THEN FS_eligibility_status_SCHL = ", FS Elig Status: WIA, TAA, TRA, or FSET placement"
+				IF FS_eligibility_status_SCHL = "10" THEN FS_eligibility_status_SCHL = ", FS Elig Status: Full Time Single Parent with Child under 12"
+				IF FS_eligibility_status_SCHL = "99" THEN FS_eligibility_status_SCHL = ", FS Elig Status: Not Eligible"
+				IF FS_eligibility_status_SCHL = "__" or FS_eligibility_status_SCHL = "?_" THEN FS_eligibility_status_SCHL = ""
+				'formatting the output variable for the function
+				variable_written_to = variable_written_to & "Member " & HH_member & "- "
+				variable_written_to = variable_written_to & school_type & school_proof_type & FS_eligibility_status_SCHL & "; "
+			End if
+		Next
   Elseif panel_read_from = "SECU" then '----------------------------------------------------------------------------------------------------SECU
 	For each HH_member in HH_member_array
       EMWriteScreen HH_member, 20, 76
@@ -1977,6 +1993,140 @@ FUNCTION change_client_name_to_FML(client_name)
 	change_client_name_to_FML = client_name 'To make this a return function, this statement must set the value of the function name
 END FUNCTION
 
+function changelog_display()
+
+	'Needs to determine MyDocs directory before proceeding.
+	Set wshshell = CreateObject("WScript.Shell")
+	user_myDocs_folder = wshShell.SpecialFolders("MyDocuments") & "\"
+
+	'Now determines name of file
+	local_changelog_path = user_myDocs_folder & "scripts-local-changelog-entries.txt"
+
+	Const ForReading = 1
+	Const ForWriting = 2
+	Const ForAppending = 8
+
+	Dim objFSO
+	Set objFSO = CreateObject("Scripting.FileSystemObject")
+
+	'Before doing comparisons, it needs to see what the most recent item added to the list was.
+	last_item_added_to_changelog = split(changelog(0), " | ")
+
+	With objFSO
+
+		'Creating an object for the stream of text which we'll use frequently
+		Dim objTextStream
+
+		'If the file doesn't exist, it needs to create it here and initialize it here! After this, it can just exit as the file will now be initialized
+
+		If .FileExists(local_changelog_path) = False then
+			'Setting the object to open the text file for appending the new data
+			Set objTextStream = .OpenTextFile(local_changelog_path, ForWriting, true)
+
+			'Write the contents of the text file
+			objTextStream.WriteLine date & " | " & name_of_script & " | " & last_item_added_to_changelog(1)
+
+			'Close the object so it can be opened again shortly
+			objTextStream.Close
+
+			'Since the file was new, we can simply exit the function
+			exit function
+		End if
+
+		'Setting the object to open the text file for reading the data already in the file
+		Set objTextStream = .OpenTextFile(local_changelog_path, ForReading)
+
+		'Reading the entire text file into a string
+		every_line_in_text_file = objTextStream.ReadAll
+
+		'Splitting the text file contents into an array which will be sorted
+		local_changelog_array = split(every_line_in_text_file, vbNewLine)
+
+		'Looks to see if the script has been used before!
+		'for each local_changelog_item in local_changelog_array
+		for i = 0 to ubound(local_changelog_array)
+			If local_changelog_array(i) <> "" then 'some are likely blank
+				'splits the local_changelog_array(i) into an array: 0 -> date, 1 -> name_of_script, 2 -> text_of_change
+				local_changelog_item_array = split(local_changelog_array(i), " | ")
+
+				'Looking to see if the script is in fact in the local changelog list. If it is, we will then check the text against the listed changes to see what needs to be displayed.
+				if local_changelog_item_array(1) = name_of_script then
+					script_in_local_changelog = true
+					if local_changelog_item_array(2) <> last_item_added_to_changelog(1) then
+						display_changelog = true
+						local_changelog_text_of_change = trim(local_changelog_item_array(2))
+						line_in_local_changelog_array_to_delete = i
+					Else
+						display_changelog = false
+					End if
+				End if
+			End if
+		next
+
+		'Close the file
+		objTextStream.Close
+
+		'If the script is not in the local changelog, it needs to be added. If this is the case, it shouldn't display the changelog at all, because it'll be the first time the script was run.
+		If script_in_local_changelog <> true then
+
+			'Setting the object to open the text file for appending the new data
+			Set objTextStream = .OpenTextFile(local_changelog_path, ForAppending, true)
+
+			'Write the contents of the text file
+			objTextStream.WriteLine date & " | " & name_of_script & " | " & last_item_added_to_changelog(1)
+
+			'Close the file and clean up
+			objTextStream.Close
+
+			'Setting this to false. We don't want to display the changelog if the script has never been added to the local list of changelog events
+			display_changelog = false
+
+		End if
+
+		'So, if the script IS in the local changelog, and needs to be displayed, it takes special handling to ensure that's done.
+		If display_changelog = true then
+
+			'Splitting the changelog into different variables for making things prettier
+			For each changelog_entry in changelog
+				date_of_change = left(changelog_entry, instr(changelog_entry, " | ") - 1)
+				scriptwriter_of_change = trim(right(changelog_entry, len(changelog_entry) - instrrev(changelog_entry, "|") ))
+				text_of_change = replace(replace(replace(changelog_entry, scriptwriter_of_change, ""), date_of_change, ""), " | ", "")
+
+				'If the text_of_change is the same as that stored in the local changelog, that means the user is up-to-date to this point, and the script should exit without displaying any more updates. Otherwise, add it to the contents.
+				if trim(text_of_change) = trim(local_changelog_text_of_change) then
+				 	exit for
+				else
+					changelog_msgbox = changelog_msgbox & "-----" & cdate(date_of_change) & "-----" & vbNewLine & text_of_change & vbNewLine & "Completed by " & scriptwriter_of_change & vbNewLine & vbNewLine
+				end if
+
+			Next
+
+			If changelog_msgbox <> "" then
+				MsgBox "Recent changes in this script: " & vbNewLine & vbNewLine & changelog_msgbox
+			End if
+
+			'Now we need to determine what the most recent change is, in order to add this to our text file
+			string_to_enter_into_local_changelog = date & " | " & name_of_script & " | " & last_item_added_to_changelog(1)
+
+			'Lastly, if it displayed a changelog, it should go through and update the record to remove the old entry and replace it with this one.
+			Set objTextStream = .OpenTextFile(local_changelog_path, ForWriting, true)						'Opening the file one last time
+			for i = 0 to ubound(local_changelog_array)
+				If i = line_in_local_changelog_array_to_delete then local_changelog_array(i) = string_to_enter_into_local_changelog
+				if local_changelog_array(i) <> "" then objTextStream.WriteLine local_changelog_array(i)
+			next
+
+		end if
+
+		Set objTextStream = Nothing
+	End with
+
+end function
+
+function changelog_update(date_of_change, text_of_change, scriptwriter_of_change)
+	ReDim Preserve changelog(UBound(changelog) + 1)
+	changelog(ubound(changelog)) = date_of_change & " | " & text_of_change & " | " & scriptwriter_of_change
+end function
+
 Function check_for_MAXIS(end_script)
 	Do
 		transmit
@@ -2239,6 +2389,23 @@ Function create_panel_if_nonexistent()
 		End If
 	End If
 End Function
+
+FUNCTION date_array_generator(initial_month, initial_year, date_array)
+	'defines an intial date from the initial_month and initial_year parameters
+	initial_date = initial_month & "/1/" & initial_year
+	'defines a date_list, which starts with just the initial date
+	date_list = initial_date
+
+	'This loop creates a list of dates
+	Do
+		If datediff("m", date, initial_date) = 1 then exit do		'if initial date is the current month plus one then it exits the do as to not loop for eternity'
+		working_date = dateadd("m", 1, right(date_list, len(date_list) - InStrRev(date_list,"|")))	'the working_date is the last-added date + 1 month. We use dateadd, then grab the rightmost characters after the "|" delimiter, which we determine the location of using InStrRev
+		date_list = date_list & "|" & working_date	'Adds the working_date to the date_list
+	Loop until datediff("m", date, working_date) = 1	'Loops until we're at current month plus one
+
+	'Splits this into an array
+	date_array = split(date_list, "|")
+End function
 
 FUNCTION date_converter_PALC_PAPL (date_variable)
 
@@ -3380,6 +3547,13 @@ FUNCTION proceed_confirmation(result_of_msgbox)
 	End if
 END FUNCTION
 
+'This function clears out PRISM global variables
+function regl
+	EMWriteScreen "REGL", 21, 18		'This writes REGL to the command line
+	transmit							'Sends the REGL command
+	transmit							'Transmits past the REGL screen
+end function
+
 function run_another_script(script_path)
   Set run_another_script_fso = CreateObject("Scripting.FileSystemObject")
   Set fso_command = run_another_script_fso.OpenTextFile(script_path)
@@ -3486,7 +3660,7 @@ FUNCTION select_cso_caseload(ButtonPressed, cso_id, cso_name)
 
 			BeginDialog select_cso_dlg, 0, 0, 286, 145, " - Select CSO Caseload"
 			EditBox 70, 55, 65, 15, cso_id
-			Text 70, 80, 90, 10, cso_name
+			Text 70, 80, 155, 10, cso_name
 			ButtonGroup ButtonPressed
 				OkButton 130, 125, 50, 15
 				PushButton 180, 125, 50, 15, "UPDATE CSO", update_cso_button
