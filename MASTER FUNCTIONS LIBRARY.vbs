@@ -3989,55 +3989,70 @@ Function write_bullet_and_variable_in_CCOL_NOTE(bullet, variable)
 
 End function
 
+'This function will write a date in any format desired.
 FUNCTION write_date(date_variable, date_format_variable, screen_row, screen_col)
+
+	'Figures out the format of the month. If it was "MM", "M", or not present.
 	If instr(ucase(date_format_variable), "MM") <> 0 then
 		month_format = "MM"
-		month_location = instr(ucase(date_format_variable), "MM")
 	Elseif instr(ucase(date_format_variable), "M") <> 0 then
 		month_format = "M"
-		month_location = instr(ucase(date_format_variable), "M")
 	Else
 		month_format = ""
-		month_location = 0
 	End if
 
+	'Figures out the format of the day. If it was "DD", "D", or not present.
 	If instr(ucase(date_format_variable), "DD") <> 0 then
 		day_format = "DD"
-		day_location = instr(ucase(date_format_variable), "DD")
 	Elseif instr(ucase(date_format_variable), "D") <> 0 then
 		day_format = "D"
-		day_location = instr(ucase(date_format_variable), "D")
 	Else
 		day_format = ""
-		day_location = 0
 	End if
 
+	'Figures out the format of the year. If it was "YYYY", "YY", or not present.
 	If instr(ucase(date_format_variable), "YYYY") <> 0 then
 		year_format = "YYYY"
-		year_location = instr(ucase(date_format_variable), "YYYY")
 	Elseif instr(ucase(date_format_variable), "YY") <> 0 then
 		year_format = "YY"
-		year_location = instr(ucase(date_format_variable), "YY")
 	Else
 		year_format = ""
-		year_location = 0
 	End if
 
+	'Formats the month. Separates the month into its own variable and adds a zero if needed.
 	var_month = datepart("m", date_variable)
-	IF len(var_month) = 1 THEN var_month = "0" & var_month
+	IF len(var_month) = 1 and month_format = "MM" THEN var_month = "0" & var_month
 
+	'Formats the day. Separates the day into its own variable and adds a zero if needed.
 	var_day = datepart("d", date_variable)
-	IF len(var_day) = 1 THEN var_day = "0" & var_day
+	IF len(var_day) = 1 and day_format = "DD" THEN var_day = "0" & var_day
 
-	If year_type = "YY" then
+	'Formats the year based on "YY" or "YYYY" formatting.
+	If year_format = "YY" then
 		var_year = right(datepart("yyyy", date_variable), 2)
-	ElseIf year_type = "YYYY" then
+	ElseIf year_format = "YYYY" then
 		var_year = datepart("yyyy", date_variable)
 	END IF
+	
+	'Imports the date_variable into a new variable
+	output_date_variable = date_format_variable
+	
+	'Condenses date format to remove excess letters. This way, we can easily replace the default details.
+	output_date_variable = replace(output_date_variable, "MM", "M")
+	output_date_variable = replace(output_date_variable, "DD", "D")
+	output_date_variable = replace(output_date_variable, "YYYY", "YY")
+	
+	'Replacing the output_date_variable with the actual dates based on the above logic
+	output_date_variable = replace(output_date_variable, "M", var_month)
+	output_date_variable = replace(output_date_variable, "D", var_day)
+	output_date_variable = replace(output_date_variable, "YY", var_year)
+	
+	'Writing the output_date_variable to screen
+	For i = 1 to len(output_date_variable)
+		screen_col_to_write = screen_col + (i - 1)
+		EMWriteScreen mid(output_date_variable, i, 1), screen_row, screen_col_to_write
+	Next
 
-	EMWriteScreen var_month & "/", screen_row, screen_col
-	EMWriteScreen var_day & "/", screen_row, screen_col + 3
-	EMWriteScreen var_year, screen_row, screen_col + 6
 END FUNCTION
 
 'This function will open the ES_statistics database, check for an existing case and edit it with new info, or add a new entry if there is no existing case in the database.
