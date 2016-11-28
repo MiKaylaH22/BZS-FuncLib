@@ -1951,7 +1951,7 @@ Function autofill_editbox_from_MAXIS(HH_member_array, panel_read_from, variable_
 	END IF
 	If read_abawd_status = "11" THEN  abawd_status = "ABAWD = Using second set of ABAWD months. Counted second set months: " & second_set_info_list & "."
 	If read_abawd_status = "12" THEN  abawd_status = "ABAWD = RCA or GA recip."
-	If read_abawd_status = "13" THEN  abawd_status = "ABAWD = ABAWD extension."
+	If read_abawd_status = "13" THEN  abawd_status = "ABAWD = ABAWD banked months."
 	If read_abawd_status = "__" THEN  abawd_status = "ABAWD = blank"
 
 	variable_written_to = variable_written_to & "Member " & HH_member & "- " & WREG_status & ", " & abawd_status & "; "
@@ -1992,6 +1992,140 @@ FUNCTION change_client_name_to_FML(client_name)
 	call fix_case(client_name, 1)
 	change_client_name_to_FML = client_name 'To make this a return function, this statement must set the value of the function name
 END FUNCTION
+
+function changelog_display()
+
+	'Needs to determine MyDocs directory before proceeding.
+	Set wshshell = CreateObject("WScript.Shell")
+	user_myDocs_folder = wshShell.SpecialFolders("MyDocuments") & "\"
+
+	'Now determines name of file
+	local_changelog_path = user_myDocs_folder & "scripts-local-changelog-entries.txt"
+
+	Const ForReading = 1
+	Const ForWriting = 2
+	Const ForAppending = 8
+
+	Dim objFSO
+	Set objFSO = CreateObject("Scripting.FileSystemObject")
+
+	'Before doing comparisons, it needs to see what the most recent item added to the list was.
+	last_item_added_to_changelog = split(changelog(0), " | ")
+
+	With objFSO
+
+		'Creating an object for the stream of text which we'll use frequently
+		Dim objTextStream
+
+		'If the file doesn't exist, it needs to create it here and initialize it here! After this, it can just exit as the file will now be initialized
+
+		If .FileExists(local_changelog_path) = False then
+			'Setting the object to open the text file for appending the new data
+			Set objTextStream = .OpenTextFile(local_changelog_path, ForWriting, true)
+
+			'Write the contents of the text file
+			objTextStream.WriteLine date & " | " & name_of_script & " | " & last_item_added_to_changelog(1)
+
+			'Close the object so it can be opened again shortly
+			objTextStream.Close
+
+			'Since the file was new, we can simply exit the function
+			exit function
+		End if
+
+		'Setting the object to open the text file for reading the data already in the file
+		Set objTextStream = .OpenTextFile(local_changelog_path, ForReading)
+
+		'Reading the entire text file into a string
+		every_line_in_text_file = objTextStream.ReadAll
+
+		'Splitting the text file contents into an array which will be sorted
+		local_changelog_array = split(every_line_in_text_file, vbNewLine)
+
+		'Looks to see if the script has been used before!
+		'for each local_changelog_item in local_changelog_array
+		for i = 0 to ubound(local_changelog_array)
+			If local_changelog_array(i) <> "" then 'some are likely blank
+				'splits the local_changelog_array(i) into an array: 0 -> date, 1 -> name_of_script, 2 -> text_of_change
+				local_changelog_item_array = split(local_changelog_array(i), " | ")
+
+				'Looking to see if the script is in fact in the local changelog list. If it is, we will then check the text against the listed changes to see what needs to be displayed.
+				if local_changelog_item_array(1) = name_of_script then
+					script_in_local_changelog = true
+					if local_changelog_item_array(2) <> last_item_added_to_changelog(1) then
+						display_changelog = true
+						local_changelog_text_of_change = trim(local_changelog_item_array(2))
+						line_in_local_changelog_array_to_delete = i
+					Else
+						display_changelog = false
+					End if
+				End if
+			End if
+		next
+
+		'Close the file
+		objTextStream.Close
+
+		'If the script is not in the local changelog, it needs to be added. If this is the case, it shouldn't display the changelog at all, because it'll be the first time the script was run.
+		If script_in_local_changelog <> true then
+
+			'Setting the object to open the text file for appending the new data
+			Set objTextStream = .OpenTextFile(local_changelog_path, ForAppending, true)
+
+			'Write the contents of the text file
+			objTextStream.WriteLine date & " | " & name_of_script & " | " & last_item_added_to_changelog(1)
+
+			'Close the file and clean up
+			objTextStream.Close
+
+			'Setting this to false. We don't want to display the changelog if the script has never been added to the local list of changelog events
+			display_changelog = false
+
+		End if
+
+		'So, if the script IS in the local changelog, and needs to be displayed, it takes special handling to ensure that's done.
+		If display_changelog = true then
+
+			'Splitting the changelog into different variables for making things prettier
+			For each changelog_entry in changelog
+				date_of_change = left(changelog_entry, instr(changelog_entry, " | ") - 1)
+				scriptwriter_of_change = trim(right(changelog_entry, len(changelog_entry) - instrrev(changelog_entry, "|") ))
+				text_of_change = replace(replace(replace(changelog_entry, scriptwriter_of_change, ""), date_of_change, ""), " | ", "")
+
+				'If the text_of_change is the same as that stored in the local changelog, that means the user is up-to-date to this point, and the script should exit without displaying any more updates. Otherwise, add it to the contents.
+				if trim(text_of_change) = trim(local_changelog_text_of_change) then
+				 	exit for
+				else
+					changelog_msgbox = changelog_msgbox & "-----" & cdate(date_of_change) & "-----" & vbNewLine & text_of_change & vbNewLine & "Completed by " & scriptwriter_of_change & vbNewLine & vbNewLine
+				end if
+
+			Next
+
+			If changelog_msgbox <> "" then
+				MsgBox "Recent changes in this script: " & vbNewLine & vbNewLine & changelog_msgbox
+			End if
+
+			'Now we need to determine what the most recent change is, in order to add this to our text file
+			string_to_enter_into_local_changelog = date & " | " & name_of_script & " | " & last_item_added_to_changelog(1)
+
+			'Lastly, if it displayed a changelog, it should go through and update the record to remove the old entry and replace it with this one.
+			Set objTextStream = .OpenTextFile(local_changelog_path, ForWriting, true)						'Opening the file one last time
+			for i = 0 to ubound(local_changelog_array)
+				If i = line_in_local_changelog_array_to_delete then local_changelog_array(i) = string_to_enter_into_local_changelog
+				if local_changelog_array(i) <> "" then objTextStream.WriteLine local_changelog_array(i)
+			next
+
+		end if
+
+		Set objTextStream = Nothing
+	End with
+
+end function
+
+function changelog_update(date_of_change, text_of_change, scriptwriter_of_change)
+	ReDim Preserve changelog(UBound(changelog) + 1)
+	changelog(ubound(changelog)) = date_of_change & " | " & text_of_change & " | " & scriptwriter_of_change
+end function
 
 Function check_for_MAXIS(end_script)
 	Do
@@ -2255,6 +2389,23 @@ Function create_panel_if_nonexistent()
 		End If
 	End If
 End Function
+
+FUNCTION date_array_generator(initial_month, initial_year, date_array)
+	'defines an intial date from the initial_month and initial_year parameters
+	initial_date = initial_month & "/1/" & initial_year
+	'defines a date_list, which starts with just the initial date
+	date_list = initial_date
+
+	'This loop creates a list of dates
+	Do
+		If datediff("m", date, initial_date) = 1 then exit do		'if initial date is the current month plus one then it exits the do as to not loop for eternity'
+		working_date = dateadd("m", 1, right(date_list, len(date_list) - InStrRev(date_list,"|")))	'the working_date is the last-added date + 1 month. We use dateadd, then grab the rightmost characters after the "|" delimiter, which we determine the location of using InStrRev
+		date_list = date_list & "|" & working_date	'Adds the working_date to the date_list
+	Loop until datediff("m", date, working_date) = 1	'Loops until we're at current month plus one
+
+	'Splits this into an array
+	date_array = split(date_list, "|")
+End function
 
 FUNCTION date_converter_PALC_PAPL (date_variable)
 
@@ -3837,6 +3988,72 @@ Function write_bullet_and_variable_in_CCOL_NOTE(bullet, variable)
 	EMSetCursor noting_row + 1, 3
 
 End function
+
+'This function will write a date in any format desired.
+FUNCTION write_date(date_variable, date_format_variable, screen_row, screen_col)
+
+	'Figures out the format of the month. If it was "MM", "M", or not present.
+	If instr(ucase(date_format_variable), "MM") <> 0 then
+		month_format = "MM"
+	Elseif instr(ucase(date_format_variable), "M") <> 0 then
+		month_format = "M"
+	Else
+		month_format = ""
+	End if
+
+	'Figures out the format of the day. If it was "DD", "D", or not present.
+	If instr(ucase(date_format_variable), "DD") <> 0 then
+		day_format = "DD"
+	Elseif instr(ucase(date_format_variable), "D") <> 0 then
+		day_format = "D"
+	Else
+		day_format = ""
+	End if
+
+	'Figures out the format of the year. If it was "YYYY", "YY", or not present.
+	If instr(ucase(date_format_variable), "YYYY") <> 0 then
+		year_format = "YYYY"
+	Elseif instr(ucase(date_format_variable), "YY") <> 0 then
+		year_format = "YY"
+	Else
+		year_format = ""
+	End if
+
+	'Formats the month. Separates the month into its own variable and adds a zero if needed.
+	var_month = datepart("m", date_variable)
+	IF len(var_month) = 1 and month_format = "MM" THEN var_month = "0" & var_month
+
+	'Formats the day. Separates the day into its own variable and adds a zero if needed.
+	var_day = datepart("d", date_variable)
+	IF len(var_day) = 1 and day_format = "DD" THEN var_day = "0" & var_day
+
+	'Formats the year based on "YY" or "YYYY" formatting.
+	If year_format = "YY" then
+		var_year = right(datepart("yyyy", date_variable), 2)
+	ElseIf year_format = "YYYY" then
+		var_year = datepart("yyyy", date_variable)
+	END IF
+	
+	'Imports the date_variable into a new variable
+	output_date_variable = date_format_variable
+	
+	'Condenses date format to remove excess letters. This way, we can easily replace the default details.
+	output_date_variable = replace(output_date_variable, "MM", "M")
+	output_date_variable = replace(output_date_variable, "DD", "D")
+	output_date_variable = replace(output_date_variable, "YYYY", "YY")
+	
+	'Replacing the output_date_variable with the actual dates based on the above logic
+	output_date_variable = replace(output_date_variable, "M", var_month)
+	output_date_variable = replace(output_date_variable, "D", var_day)
+	output_date_variable = replace(output_date_variable, "YY", var_year)
+	
+	'Writing the output_date_variable to screen
+	For i = 1 to len(output_date_variable)
+		screen_col_to_write = screen_col + (i - 1)
+		EMWriteScreen mid(output_date_variable, i, 1), screen_row, screen_col_to_write
+	Next
+
+END FUNCTION
 
 'This function will open the ES_statistics database, check for an existing case and edit it with new info, or add a new entry if there is no existing case in the database.
 Function write_MAXIS_info_to_ES_database(ESCaseNbr, ESMembNbr, ESMembName, EsSanctionPercentage, ESEmpsStatus, ESTANFMosUsed, ESExtensionReason, ESDisaEnd, ESPrimaryActivity, ESDate, ESSite, ESCounselor, ESActive, insert_string)
