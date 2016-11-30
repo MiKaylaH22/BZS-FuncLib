@@ -2117,7 +2117,8 @@ function changelog_display()
 
 		end if
 
-		Set objTextStream = Nothing
+		'Close the file
+		objTextStream.Close
 	End with
 
 end function
