@@ -2205,6 +2205,9 @@ function changelog_update(date_of_change, text_of_change, scriptwriter_of_change
 end function
 
 Function check_for_MAXIS(end_script)
+'--- This function checks to ensure the user is in a MAXIS panel
+'~~~~~ end_script: If end_script = TRUE the script will end. If end_script = FALSE, the user will be given the option to cancel the script, or manually navigate to a MAXIS screen.
+'===== Keywords: MAXIS, production, script_end_procedure
 	Do
 		transmit
 		EMReadScreen MAXIS_check, 5, 1, 39
@@ -2219,9 +2222,10 @@ Function check_for_MAXIS(end_script)
 	Loop until MAXIS_check = "MAXIS" or MAXIS_check = "AXIS "
 End function
 
-
 Function check_for_MMIS(end_script)
-'Sending MMIS back to the beginning screen and checking for a password prompt. If end_script is set to true, the script will end; if set to false, script will continue once password is entered
+'--- This function checks to ensure the user is in a MMIS panel
+'~~~~~ end_script: If end_script = TRUE the script will end. If end_script = FALSE, the user will be given the option to cancel the script, or manually navigate to a MMIS screen.
+'===== Keywords: MMIS, production, script_end_procedure
 	Do
 		transmit
 		row = 1
@@ -2239,6 +2243,9 @@ Function check_for_MMIS(end_script)
 End function
 
 Function check_for_password(are_we_passworded_out)
+'--- This function checks to make sure a user is not passworded out. If they are, it allows the user to password back in. NEEDS TO BE ADDED INTO dialog DO...lOOPS
+'~~~~~ are_we_passworded_out: When adding to dialog enter "Call check_for_password(are_we_passworded_out)", then Loop until are_we_passworded_out = false. Parameter will remain true if the user still needs to input password.
+'===== Keywords: MAXIS, PRISM, password
 	Transmit 'transmitting to see if the password screen appears
 	Emreadscreen password_check, 8, 2, 33 'checking for the word password which will indicate you are passworded out
 	If password_check = "PASSWORD" then 'If the word password is found then it will tell the worker and set the parameter to be true, otherwise it will be set to false.
@@ -2249,8 +2256,10 @@ Function check_for_password(are_we_passworded_out)
 	End If
 End Function
 
-
 Function check_for_PRISM(end_script)
+'--- This function checks to ensure the user is in a PRISM panel
+'~~~~~ end_script: If end_script = TRUE the script will end. If end_script = FALSE, the user will be given the option to cancel the script, or manually navigate to a PRISM screen.
+'===== Keywords: PRISM, production, script_end_procedure
 	EMReadScreen PRISM_check, 5, 1, 36
 	if end_script = True then
 		If PRISM_check <> "PRISM" then script_end_procedure("You do not appear to be in PRISM. You may be passworded out. Please check your PRISM screen and try again.")
@@ -2260,13 +2269,20 @@ Function check_for_PRISM(end_script)
 end function
 
 Function clear_line_of_text(row, start_column)
+'--- This function clears out a single line of text 
+'~~~~~ row: coordinate of row to clear
+'~~~~~ start_column: coordinate of column to start clearing 
+'===== Keywords: MAXIS, PRISM, production, clear
   EMSetCursor row, start_column
   EMSendKey "<EraseEof>"
   EMWaitReady 0, 0
 End function
 
-'This function converts an array into a droplist to be used by a dialog
 Function convert_array_to_droplist_items(array_to_convert, output_droplist_box)
+'--- This function converts an array into a droplist to be used within dialog
+'~~~~~ array_to_convert: name of the array
+'~~~~~ output_droplist_box: name of droplist variant/variable
+'===== Keywords: MAXIS, PRISM, production, array, droplist 
 	For each item in array_to_convert
 		If output_droplist_box = "" then
 			output_droplist_box = item
@@ -2276,16 +2292,22 @@ Function convert_array_to_droplist_items(array_to_convert, output_droplist_box)
 	Next
 End Function
 
-'This function converts a date (MM/DD/YY or MM/DD/YYYY format) into a separate footer month and footer year variables. For best results, always use MAXIS_footer_month and MAXIS_footer_year as the appropriate variables.
 FUNCTION convert_date_into_MAXIS_footer_month(date_to_convert, MAXIS_footer_month, MAXIS_footer_year)
+'--- This function converts a date (MM/DD/YY or MM/DD/YYYY format) into a separate footer month and footer year variables.
+'~~~~~ date_to_convert: variable name of date you want to convert 
+'~~~~~ MAXIS_footer_month: footer month to convert the date into 
+'~~~~~ MAXIS_footer_month: footer year to convert the date into
+'===== Keywords: MAXIS, production, array, droplist, convert
 	MAXIS_footer_month = DatePart("m", date_to_convert)										'Uses DatePart function to copy the month from date_to_convert into the MAXIS_footer_month variable.
 	IF Len(MAXIS_footer_month) = 1 THEN MAXIS_footer_month = "0" & MAXIS_footer_month		'Uses Len function to determine if the MAXIS_footer_month is a single digit month. If so, it adds a 0, which MAXIS needs.
 	MAXIS_footer_year = DatePart("yyyy", date_to_convert)									'Uses DatePart function to copy the year from date_to_convert into the MAXIS_footer_year variable.
 	MAXIS_footer_year = Right(MAXIS_footer_year, 2)											'Uses Right function to reduce the MAXIS_footer_year variable to it's right 2 characters (allowing for a 2 digit footer year).
 END FUNCTION
 
-'This function converts a numeric digit to an Excel column, up to 104 digits (columns).
 function convert_digit_to_excel_column(col_in_excel)
+'--- This function converts a numeric digit to an Excel column, up to 104 digits (columns).
+'~~~~~ col_in_excel: must be a numeric, cannot exceed 104. Do not put in "".
+'===== Keywords: MAXIS, PRISM, convert, Excel
 	'Create string with the alphabet
 	alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
@@ -2299,8 +2321,13 @@ function convert_digit_to_excel_column(col_in_excel)
 	If col_in_excel >= 105 then script_end_procedure("This script is only able to assign excel columns to 104 distinct digits. You've exceeded this number, and this script cannot continue.")
 end function
 
-'This function is used to grab all active X numbers according to the supervisor X number(s) inputted
+
 FUNCTION create_array_of_all_active_x_numbers_by_supervisor(array_name, supervisor_array)
+'--- This function is used to grab all active X numbers according to the supervisor X number(s) inputted
+'~~~~~ array_name: name of array that will contain all the supervisor's staff x numbers
+'~~~~~ supervisor_array: list of supervisor's x numbers seperated by comma
+'===== Keywords: MAXIS, array, supervisor, worker number
+	'Create string with the alphabet	
 	'Getting to REPT/USER
 	CALL navigate_to_MAXIS_screen("REPT", "USER")
 
@@ -2338,6 +2365,12 @@ FUNCTION create_array_of_all_active_x_numbers_by_supervisor(array_name, supervis
 END FUNCTION
 
 Function create_array_of_all_active_x_numbers_in_county(array_name, county_code)
+'--- This function is used to grab all active X numbers in a county
+'~~~~~ array_name: name of array that will contain all the x numbers
+'~~~~~ county_code: inserted by reading the county code under REPT/USER
+'===== Keywords: MAXIS, array, worker number
+	'Create string with the alphabet	
+	'Getting to REPT/USER
 	'Getting to REPT/USER
 	call navigate_to_MAXIS_screen("rept", "user")
 
