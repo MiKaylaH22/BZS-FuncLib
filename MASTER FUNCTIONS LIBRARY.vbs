@@ -205,9 +205,33 @@ class script
 	end property
 
 end class
+'=========================================================================================================================================================================== END OF CLASSES
 
-'BELOW ARE THE ACTUAL FUNCTIONS----------------------------------------------------------------------------------------------------
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+'BELOW ARE THE ACTUAL FUNCTIONS--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 Function add_ACCI_to_variable(ACCI_variable)
 '--- This function adds STAT/ACCI data to a variable, which can then be displayed in a dialog. See autofill_editbox_from_MAXIS.
 '~~~~~ ACCI_variable: the variable used by the editbox you wish to autofill.
