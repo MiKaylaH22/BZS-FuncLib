@@ -779,8 +779,10 @@ Function add_UNEA_to_variable(variable_name_for_UNEA)
   End if
 End function
 
-'This function will assign an address to a variable selected from the interview_location variable in the Appt Letter script.
 Function assign_county_address_variables(address_line_01, address_line_02)
+'--- This function will assign an address to a variable selected from the interview_location variable in the Appt Letter script.
+'~~~~~ address_line_01: 1st line of address (street address) from new_office_array
+'~~~~~ address_line_02: 2nd line of address (city/state/zip) from new_office_array
 	For each office in county_office_array				'Splits the county_office_array, which is set by the config program and declared earlier in this file
 		If instr(office, interview_location) <> 0 then		'If the name of the office is found in the "interview_location" variable, which is contained in the MEMO - appt letter script.
 			new_office_array = split(office, "|")		'Split the office into its own array
