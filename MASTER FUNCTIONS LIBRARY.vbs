@@ -818,7 +818,7 @@ Function assign_county_address_variables(address_line_01, address_line_02)
 '--- This function will assign an address to a variable selected from the interview_location variable in the Appt Letter script.
 '~~~~~ address_line_01: 1st line of address (street address) from new_office_array
 '~~~~~ address_line_02: 2nd line of address (city/state/zip) from new_office_array
-
+'===== Keywords: MAXIS, APPT LETTER, ADDRESS
 	For each office in county_office_array				'Splits the county_office_array, which is set by the config program and declared earlier in this file
 		If instr(office, interview_location) <> 0 then		'If the name of the office is found in the "interview_location" variable, which is contained in the MEMO - appt letter script.
 			new_office_array = split(office, "|")		'Split the office into its own array
@@ -829,12 +829,18 @@ Function assign_county_address_variables(address_line_01, address_line_02)
 End function
 
 Function attn
+ '--- This function sends or hits the ESC (escape) key. 
+  '===== Keywords: MAXIS, MMIS, PRISM, ESC
   EMSendKey "<attn>"
   EMWaitReady -1, 0
 End function
 
 Function autofill_editbox_from_MAXIS(HH_member_array, panel_read_from, variable_written_to)
- 'First it navigates to the screen. Only does the first four characters because we use separate handling for HCRE-retro. This is something that should be fixed someday!!!!!!!!!
+ '--- This function autofills information for all HH members idenified from the HH_member_array from a selected MAXIS panel into an edit box in a dialog.
+ '~~~~~ HH_member_array: array of HH members from function HH_member_custom_dialog(HH_member_array). User selects which HH members are added to array. 
+ '~~~~~ read_panel_from: first four characters because we use separate handling for HCRE-retro. This is something that should be fixed someday!!!!!!!!!
+ '~~~~~ variable_written_to: the variable used by the editbox you wish to autofill.
+ '===== Keywords: MAXIS, autofill, HH_member_array
   call navigate_to_MAXIS_screen("stat", left(panel_read_from, 4))
 
   'Now it checks for the total number of panels. If there's 0 Of 0 it'll exit the function for you so as to save oodles of time.
@@ -2021,6 +2027,8 @@ Function autofill_editbox_from_MAXIS(HH_member_array, panel_read_from, variable_
 End function
 
 function back_to_SELF
+'--- This function will return back to the 'SELF' menu or the MAXIS home menu 
+'===== Keywords: MAXIS, SELF, navigate
   Do
     EMSendKey "<PF3>"
     EMWaitReady 0, 0
@@ -2028,8 +2036,9 @@ function back_to_SELF
   Loop until SELF_check = "SELF"
 End function
 
-'This function asks if you want to cancel. If you say yes, it sends StopScript.
 FUNCTION cancel_confirmation
+'--- This function asks if the user if they want to cancel. If you say yes, the script will end. If no, the dialog will appear for the user again.
+'===== Keywords: MAXIS, PRISM, MMIS, cancel, script_end_procedure
 	If ButtonPressed = 0 then
 		cancel_confirm = MsgBox("Are you sure you want to cancel the script? Press YES to cancel. Press NO to return to the script.", vbYesNo)
 		If cancel_confirm = vbYes then script_end_procedure("~PT: user pressed cancel")
@@ -2037,9 +2046,10 @@ FUNCTION cancel_confirmation
 	End if
 END FUNCTION
 
-' This is a custom function to change the format of a participant name.  The parameter is a string with the
-' client's name formatted like "Levesseur, Wendy K", and will change it to "Wendy K LeVesseur".
 FUNCTION change_client_name_to_FML(client_name)
+'--- This function changes the format of a participant name. client's name formatted like "Levesseur, Wendy K", and will change it to "Wendy K LeVesseur".
+'~~~~~ client_name: variable used within the script for name to be converted
+'===== Keywords: PRISM, name, change
 	client_name = trim(client_name)
 	length = len(client_name)
 	position = InStr(client_name, ", ")
@@ -2052,7 +2062,10 @@ FUNCTION change_client_name_to_FML(client_name)
 END FUNCTION
 
 function changelog_display()
-
+'--- This function determines if the user has been informed of a change to a script, and if not will display a mesage box with the script's change log information
+'~~~~~ (): always leave the parameter empty
+'===== Keywords: MAXIS, PRISM, change, info, information
+	
 	'Needs to determine MyDocs directory before proceeding.
 	Set wshshell = CreateObject("WScript.Shell")
 	user_myDocs_folder = wshShell.SpecialFolders("MyDocuments") & "\"
@@ -2182,6 +2195,11 @@ function changelog_display()
 end function
 
 function changelog_update(date_of_change, text_of_change, scriptwriter_of_change)
+'--- This function adds the change to the scripts to the user change log to be displayed in function changelog_display()
+'~~~~~ date_of_change: date the change was made/committed to the script file. Surround date in ""
+'~~~~~ text_of_change: information about the change to the script that users statewide will see. Please be clear about your updates. You can write several sentences. Surround text in "".
+'~~~~~ scriptwriter_of_change: scriptwriter name and county seperated by a comma. Surround name and county name with "".
+'===== Keywords: MAXIS, PRISM, change, info, information
 	ReDim Preserve changelog(UBound(changelog) + 1)
 	changelog(ubound(changelog)) = date_of_change & " | " & text_of_change & " | " & scriptwriter_of_change
 end function
