@@ -211,6 +211,7 @@ end class
 Function add_ACCI_to_variable(ACCI_variable)
 '--- This function adds STAT/ACCI data to a variable, which can then be displayed in a dialog. See autofill_editbox_from_MAXIS.
 '~~~~~ ACCI_variable: the variable used by the editbox you wish to autofill.
+'===== Keywords: MAXIS, autofill, ACCI
   EMReadScreen ACCI_date, 8, 6, 73
   ACCI_date = replace(ACCI_date, " ", "/")
   If datediff("yyyy", ACCI_date, now) < 5 then
@@ -235,6 +236,7 @@ End function
 Function add_ACCT_to_variable(ACCT_variable)
 '--- This function adds STAT/ACCT data to a variable, which can then be displayed in a dialog. See autofill_editbox_from_MAXIS.
 '~~~~~ ACCT_variable: the variable used by the editbox you wish to autofill.
+'===== Keywords: MAXIS, autofill, ACCT
   EMReadScreen ACCT_amt, 8, 10, 46
   ACCT_amt = trim(ACCT_amt)
   ACCT_amt = "$" & ACCT_amt
@@ -266,6 +268,8 @@ End function
 Function add_BUSI_to_variable(variable_name_for_BUSI)
 '--- This function adds STAT/BUSI data to a variable, which can then be displayed in a dialog. See autofill_editbox_from_MAXIS.
 '~~~~~ BUSI_variable: the variable used by the editbox you wish to autofill.
+'===== Keywords: MAXIS, autofill, BUSI
+
 	'Reading the footer month, converting to an actual date, we'll need this for determining if the panel is 02/15 or later (there was a change in 02/15 which moved stuff)
 	EMReadScreen BUSI_footer_month, 5, 20, 55
 	BUSI_footer_month = replace(BUSI_footer_month, " ", "/01/")
@@ -453,6 +457,7 @@ End function
 Function add_CARS_to_variable(CARS_variable)
 '--- This function adds STAT/CARS data to a variable, which can then be displayed in a dialog. See autofill_editbox_from_MAXIS.
 '~~~~~ CARS_variable: the variable used by the editbox you wish to autofill.
+'===== Keywords: MAXIS, autofill, CARS
   EMReadScreen CARS_year, 4, 8, 31
   EMReadScreen CARS_make, 15, 8, 43
   CARS_make = replace(CARS_make, "_", "")
@@ -477,6 +482,7 @@ End function
 Function add_JOBS_to_variable(variable_name_for_JOBS)
 '--- This function adds STAT/JOBS data to a variable, which can then be displayed in a dialog. See autofill_editbox_from_MAXIS.
 '~~~~~ JOBS_variable: the variable used by the editbox you wish to autofill.
+'===== Keywords: MAXIS, autofill, JOBS
   EMReadScreen JOBS_month, 5, 20, 55									'reads Footer month
   JOBS_month = replace(JOBS_month, " ", "/")					'Cleans up the read number by putting a / in place of the blank space between MM YY
   EMReadScreen JOBS_type, 30, 7, 42										'Reads up name of the employer and then cleans it up
@@ -575,6 +581,7 @@ End function
 Function add_OTHR_to_variable(OTHR_variable)
 '--- This function adds STAT/OTHR data to a variable, which can then be displayed in a dialog. See autofill_editbox_from_MAXIS.
 '~~~~~ OTHR_variable: the variable used by the editbox you wish to autofill.
+'===== Keywords: MAXIS, autofill, OTHR
   EMReadScreen OTHR_type, 16, 6, 43
   OTHR_type = trim(OTHR_type)
   EMReadScreen OTHR_amt, 10, 8, 40
@@ -587,6 +594,7 @@ End function
 Function add_RBIC_to_variable(variable_name_for_RBIC)
 '--- This function adds STAT/RBIC data to a variable, which can then be displayed in a dialog. See autofill_editbox_from_MAXIS.
 '~~~~~ RBIC_variable: the variable used by the editbox you wish to autofill.
+'===== Keywords: MAXIS, autofill, RBIC
 	EMReadScreen RBIC_month, 5, 20, 55
 	RBIC_month = replace(RBIC_month, " ", "/")
 	EMReadScreen RBIC_type, 14, 5, 48
@@ -673,6 +681,7 @@ End function
 Function add_REST_to_variable(REST_variable)
 '--- This function adds STAT/REST data to a variable, which can then be displayed in a dialog. See autofill_editbox_from_MAXIS.
 '~~~~~ REST_variable: the variable used by the editbox you wish to autofill.
+'===== Keywords: MAXIS, autofill, REST
   EMReadScreen REST_type, 16, 6, 41
   REST_type = trim(REST_type)
   EMReadScreen REST_amt, 10, 8, 41
@@ -685,6 +694,7 @@ End function
 Function add_SECU_to_variable(SECU_variable)
 '--- This function adds STAT/SECU data to a variable, which can then be displayed in a dialog. See autofill_editbox_from_MAXIS.
 '~~~~~ SECU_variable: the variable used by the editbox you wish to autofill.
+'===== Keywords: MAXIS, autofill, SECU
   EMReadScreen SECU_amt, 8, 10, 52
   SECU_amt = trim(SECU_amt)
   SECU_amt = "$" & SECU_amt
@@ -716,6 +726,7 @@ End function
 Function add_UNEA_to_variable(variable_name_for_UNEA)
 '--- This function adds STAT/UNEA data to a variable, which can then be displayed in a dialog. See autofill_editbox_from_MAXIS.
 '~~~~~ UNEA_variable: the variable used by the editbox you wish to autofill.
+'===== Keywords: MAXIS, autofill, UNEA
   EMReadScreen UNEA_month, 5, 20, 55
   UNEA_month = replace(UNEA_month, " ", "/")
   EMReadScreen UNEA_type, 16, 5, 40
@@ -783,6 +794,7 @@ Function assign_county_address_variables(address_line_01, address_line_02)
 '--- This function will assign an address to a variable selected from the interview_location variable in the Appt Letter script.
 '~~~~~ address_line_01: 1st line of address (street address) from new_office_array
 '~~~~~ address_line_02: 2nd line of address (city/state/zip) from new_office_array
+
 	For each office in county_office_array				'Splits the county_office_array, which is set by the config program and declared earlier in this file
 		If instr(office, interview_location) <> 0 then		'If the name of the office is found in the "interview_location" variable, which is contained in the MEMO - appt letter script.
 			new_office_array = split(office, "|")		'Split the office into its own array
