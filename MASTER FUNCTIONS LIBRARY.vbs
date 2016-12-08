@@ -205,10 +205,37 @@ class script
 	end property
 
 end class
+'=========================================================================================================================================================================== END OF CLASSES
 
-'BELOW ARE THE ACTUAL FUNCTIONS----------------------------------------------------------------------------------------------------
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+'BELOW ARE THE ACTUAL FUNCTIONS--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 Function add_ACCI_to_variable(ACCI_variable)
+'--- This function adds STAT/ACCI data to a variable, which can then be displayed in a dialog. See autofill_editbox_from_MAXIS.
+'~~~~~ ACCI_variable: the variable used by the editbox you wish to autofill.
+'===== Keywords: MAXIS, autofill, ACCI
   EMReadScreen ACCI_date, 8, 6, 73
   ACCI_date = replace(ACCI_date, " ", "/")
   If datediff("yyyy", ACCI_date, now) < 5 then
@@ -231,6 +258,9 @@ Function add_ACCI_to_variable(ACCI_variable)
 End function
 
 Function add_ACCT_to_variable(ACCT_variable)
+'--- This function adds STAT/ACCT data to a variable, which can then be displayed in a dialog. See autofill_editbox_from_MAXIS.
+'~~~~~ ACCT_variable: the variable used by the editbox you wish to autofill.
+'===== Keywords: MAXIS, autofill, ACCT
   EMReadScreen ACCT_amt, 8, 10, 46
   ACCT_amt = trim(ACCT_amt)
   ACCT_amt = "$" & ACCT_amt
@@ -260,6 +290,10 @@ Function add_ACCT_to_variable(ACCT_variable)
 End function
 
 Function add_BUSI_to_variable(variable_name_for_BUSI)
+'--- This function adds STAT/BUSI data to a variable, which can then be displayed in a dialog. See autofill_editbox_from_MAXIS.
+'~~~~~ BUSI_variable: the variable used by the editbox you wish to autofill.
+'===== Keywords: MAXIS, autofill, BUSI
+
 	'Reading the footer month, converting to an actual date, we'll need this for determining if the panel is 02/15 or later (there was a change in 02/15 which moved stuff)
 	EMReadScreen BUSI_footer_month, 5, 20, 55
 	BUSI_footer_month = replace(BUSI_footer_month, " ", "/01/")
@@ -445,6 +479,9 @@ Function add_BUSI_to_variable(variable_name_for_BUSI)
 End function
 
 Function add_CARS_to_variable(CARS_variable)
+'--- This function adds STAT/CARS data to a variable, which can then be displayed in a dialog. See autofill_editbox_from_MAXIS.
+'~~~~~ CARS_variable: the variable used by the editbox you wish to autofill.
+'===== Keywords: MAXIS, autofill, CARS
   EMReadScreen CARS_year, 4, 8, 31
   EMReadScreen CARS_make, 15, 8, 43
   CARS_make = replace(CARS_make, "_", "")
@@ -467,6 +504,9 @@ Function add_CARS_to_variable(CARS_variable)
 End function
 
 Function add_JOBS_to_variable(variable_name_for_JOBS)
+'--- This function adds STAT/JOBS data to a variable, which can then be displayed in a dialog. See autofill_editbox_from_MAXIS.
+'~~~~~ JOBS_variable: the variable used by the editbox you wish to autofill.
+'===== Keywords: MAXIS, autofill, JOBS
   EMReadScreen JOBS_month, 5, 20, 55									'reads Footer month
   JOBS_month = replace(JOBS_month, " ", "/")					'Cleans up the read number by putting a / in place of the blank space between MM YY
   EMReadScreen JOBS_type, 30, 7, 42										'Reads up name of the employer and then cleans it up
@@ -563,6 +603,9 @@ Function add_JOBS_to_variable(variable_name_for_JOBS)
 End function
 
 Function add_OTHR_to_variable(OTHR_variable)
+'--- This function adds STAT/OTHR data to a variable, which can then be displayed in a dialog. See autofill_editbox_from_MAXIS.
+'~~~~~ OTHR_variable: the variable used by the editbox you wish to autofill.
+'===== Keywords: MAXIS, autofill, OTHR
   EMReadScreen OTHR_type, 16, 6, 43
   OTHR_type = trim(OTHR_type)
   EMReadScreen OTHR_amt, 10, 8, 40
@@ -573,6 +616,9 @@ Function add_OTHR_to_variable(OTHR_variable)
 End function
 
 Function add_RBIC_to_variable(variable_name_for_RBIC)
+'--- This function adds STAT/RBIC data to a variable, which can then be displayed in a dialog. See autofill_editbox_from_MAXIS.
+'~~~~~ RBIC_variable: the variable used by the editbox you wish to autofill.
+'===== Keywords: MAXIS, autofill, RBIC
 	EMReadScreen RBIC_month, 5, 20, 55
 	RBIC_month = replace(RBIC_month, " ", "/")
 	EMReadScreen RBIC_type, 14, 5, 48
@@ -657,6 +703,9 @@ Function add_RBIC_to_variable(variable_name_for_RBIC)
 End function
 
 Function add_REST_to_variable(REST_variable)
+'--- This function adds STAT/REST data to a variable, which can then be displayed in a dialog. See autofill_editbox_from_MAXIS.
+'~~~~~ REST_variable: the variable used by the editbox you wish to autofill.
+'===== Keywords: MAXIS, autofill, REST
   EMReadScreen REST_type, 16, 6, 41
   REST_type = trim(REST_type)
   EMReadScreen REST_amt, 10, 8, 41
@@ -667,6 +716,9 @@ Function add_REST_to_variable(REST_variable)
 End function
 
 Function add_SECU_to_variable(SECU_variable)
+'--- This function adds STAT/SECU data to a variable, which can then be displayed in a dialog. See autofill_editbox_from_MAXIS.
+'~~~~~ SECU_variable: the variable used by the editbox you wish to autofill.
+'===== Keywords: MAXIS, autofill, SECU
   EMReadScreen SECU_amt, 8, 10, 52
   SECU_amt = trim(SECU_amt)
   SECU_amt = "$" & SECU_amt
@@ -696,6 +748,9 @@ Function add_SECU_to_variable(SECU_variable)
 End function
 
 Function add_UNEA_to_variable(variable_name_for_UNEA)
+'--- This function adds STAT/UNEA data to a variable, which can then be displayed in a dialog. See autofill_editbox_from_MAXIS.
+'~~~~~ UNEA_variable: the variable used by the editbox you wish to autofill.
+'===== Keywords: MAXIS, autofill, UNEA
   EMReadScreen UNEA_month, 5, 20, 55
   UNEA_month = replace(UNEA_month, " ", "/")
   EMReadScreen UNEA_type, 16, 5, 40
@@ -759,8 +814,11 @@ Function add_UNEA_to_variable(variable_name_for_UNEA)
   End if
 End function
 
-'This function will assign an address to a variable selected from the interview_location variable in the Appt Letter script.
 Function assign_county_address_variables(address_line_01, address_line_02)
+'--- This function will assign an address to a variable selected from the interview_location variable in the Appt Letter script.
+'~~~~~ address_line_01: 1st line of address (street address) from new_office_array
+'~~~~~ address_line_02: 2nd line of address (city/state/zip) from new_office_array
+'===== Keywords: MAXIS, APPT LETTER, ADDRESS
 	For each office in county_office_array				'Splits the county_office_array, which is set by the config program and declared earlier in this file
 		If instr(office, interview_location) <> 0 then		'If the name of the office is found in the "interview_location" variable, which is contained in the MEMO - appt letter script.
 			new_office_array = split(office, "|")		'Split the office into its own array
@@ -771,12 +829,18 @@ Function assign_county_address_variables(address_line_01, address_line_02)
 End function
 
 Function attn
+ '--- This function sends or hits the ESC (escape) key. 
+  '===== Keywords: MAXIS, MMIS, PRISM, ESC
   EMSendKey "<attn>"
   EMWaitReady -1, 0
 End function
 
 Function autofill_editbox_from_MAXIS(HH_member_array, panel_read_from, variable_written_to)
- 'First it navigates to the screen. Only does the first four characters because we use separate handling for HCRE-retro. This is something that should be fixed someday!!!!!!!!!
+ '--- This function autofills information for all HH members idenified from the HH_member_array from a selected MAXIS panel into an edit box in a dialog.
+ '~~~~~ HH_member_array: array of HH members from function HH_member_custom_dialog(HH_member_array). User selects which HH members are added to array. 
+ '~~~~~ read_panel_from: first four characters because we use separate handling for HCRE-retro. This is something that should be fixed someday!!!!!!!!!
+ '~~~~~ variable_written_to: the variable used by the editbox you wish to autofill.
+ '===== Keywords: MAXIS, autofill, HH_member_array
   call navigate_to_MAXIS_screen("stat", left(panel_read_from, 4))
 
   'Now it checks for the total number of panels. If there's 0 Of 0 it'll exit the function for you so as to save oodles of time.
@@ -1963,6 +2027,8 @@ Function autofill_editbox_from_MAXIS(HH_member_array, panel_read_from, variable_
 End function
 
 function back_to_SELF
+'--- This function will return back to the 'SELF' menu or the MAXIS home menu 
+'===== Keywords: MAXIS, SELF, navigate
   Do
     EMSendKey "<PF3>"
     EMWaitReady 0, 0
@@ -1970,8 +2036,9 @@ function back_to_SELF
   Loop until SELF_check = "SELF"
 End function
 
-'This function asks if you want to cancel. If you say yes, it sends StopScript.
 FUNCTION cancel_confirmation
+'--- This function asks if the user if they want to cancel. If you say yes, the script will end. If no, the dialog will appear for the user again.
+'===== Keywords: MAXIS, PRISM, MMIS, cancel, script_end_procedure
 	If ButtonPressed = 0 then
 		cancel_confirm = MsgBox("Are you sure you want to cancel the script? Press YES to cancel. Press NO to return to the script.", vbYesNo)
 		If cancel_confirm = vbYes then script_end_procedure("~PT: user pressed cancel")
@@ -1979,9 +2046,10 @@ FUNCTION cancel_confirmation
 	End if
 END FUNCTION
 
-' This is a custom function to change the format of a participant name.  The parameter is a string with the
-' client's name formatted like "Levesseur, Wendy K", and will change it to "Wendy K LeVesseur".
 FUNCTION change_client_name_to_FML(client_name)
+'--- This function changes the format of a participant name. client's name formatted like "Levesseur, Wendy K", and will change it to "Wendy K LeVesseur".
+'~~~~~ client_name: variable used within the script for name to be converted
+'===== Keywords: PRISM, name, change
 	client_name = trim(client_name)
 	length = len(client_name)
 	position = InStr(client_name, ", ")
@@ -1994,7 +2062,10 @@ FUNCTION change_client_name_to_FML(client_name)
 END FUNCTION
 
 function changelog_display()
-
+'--- This function determines if the user has been informed of a change to a script, and if not will display a mesage box with the script's change log information
+'~~~~~ (): always leave the parameter empty
+'===== Keywords: MAXIS, PRISM, change, info, information
+	
 	'Needs to determine MyDocs directory before proceeding.
 	Set wshshell = CreateObject("WScript.Shell")
 	user_myDocs_folder = wshShell.SpecialFolders("MyDocuments") & "\"
@@ -2124,11 +2195,19 @@ function changelog_display()
 end function
 
 function changelog_update(date_of_change, text_of_change, scriptwriter_of_change)
+'--- This function adds the change to the scripts to the user change log to be displayed in function changelog_display()
+'~~~~~ date_of_change: date the change was made/committed to the script file. Surround date in ""
+'~~~~~ text_of_change: information about the change to the script that users statewide will see. Please be clear about your updates. You can write several sentences. Surround text in "".
+'~~~~~ scriptwriter_of_change: scriptwriter name and county seperated by a comma. Surround name and county name with "".
+'===== Keywords: MAXIS, PRISM, change, info, information
 	ReDim Preserve changelog(UBound(changelog) + 1)
 	changelog(ubound(changelog)) = date_of_change & " | " & text_of_change & " | " & scriptwriter_of_change
 end function
 
 Function check_for_MAXIS(end_script)
+'--- This function checks to ensure the user is in a MAXIS panel
+'~~~~~ end_script: If end_script = TRUE the script will end. If end_script = FALSE, the user will be given the option to cancel the script, or manually navigate to a MAXIS screen.
+'===== Keywords: MAXIS, production, script_end_procedure
 	Do
 		transmit
 		EMReadScreen MAXIS_check, 5, 1, 39
@@ -2143,9 +2222,10 @@ Function check_for_MAXIS(end_script)
 	Loop until MAXIS_check = "MAXIS" or MAXIS_check = "AXIS "
 End function
 
-
 Function check_for_MMIS(end_script)
-'Sending MMIS back to the beginning screen and checking for a password prompt. If end_script is set to true, the script will end; if set to false, script will continue once password is entered
+'--- This function checks to ensure the user is in a MMIS panel
+'~~~~~ end_script: If end_script = TRUE the script will end. If end_script = FALSE, the user will be given the option to cancel the script, or manually navigate to a MMIS screen.
+'===== Keywords: MMIS, production, script_end_procedure
 	Do
 		transmit
 		row = 1
@@ -2163,6 +2243,9 @@ Function check_for_MMIS(end_script)
 End function
 
 Function check_for_password(are_we_passworded_out)
+'--- This function checks to make sure a user is not passworded out. If they are, it allows the user to password back in. NEEDS TO BE ADDED INTO dialog DO...lOOPS
+'~~~~~ are_we_passworded_out: When adding to dialog enter "Call check_for_password(are_we_passworded_out)", then Loop until are_we_passworded_out = false. Parameter will remain true if the user still needs to input password.
+'===== Keywords: MAXIS, PRISM, password
 	Transmit 'transmitting to see if the password screen appears
 	Emreadscreen password_check, 8, 2, 33 'checking for the word password which will indicate you are passworded out
 	If password_check = "PASSWORD" then 'If the word password is found then it will tell the worker and set the parameter to be true, otherwise it will be set to false.
@@ -2173,8 +2256,10 @@ Function check_for_password(are_we_passworded_out)
 	End If
 End Function
 
-
 Function check_for_PRISM(end_script)
+'--- This function checks to ensure the user is in a PRISM panel
+'~~~~~ end_script: If end_script = TRUE the script will end. If end_script = FALSE, the user will be given the option to cancel the script, or manually navigate to a PRISM screen.
+'===== Keywords: PRISM, production, script_end_procedure
 	EMReadScreen PRISM_check, 5, 1, 36
 	if end_script = True then
 		If PRISM_check <> "PRISM" then script_end_procedure("You do not appear to be in PRISM. You may be passworded out. Please check your PRISM screen and try again.")
@@ -2184,13 +2269,20 @@ Function check_for_PRISM(end_script)
 end function
 
 Function clear_line_of_text(row, start_column)
+'--- This function clears out a single line of text 
+'~~~~~ row: coordinate of row to clear
+'~~~~~ start_column: coordinate of column to start clearing 
+'===== Keywords: MAXIS, PRISM, production, clear
   EMSetCursor row, start_column
   EMSendKey "<EraseEof>"
   EMWaitReady 0, 0
 End function
 
-'This function converts an array into a droplist to be used by a dialog
 Function convert_array_to_droplist_items(array_to_convert, output_droplist_box)
+'--- This function converts an array into a droplist to be used within dialog
+'~~~~~ array_to_convert: name of the array
+'~~~~~ output_droplist_box: name of droplist variant/variable
+'===== Keywords: MAXIS, PRISM, production, array, droplist 
 	For each item in array_to_convert
 		If output_droplist_box = "" then
 			output_droplist_box = item
@@ -2200,16 +2292,22 @@ Function convert_array_to_droplist_items(array_to_convert, output_droplist_box)
 	Next
 End Function
 
-'This function converts a date (MM/DD/YY or MM/DD/YYYY format) into a separate footer month and footer year variables. For best results, always use MAXIS_footer_month and MAXIS_footer_year as the appropriate variables.
 FUNCTION convert_date_into_MAXIS_footer_month(date_to_convert, MAXIS_footer_month, MAXIS_footer_year)
+'--- This function converts a date (MM/DD/YY or MM/DD/YYYY format) into a separate footer month and footer year variables.
+'~~~~~ date_to_convert: variable name of date you want to convert 
+'~~~~~ MAXIS_footer_month: footer month to convert the date into 
+'~~~~~ MAXIS_footer_month: footer year to convert the date into
+'===== Keywords: MAXIS, production, array, droplist, convert
 	MAXIS_footer_month = DatePart("m", date_to_convert)										'Uses DatePart function to copy the month from date_to_convert into the MAXIS_footer_month variable.
 	IF Len(MAXIS_footer_month) = 1 THEN MAXIS_footer_month = "0" & MAXIS_footer_month		'Uses Len function to determine if the MAXIS_footer_month is a single digit month. If so, it adds a 0, which MAXIS needs.
 	MAXIS_footer_year = DatePart("yyyy", date_to_convert)									'Uses DatePart function to copy the year from date_to_convert into the MAXIS_footer_year variable.
 	MAXIS_footer_year = Right(MAXIS_footer_year, 2)											'Uses Right function to reduce the MAXIS_footer_year variable to it's right 2 characters (allowing for a 2 digit footer year).
 END FUNCTION
 
-'This function converts a numeric digit to an Excel column, up to 104 digits (columns).
 function convert_digit_to_excel_column(col_in_excel)
+'--- This function converts a numeric digit to an Excel column, up to 104 digits (columns).
+'~~~~~ col_in_excel: must be a numeric, cannot exceed 104. Do not put in "".
+'===== Keywords: MAXIS, PRISM, convert, Excel
 	'Create string with the alphabet
 	alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
@@ -2223,8 +2321,13 @@ function convert_digit_to_excel_column(col_in_excel)
 	If col_in_excel >= 105 then script_end_procedure("This script is only able to assign excel columns to 104 distinct digits. You've exceeded this number, and this script cannot continue.")
 end function
 
-'This function is used to grab all active X numbers according to the supervisor X number(s) inputted
+
 FUNCTION create_array_of_all_active_x_numbers_by_supervisor(array_name, supervisor_array)
+'--- This function is used to grab all active X numbers according to the supervisor X number(s) inputted
+'~~~~~ array_name: name of array that will contain all the supervisor's staff x numbers
+'~~~~~ supervisor_array: list of supervisor's x numbers seperated by comma
+'===== Keywords: MAXIS, array, supervisor, worker number
+	'Create string with the alphabet	
 	'Getting to REPT/USER
 	CALL navigate_to_MAXIS_screen("REPT", "USER")
 
@@ -2262,6 +2365,12 @@ FUNCTION create_array_of_all_active_x_numbers_by_supervisor(array_name, supervis
 END FUNCTION
 
 Function create_array_of_all_active_x_numbers_in_county(array_name, county_code)
+'--- This function is used to grab all active X numbers in a county
+'~~~~~ array_name: name of array that will contain all the x numbers
+'~~~~~ county_code: inserted by reading the county code under REPT/USER
+'===== Keywords: MAXIS, array, worker number
+	'Create string with the alphabet	
+	'Getting to REPT/USER
 	'Getting to REPT/USER
 	call navigate_to_MAXIS_screen("rept", "user")
 
