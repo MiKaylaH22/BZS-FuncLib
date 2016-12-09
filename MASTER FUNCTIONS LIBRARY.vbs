@@ -3106,6 +3106,8 @@ function log_usage_stats_without_closing
 end function
 
 Function MAXIS_background_check
+'--- This function checks to see if a user is in background 
+'===== Keywords: MAXIS, background 
 	Do
 		call navigate_to_MAXIS_screen("STAT", "SUMM")
 		EMReadScreen SELF_check, 4, 2, 50
@@ -3117,6 +3119,9 @@ Function MAXIS_background_check
 End function
 
 Function MAXIS_case_number_finder(variable_for_MAXIS_case_number)
+'--- This function finds the MAXIS case number if listed on a MAXIS screen
+'~~~~~ variable_for_MAXIS_case_number: this should be 'MAXIS_case_number'
+'===== Keywords: MAXIS, case number 
 	EMReadScreen variable_for_SELF_check, 4, 2, 50
 	IF variable_for_SELF_check = "SELF" then
 		EMReadScreen variable_for_MAXIS_case_number, 8, 18, 43
@@ -3135,8 +3140,9 @@ Function MAXIS_case_number_finder(variable_for_MAXIS_case_number)
 
 End function
 
-'This function navigates to various panels in MAXIS. You need to name your buttons using the button names in the function.
 FUNCTION MAXIS_dialog_navigation
+'--- This function navigates to various panels in MAXIS. You need to name your buttons using the button names in the function.
+'===== Keywords: MAXIS, dialog, navigation
 	'This part works with the prev/next buttons on several of our dialogs. You need to name your buttons prev_panel_button, next_panel_button, prev_memb_button, and next_memb_button in order to use them.
 	EMReadScreen STAT_check, 4, 20, 21
 	If STAT_check = "STAT" then
@@ -3249,8 +3255,11 @@ FUNCTION MAXIS_dialog_navigation
 	If ButtonPressed = WREG_button then call navigate_to_MAXIS_screen("stat", "WREG")
 END FUNCTION
 
-FUNCTION MAXIS_footer_finder(MAXIS_footer_month, MAXIS_footer_year)'Grabbing the footer month/year
-	'Does this to check to see if we're on SELF screen
+FUNCTION MAXIS_footer_finder(MAXIS_footer_month, MAXIS_footer_year)
+'--- This function finds the MAXIS footer month/year for MAXIS cases in SELF, MAXIS panels or MEMO screens.
+'~~~~~ MAXIS_footer_month: needs to be 'MAXIS_footer_month'
+'~~~~~ MAXIS_footer_year: needs to be 'MAXIS_footer_year'
+'===== Keywords: MAXIS, footer, month, year
 	EMReadScreen SELF_check, 4, 2, 50
 	IF SELF_check = "SELF" THEN
 		EMReadScreen MAXIS_footer_month, 2, 20, 43
@@ -3268,8 +3277,9 @@ FUNCTION MAXIS_footer_finder(MAXIS_footer_month, MAXIS_footer_year)'Grabbing the
 	End if
 END FUNCTION
 
-'Function for checking and changing the footer month to the MAXIS_footer_month & MAXIS_footer_year selected by the user in the inital dialog if necessary
-FUNCTION MAXIS_footer_month_confirmation	'Must use MAXIS_footer_month & MAXIS MAXIS_footer_year as variables for this function to work
+FUNCTION MAXIS_footer_month_confirmation
+'--- This function is for checking and changing the footer month to the MAXIS_footer_month & MAXIS_footer_year selected by the user in the inital dialog if necessary
+'===== Keywords: MAXIS, footer, month, year	
 	EMReadScreen SELF_check, 4, 2, 50			'Does this to check to see if we're on SELF screen
 	IF SELF_check = "SELF" THEN
 		EMReadScreen panel_footer_month, 2, 20, 43
@@ -3293,8 +3303,9 @@ FUNCTION MAXIS_footer_month_confirmation	'Must use MAXIS_footer_month & MAXIS MA
 END FUNCTION
 
 Function MMIS_RKEY_finder
-  'Now we use a Do Loop to get to the start screen for MMIS.
-  Do
+'--- This function finds the 'RKEY' screen in MMIS
+'===== Keywords: MMIS, find, panel
+  Do	  						'Now we use a Do Loop to get to the start screen for MMIS.
     EMSendkey "<PF6>"
     EMWaitReady 0, 0
     EMReadScreen session_start, 18, 1, 7
@@ -3321,6 +3332,13 @@ Function MMIS_RKEY_finder
 End function
 
 FUNCTION month_change(interval, starting_month, starting_year, result_month, result_year)
+'--- This function may be deleted soon. Waiting for feedback from scriptwriters. 
+'~~~~~ interval: numeric amount of intervals
+'~~~~~ starting_month: month to start
+'~~~~~ starting_year: year to start
+'~~~~~ result_month: This should be 'result_month'...maybe
+'~~~~~ result_year: This should be 'result_year'...maybe 
+'===== Keywords: MAXIS, month, year, change
 	result_month = abs(starting_month)
 	result_year = abs(starting_year)
 	valid_month = FALSE
