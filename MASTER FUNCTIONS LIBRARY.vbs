@@ -2530,6 +2530,11 @@ Function create_panel_if_nonexistent()
 End Function
 
 FUNCTION date_array_generator(initial_month, initial_year, date_array)
+'--- This function creates a series of dates (Example: for each footer month/year through current month plus 1)
+'~~~~~ initial_month: first footer month 
+'~~~~~ initial_year: first footer year
+'~~~~~ date_array: the name of the array that holds the dates/number of months to create dates for
+'===== Keywords: MAXIS, create, date, array
 	'defines an intial date from the initial_month and initial_year parameters
 	initial_date = initial_month & "/1/" & initial_year
 	'defines a date_list, which starts with just the initial date
@@ -2547,7 +2552,9 @@ FUNCTION date_array_generator(initial_month, initial_year, date_array)
 End function
 
 FUNCTION date_converter_PALC_PAPL (date_variable)
-
+'--- This function creates a creates a date in MM/DD/YY format 
+'~~~~~ date_variable: name of variable that holds the date info
+'===== Keywords: PRISM, date convert, PALC, PAPL
 	date_year = left (date_variable, 2)
 	date_day = right (date_variable, 2)
 	date_month = right (left (date_variable, 4), 2)
@@ -2556,15 +2563,14 @@ FUNCTION date_converter_PALC_PAPL (date_variable)
 END FUNCTION
 
 Function dynamic_calendar_dialog(selected_dates_array, month_to_use, text_prompt, one_date_only, disable_weekends, disable_month_change, start_date, end_date)
-	'Instructions for function
-	' PARAMETERS:
-	' selected_dates_array  - is the output array it will contain dates in MM/DD/YY format
-	' month_to_use          - this can be MM/YY or MM/DD/YY format as long as it is considered a date it will work.
-	' one_date_only         - this is a True/false parameter which will restrict the function to only allow one date to be selected if set to TRUE
-	' disable_weekends      - this is a True/false parameter which will restrict the selection of weekends if set to TRUE
-	' disable_month_change  - this is a True/false parameter which will restrict the selection of different months if set to TRUE
-	' start_date & end_date - This will provide a range of dates which cannot be selected. These are to be entered as numbers. For example start_date = 3 and end_date = 14 the days 3 through 14 will be unavailable to select
-
+'--- This function creates a dynamic calendar that users can select dates from to be used in scheduleing. This is used in BULK - REVS SCRUBBER. 
+'~~~~~ selected_dates_array:the output array it will contain dates in MM/DD/YY format
+'~~~~~ month_to_use: this can be MM/YY or MM/DD/YY format as long as it is considered a date it will work.
+'~~~~~ one_date_only: this is a True/false parameter which will restrict the function to only allow one date to be selected if set to TRUE
+'~~~~~ disable_weekends: this is a True/false parameter which will restrict the selection of weekends if set to TRUE
+'~~~~~ disable_month_change: this is a True/false parameter which will restrict the selection of different months if set to TRUE
+'~~~~~ start_date & end_date: this will provide a range of dates which cannot be selected. These are to be entered as numbers. For example start_date = 3 and end_date = 14 the days 3 through 14 will be unavailable to select 
+'===== Keywords: MAXIS, PRISM, create, date, calendar, dialog
 	'dimming array to display the dates
 	DIM display_dates_array
 	DO
