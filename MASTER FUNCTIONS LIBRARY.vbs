@@ -2798,14 +2798,16 @@ END FUNCTION
 FUNCTION fix_read_data (search_string)
 '--- This function fixes data that we are reading from PRISM that includes underscores. The function searches the variable and removes underscores. Then, the fix case function is called to format the string to the correct case & the data is trimmed to remove any excess spaces.
 '~~~~~ search_string: the string for the variable to be searched
-'===== Keywords: PRISM, name, data, fix
+'===== Keywords: MAXIS, MMIS, PRISM, name, data, fix
 	search_string = replace(search_string, "_", "")
 	call fix_case(search_string, 1)
 	search_string = trim(search_string)
 	fix_read_data = search_string 'To make this a return function, this statement must set the value of the function name
 END FUNCTION
 
-Function get_county_code		'Determines county_name from worker_county_code, and asks for it if it's blank
+Function get_county_code		
+'--- This function determines county_name from worker_county_code, and asks for it if it's blank
+'===== Keywords: MAXIS, MMIS, PRISM, county 
 	If left(code_from_installer, 2) = "PT" then 'special handling for Pine Tech
 		worker_county_code = "PWVTS"
 	Else
@@ -3005,6 +3007,8 @@ Function get_county_code		'Determines county_name from worker_county_code, and a
 End function
 
 Function get_to_MMIS_session_begin
+'--- This function brings a MMIS user all the way out of MMIS by PF6'ing until the session is terminated.
+'===== Keywords: MMIS, PF6
   Do
     EMSendkey "<PF6>"
     EMWaitReady 0, 0
@@ -3013,7 +3017,9 @@ Function get_to_MMIS_session_begin
 End function
 
 Function HH_member_custom_dialog(HH_member_array)
-
+'--- This function creates an array of all household members in a MAXIS case, and allows users to select which members to seek/add information to add to edit boxes in dialogs. 
+'~~~~~ HH_member_array: should be HH_member_array for function to work
+'===== Keywords: MAXIS, member, array, dialog
 	CALL Navigate_to_MAXIS_screen("STAT", "MEMB")   'navigating to stat memb to gather the ref number and name.
 
 	DO								'reads the reference number, last name, first name, and then puts it into a single string then into the array
@@ -3072,7 +3078,9 @@ Function HH_member_custom_dialog(HH_member_array)
 	HH_member_array = SPLIT(HH_member_array, " ")
 End function
 
-function log_usage_stats_without_closing 'For use when logging usage stats but then running another script, i.e. DAIL scrubber
+function log_usage_stats_without_closing 
+'--- This function allows logging usage stats but then running another script without closing, i.e. DAIL scrubber
+'===== Keywords: MAXIS, MMIS, PRISM, statistics
 	stop_time = timer
 	script_run_time = stop_time - start_time
 	If is_county_collecting_stats = True then
