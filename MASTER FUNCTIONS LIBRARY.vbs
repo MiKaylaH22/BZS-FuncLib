@@ -3998,11 +3998,18 @@ FUNCTION start_a_blank_CASE_NOTE
 END FUNCTION
 
 function transmit
+'--- This function sends or hits the transmit key. 
+ '===== Keywords: MAXIS, MMIS, PRISM, transmit
   EMSendKey "<enter>"
   EMWaitReady 0, 0
 end function
 
 FUNCTION word_doc_open(doc_location, objWord, objDoc)
+'--- This function opens a specific word document. 
+'~~~~~ doc_location: location of word document
+'~~~~~ ObjWord: leave as 'ObjWord'
+'~~~~~ objDoc: leave as 'objDoc' 
+'===== Keywords: MAXIS, PRISM, MMIS, Word
 	'Opens Word object
 	Set objWord = CreateObject("Word.Application")
 	objWord.Visible = True		'We want to see it
@@ -4012,11 +4019,19 @@ FUNCTION word_doc_open(doc_location, objWord, objDoc)
 END FUNCTION
 
 FUNCTION word_doc_update_field(field_name, variable_for_field, objDoc)
-	'Simply enters the Word document field based on these three criteria
-	objDoc.FormFields(field_name).Result = variable_for_field
+'--- This function updates specific fields on a word document 
+'~~~~~ field_name: name of the field to update
+'~~~~~ variable_for_field: information to be updated
+'~~~~~ objDoc: leave as 'objDoc' 
+'===== Keywords: MAXIS, PRISM, MMIS, Word
+	objDoc.FormFields(field_name).Result = variable_for_field	'Simply enters the Word document field based on these three criteria
 END FUNCTION
 
 Function write_bullet_and_variable_in_CAAD(bullet, variable)
+'--- This function creates an asterisk, a bullet, a colon then a variable to style CAAD notes
+'~~~~~ bullet: name of the field to update. Put bullet in "".
+'~~~~~ variable: variable from script to be written into CAAD note
+'===== Keywords: PRISM, bullet, CAAD note
 IF variable <> "" THEN
   spaces_count = 6	'Temporary just to make it work
 
@@ -4074,6 +4089,10 @@ END IF
 End Function
 
 Function write_bullet_and_variable_in_CASE_NOTE(bullet, variable)
+'--- This function creates an asterisk, a bullet, a colon then a variable to style CASE notes
+'~~~~~ bullet: name of the field to update. Put bullet in "".
+'~~~~~ variable: variable from script to be written into CASE note
+'===== Keywords: MAXIS, bullet, CASE note
 	If trim(variable) <> "" then
 		EMGetCursor noting_row, noting_col						'Needs to get the row and col to start. Doesn't need to get it in the array function because that uses EMWriteScreen.
 		noting_col = 3											'The noting col should always be 3 at this point, because it's the beginning. But, this will be dynamically recreated each time.
@@ -4175,7 +4194,10 @@ Function write_bullet_and_variable_in_CASE_NOTE(bullet, variable)
 End function
 
 Function write_bullet_and_variable_in_CCOL_NOTE(bullet, variable)
-
+'--- This function creates an asterisk, a bullet, a colon then a variable to style CCOL notes
+'~~~~~ bullet: name of the field to update. Put bullet in "".
+'~~~~~ variable: variable from script to be written into CCOL note
+'===== Keywords: MAXIS, bullet, CCOL note
 	EMGetCursor noting_row, noting_col						'Needs to get the row and col to start. Doesn't need to get it in the array function because that uses EMWriteScreen.
 	noting_col = 3											'The noting col should always be 3 at this point, because it's the beginning. But, this will be dynamically recreated each time.
 	'The following figures out if we need a new page, or if we need a new case note entirely as well.
@@ -4272,12 +4294,15 @@ Function write_bullet_and_variable_in_CCOL_NOTE(bullet, variable)
 
 	'After the array is processed, set the cursor on the following row, in col 3, so that the user can enter in information here (just like writing by hand). If you're on row 18 (which isn't writeable), hit a PF8. If the panel is at the very end (page 5), it will back out and go into another case note, as we did above.
 	EMSetCursor noting_row + 1, 3
-
 End function
 
-'This function will write a date in any format desired.
 FUNCTION write_date(date_variable, date_format_variable, screen_row, screen_col)
-
+'--- This function will write a date in any format desired.
+'~~~~~ date_variable: date to write 
+'~~~~~ date_format_variable: format of date. Need to put in spaces between month/day/year if necessary to update your field. Example: MM DD YY or MM/DD/YYYY
+'~~~~~ screen_row: row to write date
+'~~~~~ screen_col: column to write date 
+'===== Keywords: MAXIS, MMIS, PRISM, date, format
 	'Figures out the format of the month. If it was "MM", "M", or not present.
 	If instr(ucase(date_format_variable), "MM") <> 0 then
 		month_format = "MM"
@@ -4338,22 +4363,21 @@ FUNCTION write_date(date_variable, date_format_variable, screen_row, screen_col)
 		screen_col_to_write = screen_col + (i - 1)
 		EMWriteScreen mid(output_date_variable, i, 1), screen_row, screen_col_to_write
 	Next
-
 END FUNCTION
 
-'This function will open the ES_statistics database, check for an existing case and edit it with new info, or add a new entry if there is no existing case in the database.
 Function write_MAXIS_info_to_ES_database(ESCaseNbr, ESMembNbr, ESMembName, EsSanctionPercentage, ESEmpsStatus, ESTANFMosUsed, ESExtensionReason, ESDisaEnd, ESPrimaryActivity, ESDate, ESSite, ESCounselor, ESActive, insert_string)
+'--- This function will open the ES_statistics database, check for an existing case and edit it with new info, or add a new entry if there is no existing case in the database.
+'~~~~~ dESCaseNbr, ESMembNbr, ESMembName, EsSanctionPercentage, ESEmpsStatus, ESTANFMosUsed, ESExtensionReason, ESDisaEnd, ESPrimaryActivity, ESDate, ESSite, ESCounselor, ESActive, insert_string: all required parameters from script to be inputted into database
+'===== Keywords: MAXIS, statistics, ES 
 	info_array = array(ESCaseNbr, ESMembNbr, ESMembName, EsSanctionPercentage, ESEmpsStatus, ESTANFMosUsed, ESExtensionReason, ESDisaEnd, ESPrimaryActivity, ESDate, ESSite, ESCounselor, ESActive)
 	'Creating objects for Access
 	Set objConnection = CreateObject("ADODB.Connection")
 	Set objRecordSet = CreateObject("ADODB.Recordset")
 
-
 	'Opening DB
 	objConnection.Open "Provider = Microsoft.ACE.OLEDB.12.0; Data Source = " & ES_database_path
 		'This looks for an existing case number and edits it if needed
 	set rs = objConnection.Execute("SELECT * FROM ESTrackingTbl WHERE ESCaseNbr = " & ESCaseNbr & " AND ESMembNbr = " & ESMembNbr & "") 'pulling all existing case / member info into a recordset
-
 
 	IF NOT(rs.EOF) THEN 'There is an existing case, we need to update
 		'we don't want to overwrite existing data that isn't updated by the script,
@@ -4475,10 +4499,17 @@ Function write_MAXIS_info_to_ES_database(ESCaseNbr, ESMembNbr, ESMembName, EsSan
 	ESCounselor = ""
 	ESActive = ""
 	insert_string = ""
-
 END FUNCTION
 
 Function write_three_columns_in_CASE_NOTE(col_01_start_point, col_01_variable, col_02_start_point, col_02_variable, col_03_start_point, col_03_variable)
+'--- This function writes variables into three seperate columns into case notes 
+'~~~~~ col_01_start_point: column where to write the 1st variable
+'~~~~~ col_01_variable: name of 1st variable to write
+'~~~~~ col_02_start_point: column where to write the 2nd variable
+'~~~~~ col_02_variable: name of 2nd variable to write
+'~~~~~ col_03_start_point: column where to write the 3rd variable
+'~~~~~ col_03_variable: name of 3rd variable to write
+'===== Keywords: MAXIS, case note, three columns, format
   EMGetCursor row, col
   If (row = 17 and col + (len(x)) >= 80 + 1 ) or (row = 4 and col = 3) then
     EMSendKey "<PF8>"
@@ -4502,11 +4533,19 @@ Function write_three_columns_in_CASE_NOTE(col_01_start_point, col_01_variable, c
 End function
 
 FUNCTION write_value_and_transmit(input_value, MAXIS_row, MAXIS_col)
+'--- This function writes a specific value and transmits.
+'~~~~~ input_value: information to be entered 
+'~~~~~ MAXIS_row: row to write the input_value
+'~~~~~ MAXIS_col: column to write the input_value
+'===== Keywords: MAXIS, case note, three columns, format
 	EMWriteScreen input_value, MAXIS_row, MAXIS_col
 	transmit
 END FUNCTION
 
 Function write_variable_in_CAAD(variable)
+'--- This function writes a variable in CAAD note
+'~~~~~ variable: information to be entered into CAAD note from script/edit box
+'===== Keywords: PRISM, CAAD note
     IF variable <> "" THEN
         EMGetCursor row, col
         EMReadScreen line_check, 2, 15, 2
@@ -4530,6 +4569,9 @@ Function write_variable_in_CAAD(variable)
 End function
 
 Function write_variable_in_CASE_NOTE(variable)
+'--- This function writes a variable in CASE note
+'~~~~~ variable: information to be entered into CASE note from script/edit box
+'===== Keywords: MAXIS, CASE note
 	If trim(variable) <> "" THEN
 		EMGetCursor noting_row, noting_col						'Needs to get the row and col to start. Doesn't need to get it in the array function because that uses EMWriteScreen.
 		noting_col = 3											'The noting col should always be 3 at this point, because it's the beginning. But, this will be dynamically recreated each time.
@@ -4605,7 +4647,9 @@ Function write_variable_in_CASE_NOTE(variable)
 End function
 
 Function write_variable_in_CCOL_NOTE(variable)
-
+'--- This function writes a variable in CCOL note
+'~~~~~ variable: information to be entered into CCOL note from script/edit box
+'===== Keywords: MAXIS, CCOL note
 	EMGetCursor noting_row, noting_col						'Needs to get the row and col to start. Doesn't need to get it in the array function because that uses EMWriteScreen.
 	noting_col = 3											'The noting col should always be 3 at this point, because it's the beginning. But, this will be dynamically recreated each time.
 	'The following figures out if we need a new page, or if we need a new case note entirely as well.
@@ -4676,10 +4720,13 @@ Function write_variable_in_CCOL_NOTE(variable)
 
 	'After the array is processed, set the cursor on the following row, in col 3, so that the user can enter in information here (just like writing by hand). If you're on row 18 (which isn't writeable), hit a PF8. If the panel is at the very end (page 5), it will back out and go into another case note, as we did above.
 	EMSetCursor noting_row + 1, 3
-
 End function
 
 FUNCTION write_variable_in_DORD(string_to_write, recipient)
+'--- This function writes a variable in DORD document
+'~~~~~ string_to_write: information to be entered into document
+'~~~~~ recipient: recipeint of DORD document
+'===== Keywords: PRISM, DORD 
 	call navigate_to_PRISM_screen("DORD")
 	EMWriteScreen "A", 3, 29
 	EMWriteScreen "F0104", 6, 36
@@ -4732,6 +4779,9 @@ FUNCTION write_variable_in_DORD(string_to_write, recipient)
 END FUNCTION
 
 Function write_variable_in_SPEC_MEMO(variable)
+'--- This function writes a variable in SPEC/MEMO
+'~~~~~ variable: information to be entered into SPEC/MEMO 
+'===== Keywords: MAXIS, SPEC, MEMO
 	EMGetCursor memo_row, memo_col						'Needs to get the row and col to start. Doesn't need to get it in the array function because that uses EMWriteScreen.
 	memo_col = 15										'The memo col should always be 15 at this point, because it's the beginning. But, this will be dynamically recreated each time.
 	'The following figures out if we need a new page
@@ -4776,6 +4826,9 @@ Function write_variable_in_SPEC_MEMO(variable)
 End function
 
 Function write_variable_in_TIKL(variable)
+'--- This function writes a variable in TIKL
+'~~~~~ variable: information to be entered into TIKL 
+'===== Keywords: MAXIS, TIKL
 	IF len(variable) <= 60 THEN
 		tikl_line_one = variable
 	ELSE
@@ -4848,6 +4901,22 @@ Function write_variable_in_TIKL(variable)
 	transmit
 End function
 
+'END OF MAIN FUNCTIONS LIBRARY========================================================================================================================================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+'FUNCTIONS for PROJECT KRABAPPEL (UTILITIES - TRAINING CASE CREATOR)====================================================================================================================================================
 'write_panel_to_MAXIS comes from Krabappel
 Function write_panel_to_MAXIS_ABPS(abps_supp_coop,abps_gc_status)
 	call navigate_to_MAXIS_screen("STAT","PARE")							'Starts by creating an array of all the kids on PARE
