@@ -3764,8 +3764,10 @@ function PF24
 end function
 
 Function PRISM_case_number_finder(variable_for_PRISM_case_number)
-	'Searches for the case number.
-	PRISM_row = 1
+'--- This function finds the PRISM case number if listed on a PRISM screen
+'~~~~~ variable_for_PRISM_case_number: this should be 'PRISM_case_number'
+'===== Keywords: PRISM, case number 
+	PRISM_row = 1 'Searches for the case number.
 	PRISM_col = 1
 	EMSearch "Case: ", PRISM_row, PRISM_col
 	If PRISM_row <> 0 then
@@ -3784,6 +3786,10 @@ Function PRISM_case_number_finder(variable_for_PRISM_case_number)
 End function
 
 Function PRISM_case_number_validation(case_number_to_validate, outcome)
+'--- This function finds the PRISM case number if listed on a PRISM screen
+'~~~~~ case_number_to_validate: needs to be 'PRISM_case_number'
+'~~~~~ outcome: needs to be 'outcome'
+'===== Keywords: PRISM, case number
   If len(case_number_to_validate) <> 13 then
     outcome = False
   Elseif isnumeric(left(case_number_to_validate, 10)) = False then
@@ -3797,8 +3803,10 @@ Function PRISM_case_number_validation(case_number_to_validate, outcome)
   End if
 End function
 
-'Asks the user if they want to proceed. Result_of_msgbox parameter returns TRUE if Yes is pressed, and FALSE if No is pressed.
 FUNCTION proceed_confirmation(result_of_msgbox)
+'--- This function asks the user if they want to proceed.
+'~~~~~ result_of_msgbox: returns TRUE if Yes is pressed, and FALSE if No is pressed.
+'===== Keywords: MAXIS, MMIS, PRISM, dialog, proceed, confirmation 
 	If ButtonPressed = -1 then
 		proceed_confirm = MsgBox("Are you sure you want to proceed? Press Yes to continue, No to return to the previous screen, and Cancel to end the script.", vbYesNoCancel)
 		If proceed_confirm = vbCancel then stopscript
@@ -3807,14 +3815,18 @@ FUNCTION proceed_confirmation(result_of_msgbox)
 	End if
 END FUNCTION
 
-'This function clears out PRISM global variables
 function regl
+'--- This function clears out PRISM global variables
+'===== Keywords: PRISM, REGL, global variables, clear
 	EMWriteScreen "REGL", 21, 18		'This writes REGL to the command line
 	transmit							'Sends the REGL command
 	transmit							'Transmits past the REGL screen
 end function
 
 function run_another_script(script_path)
+'--- This function runs another script from a specific file either stored locally or on the web.
+'~~~~~ script_path: path of script to run
+'===== Keywords: MAXIS, MMIS, PRISM, run, script, script path 
   Set run_another_script_fso = CreateObject("Scripting.FileSystemObject")
   Set fso_command = run_another_script_fso.OpenTextFile(script_path)
   text_from_the_other_script = fso_command.ReadAll
@@ -3823,6 +3835,9 @@ function run_another_script(script_path)
 end function
 
 FUNCTION run_from_GitHub(url)
+'--- This function runs a script file from GitHub
+'~~~~~ url: web address of script file on GitHub
+'===== Keywords: MAXIS, MMIS, PRISM, run, script, url, GitHub
 	'Creates a list of items to remove from anything run from GitHub. This will allow for counties to use Option Explicit handling without fear.
 	list_of_things_to_remove = array("OPTION EXPLICIT", _
 									"option explicit", _
@@ -3854,6 +3869,9 @@ FUNCTION run_from_GitHub(url)
 END FUNCTION
 
 function script_end_procedure(closing_message)
+'--- This function is how all user stats are collected when a script ends. 
+'~~~~~ closing_message: message to user in a MsgBox that appears once the script is complete. Example: "Success! Your actions are complete."
+'===== Keywords: MAXIS, MMIS, PRISM, end, script, statistics, stopscript
 	stop_time = timer
 	If closing_message <> "" AND left(closing_message, 3) <> "~PT" then MsgBox closing_message '"~PT" forces the message to "pass through", i.e. not create a pop-up, but to continue without further diversion to the database, where it will write a record with the message
 	script_run_time = stop_time - start_time
@@ -3903,8 +3921,13 @@ function script_end_procedure(closing_message)
 	If disable_StopScript = FALSE or disable_StopScript = "" then stopscript
 end function
 
-'This code is helpful for bulk scripts. This script is used to select the caseload by the 8 digit worker ID code entered in the dialog.
+
 FUNCTION select_cso_caseload(ButtonPressed, cso_id, cso_name)
+'--- This function is helpful for bulk scripts. This script is used to select the caseload by the 8 digit worker ID code entered in the dialog.
+'~~~~~ ButtonPressed: should be 'ButtonPressed
+'~~~~~ cso_id: should be 'cso_id'
+'~~~~~ cso_name: should be 'cso_name'
+'===== Keywords: PRISM, cso, select, caseload, BULK
 	DO
 		DO
 			CALL navigate_to_PRISM_screen("USWT")
@@ -3948,9 +3971,11 @@ FUNCTION select_cso_caseload(ButtonPressed, cso_id, cso_name)
 	LOOP UNTIL err_msg = ""
 END FUNCTION
 
-'This function requires a recipient (the recipient code from the DORD screen), and the document code (also from the DORD screen).
-'This function adds the document.  Some user involvement (resolving required labels, hard-copy printing) may be required.
 FUNCTION send_dord_doc(recipient, dord_doc)
+'--- This function adds the document.  Some user involvement (resolving required labels, hard-copy printing) may be required.
+'~~~~~ recipient: the recipient code from the DORD screen
+'~~~~~ dord_doc: document code (also from the DORD screen)
+'===== Keywords: PRISM, cso, select, caseload, BULK
 	call navigate_to_PRISM_screen("DORD")
 	EMWriteScreen "C", 3, 29
 	transmit
@@ -3960,8 +3985,9 @@ FUNCTION send_dord_doc(recipient, dord_doc)
 	transmit
 END FUNCTION
 
-'Navigates you to a blank case note, presses PF9, and checks to make sure you're in edit mode (keeping you from writing all of the case note on an inquiry screen).
 FUNCTION start_a_blank_CASE_NOTE
+'--- This function navigates user to a blank case note, presses PF9, and checks to make sure you're in edit mode (keeping you from writing all of the case note on an inquiry screen).
+'===== Keywords: MAXIS, case note, navigate, edit
 	call navigate_to_MAXIS_screen("case", "note")
 	DO
 		PF9
