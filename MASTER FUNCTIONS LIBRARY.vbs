@@ -3368,7 +3368,10 @@ FUNCTION month_change(interval, starting_month, starting_year, result_month, res
 	result_year = right(result_year, 2)
 END FUNCTION
 
-FUNCTION navigate_to_MAXIS(maxis_mode)  'This function is to be used when navigating back to MAXIS from another function in BlueZone (MMIS, PRISM, INFOPAC, etc.)
+FUNCTION navigate_to_MAXIS(maxis_mode)
+'--- This function is to be used when navigating back to MAXIS from another function in BlueZone (MMIS, PRISM, INFOPAC, etc.)
+'~~~~~ maxis_mode: This parameter needs to be "maxis_mode"
+'===== Keywords: MAXIS, navigate
 	attn
 	EMConnect "A"
 	IF maxis_mode = "PRODUCTION" THEN
@@ -3411,7 +3414,9 @@ FUNCTION navigate_to_MAXIS(maxis_mode)  'This function is to be used when naviga
 	END IF
 END FUNCTION
 
-FUNCTION navigate_to_MMIS   'This function is to be used when navigating to MMIS from another function in BlueZone (MAXIS, PRISM, INFOPAC, etc.)
+FUNCTION navigate_to_MMIS   
+'--- This function is to be used when navigating to MMIS from another function in BlueZone (MAXIS, PRISM, INFOPAC, etc.)
+'===== Keywords: MMIS, navigate
 	attn
 	Do
 		EMReadScreen MAI_check, 3, 1, 33
@@ -3506,6 +3511,10 @@ FUNCTION navigate_to_MMIS   'This function is to be used when navigating to MMIS
 END FUNCTION
 
 Function navigate_to_MAXIS_screen(function_to_go_to, command_to_go_to)
+'--- This function is to be used to navigate to a specific MAXIS screen
+'~~~~~ function_to_go_to: needs to be MAXIS function like "STAT" or "REPT"
+'~~~~~ command_to_go_to: needs to be MAXIS function like "WREG" or "ACTV"
+'===== Keywords: MAXIS, navigate
   EMSendKey "<enter>"
   EMWaitReady 0, 0
   EMReadScreen MAXIS_check, 5, 1, 39
@@ -3559,13 +3568,17 @@ Function navigate_to_MAXIS_screen(function_to_go_to, command_to_go_to)
   End if
 End function
 
-Function navigate_to_PRISM_screen(x) 'x is the name of the screen
+Function navigate_to_PRISM_screen(x) 
+'--- This function is to be used to navigate to a specific PRISM screen
+'~~~~~ x: name of the PRISM screen
+'===== Keywords: PRISM, navigate
   EMWriteScreen x, 21, 18
   EMSendKey "<enter>"
   EMWaitReady 0, 0
 End function
 
 function new_page_check
+
   EMGetCursor MAXIS_row, MAXIS_col
   If MAXIS_row = 17 then
     EMSendKey ">>>>MORE>>>>"
@@ -3576,125 +3589,176 @@ function new_page_check
 end function
 
 Function open_URL_in_browser(URL_to_open)
+'--- This function is to be used to open a URL in user's default browser
+'~~~~~ URL_to_open: web address to open
+'===== Keywords: URL, open, web
 	CreateObject("WScript.Shell").Run(URL_to_open)
 End function
 
 Function PF1
+'--- This function sends or hits the PF1 key. 
+ '===== Keywords: MAXIS, MMIS, PRISM, PF1
   EMSendKey "<PF1>"
   EMWaitReady 0, 0
 End function
 
 Function PF2
+'--- This function sends or hits the PF2 key. 
+ '===== Keywords: MAXIS, MMIS, PRISM, PF2
   EMSendKey "<PF2>"
   EMWaitReady 0, 0
 End function
 
 function PF3
+'--- This function sends or hits the PF3 key. 
+ '===== Keywords: MAXIS, MMIS, PRISM, PF3
   EMSendKey "<PF3>"
   EMWaitReady 0, 0
 end function
 
 Function PF4
+'--- This function sends or hits the PF4 key. 
+ '===== Keywords: MAXIS, MMIS, PRISM, PF4
   EMSendKey "<PF4>"
   EMWaitReady 0, 0
 End function
 
 Function PF5
+'--- This function sends or hits the PF5 key. 
+ '===== Keywords: MAXIS, MMIS, PRISM, PF5
   EMSendKey "<PF5>"
   EMWaitReady 0, 0
 End function
 
 Function PF6
+'--- This function sends or hits the PF6 key. 
+ '===== Keywords: MAXIS, MMIS, PRISM, PF6
   EMSendKey "<PF6>"
   EMWaitReady 0, 0
 End function
 
 Function PF7
+'--- This function sends or hits the PF7 key. 
+ '===== Keywords: MAXIS, MMIS, PRISM, PF7
   EMSendKey "<PF7>"
   EMWaitReady 0, 0
 End function
 
 function PF8
+'--- This function sends or hits the PF8 key. 
+ '===== Keywords: MAXIS, MMIS, PRISM, PF8
   EMSendKey "<PF8>"
   EMWaitReady 0, 0
 end function
 
 function PF9
+'--- This function sends or hits the PF9 key. 
+ '===== Keywords: MAXIS, MMIS, PRISM, PF9
   EMSendKey "<PF9>"
   EMWaitReady 0, 0
 end function
 
 function PF10
+'--- This function sends or hits the PF10 key. 
+ '===== Keywords: MAXIS, MMIS, PRISM, PF10
   EMSendKey "<PF10>"
   EMWaitReady 0, 0
 end function
 
 Function PF11
+'--- This function sends or hits the PF11 key. 
+ '===== Keywords: MAXIS, MMIS, PRISM, PF11
   EMSendKey "<PF11>"
   EMWaitReady 0, 0
 End function
 
 Function PF12
+'--- This function sends or hits the PF12 key. 
+ '===== Keywords: MAXIS, MMIS, PRISM, PF12
   EMSendKey "<PF12>"
   EMWaitReady 0, 0
 End function
 
 Function PF13
+'--- This function sends or hits the PF13 key. 
+ '===== Keywords: MAXIS, MMIS, PRISM, PF13
   EMSendKey "<PF13>"
   EMWaitReady 0, 0
 End function
 
 Function PF14
+'--- This function sends or hits the PF14 key. 
+ '===== Keywords: MAXIS, MMIS, PRISM, PF14
   EMSendKey "<PF14>"
   EMWaitReady 0, 0
 End function
 
 Function PF15
+'--- This function sends or hits the PF15 key. 
+ '===== Keywords: MAXIS, MMIS, PRISM, PF15
   EMSendKey "<PF15>"
   EMWaitReady 0, 0
 End function
 
 Function PF16
+'--- This function sends or hits the PF16 key. 
+ '===== Keywords: MAXIS, MMIS, PRISM, PF16
   EMSendKey "<PF16>"
   EMWaitReady 0, 0
 End function
 
 Function PF17
+'--- This function sends or hits the PF17 key. 
+ '===== Keywords: MAXIS, MMIS, PRISM, PF17
   EMSendKey "<PF17>"
   EMWaitReady 0, 0
 End function
 
 Function PF18
+'--- This function sends or hits the PF18 key. 
+ '===== Keywords: MAXIS, MMIS, PRISM, PF18
   EMSendKey "<PF18>"
   EMWaitReady 0, 0
 End function
 
 function PF19
+'--- This function sends or hits the PF19 key. 
+ '===== Keywords: MAXIS, MMIS, PRISM, PF19
   EMSendKey "<PF19>"
   EMWaitReady 0, 0
 end function
 
 function PF20
+'--- This function sends or hits the PF20 key. 
+ '===== Keywords: MAXIS, MMIS, PRISM, PF20
   EMSendKey "<PF20>"
   EMWaitReady 0, 0
 end function
 
 function PF21
+'--- This function sends or hits the PF21 key. 
+ '===== Keywords: MAXIS, MMIS, PRISM, PF21
   EMSendKey "<PF21>"
   EMWaitReady 0, 0
 end function
 
 function PF22
+'--- This function sends or hits the PF22 key. 
+ '===== Keywords: MAXIS, MMIS, PRISM, PF22
   EMSendKey "<PF22>"
   EMWaitReady 0, 0
 end function
 
 function PF23
+'--- This function sends or hits the PF23 key. 
+ '===== Keywords: MAXIS, MMIS, PRISM, PF23
   EMSendKey "<PF23>"
   EMWaitReady 0, 0
 end function
 
 function PF24
+'--- This function sends or hits the PF24 key. 
+ '===== Keywords: MAXIS, MMIS, PRISM, PF24
   EMSendKey "<PF24>"
   EMWaitReady 0, 0
 end function
