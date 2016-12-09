@@ -94,15 +94,32 @@
 
 body {
     margin-top: 50px;
-    font-family: "Segoe UI", "Futura", sans-serif;
+}
+
+nav {
+    font-family: 'Oxygen', sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+}
+
+.navbar-brand {
+    font-size: 20px;
+    font-weight: bold;
 }
 
 h1 {
+    font-family: 'Oxygen', sans-serif;
+    font-weight: 300;
     font-size: 20px;
 }
 
 h2 {
-    font-size: 12px;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 14px;
+}
+
+p {
+    font-family: 'Source Sans Pro', sans-serif;
 }
 
 /* Updating color of panels */
