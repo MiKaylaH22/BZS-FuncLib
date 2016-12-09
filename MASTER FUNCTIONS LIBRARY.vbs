@@ -2309,6 +2309,7 @@ function convert_digit_to_excel_column(col_in_excel)
 '~~~~~ col_in_excel: must be a numeric, cannot exceed 104. Do not put in "".
 '===== Keywords: MAXIS, PRISM, convert, Excel
 	'Create string with the alphabet
+	
 	alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 	'Assigning a letter, based on that column. Uses "mid" function to determine it. If number > 26, it handles by adding a letter (per Excel).
@@ -2326,7 +2327,7 @@ FUNCTION create_array_of_all_active_x_numbers_by_supervisor(array_name, supervis
 '--- This function is used to grab all active X numbers according to the supervisor X number(s) inputted
 '~~~~~ array_name: name of array that will contain all the supervisor's staff x numbers
 '~~~~~ supervisor_array: list of supervisor's x numbers seperated by comma
-'===== Keywords: MAXIS, array, supervisor, worker number
+'===== Keywords: MAXIS, array, supervisor, worker number, create
 	'Create string with the alphabet	
 	'Getting to REPT/USER
 	CALL navigate_to_MAXIS_screen("REPT", "USER")
@@ -2368,9 +2369,7 @@ Function create_array_of_all_active_x_numbers_in_county(array_name, county_code)
 '--- This function is used to grab all active X numbers in a county
 '~~~~~ array_name: name of array that will contain all the x numbers
 '~~~~~ county_code: inserted by reading the county code under REPT/USER
-'===== Keywords: MAXIS, array, worker number
-	'Create string with the alphabet	
-	'Getting to REPT/USER
+'===== Keywords: MAXIS, array, worker number, create
 	'Getting to REPT/USER
 	call navigate_to_MAXIS_screen("rept", "user")
 
@@ -2407,6 +2406,12 @@ Function create_array_of_all_active_x_numbers_in_county(array_name, county_code)
 End function
 
 FUNCTION create_mainframe_friendly_date(date_variable, screen_row, screen_col, year_type)
+'--- This function creates a mainframe friendly date. This can be used for both year formats and input spacing.
+'~~~~~ date_variable: the name of the variable to output 
+'~~~~~ screen_row: row to start writing date
+'~~~~~ screen_col: column to start writing date
+'~~~~~ year_type: formatting to export date year as "YY" or "YYYY"
+'===== Keywords: MAXIS, PRISM, MMIS, date, create
 	var_month = datepart("m", date_variable)
 	IF len(var_month) = 1 THEN var_month = "0" & var_month
 	EMWriteScreen var_month & "/", screen_row, screen_col
@@ -2424,8 +2429,13 @@ FUNCTION create_mainframe_friendly_date(date_variable, screen_row, screen_col, y
 	EMWriteScreen var_year, screen_row, screen_col + 6
 END FUNCTION
 
-'Creates a MM DD YY date entry at screen_row and screen_col. The variable_length variable is the amount of days to offset the date entered. I.e., 10 for 10 days, -10 for 10 days in the past, etc.
 Function create_MAXIS_friendly_date(date_variable, variable_length, screen_row, screen_col)
+'--- This function creates a MM DD YY date entry into BlueZone.
+'~~~~~ date_variable: the name of the variable to output 
+'~~~~~ variable_length:the amount of days to offset the date entered. I.e., 10 for 10 days, -10 for 10 days in the past, etc.
+'~~~~~ screen_row: row to start writing date
+'~~~~~ screen_col: column to start writing date
+'===== Keywords: MAXIS, date, create
 	var_month = datepart("m", dateadd("d", variable_length, date_variable))
 	If len(var_month) = 1 then var_month = "0" & var_month
 	EMWriteScreen var_month, screen_row, screen_col
@@ -2437,6 +2447,12 @@ Function create_MAXIS_friendly_date(date_variable, variable_length, screen_row, 
 End function
 
 FUNCTION create_MAXIS_friendly_date_three_spaces_between(date_variable, variable_length, screen_row, screen_col)
+'--- This function creates a MM  DD  YY date entry into BlueZone.
+'~~~~~ date_variable: the name of the variable to output 
+'~~~~~ variable_length:the amount of days to offset the date entered. I.e., 10 for 10 days, -10 for 10 days in the past, etc.
+'~~~~~ screen_row: row to start writing date
+'~~~~~ screen_col: column to start writing date
+'===== Keywords: MAXIS, date, create
 	var_month = datepart("m", dateadd("d", variable_length, date_variable))		'determines the date based on the variable length: month
 	If len(var_month) = 1 then var_month = "0" & var_month				'adds a '0' in front of a single digit month
 	EMWriteScreen var_month, screen_row, screen_col					'writes in var_month at coordinates set in FUNCTION line
@@ -2447,8 +2463,13 @@ FUNCTION create_MAXIS_friendly_date_three_spaces_between(date_variable, variable
 	EMWriteScreen right(var_year, 2), screen_row, screen_col + 10 			'writes in var_year at coordinates set in FUNCTION line , and starts 5 columns into date field in MAXIS
 END FUNCTION
 
-'Creates a MM DD YYYY date entry at screen_row and screen_col. The variable_length variable is the amount of days to offset the date entered. I.e., 10 for 10 days, -10 for 10 days in the past, etc.
 FUNCTION create_MAXIS_friendly_date_with_YYYY(date_variable, variable_length, screen_row, screen_col)
+'--- This function creates a MM DD YYYY date entry into BlueZone.
+'~~~~~ date_variable: the name of the variable to output 
+'~~~~~ variable_length:the amount of days to offset the date entered. I.e., 10 for 10 days, -10 for 10 days in the past, etc.
+'~~~~~ screen_row: row to start writing date
+'~~~~~ screen_col: column to start writing date
+'===== Keywords: MAXIS, date, create
 	var_month = datepart("m", dateadd("d", variable_length, date_variable))
 	IF len(var_month) = 1 THEN var_month = "0" & var_month
 	EMWriteScreen var_month, screen_row, screen_col
@@ -2460,6 +2481,11 @@ FUNCTION create_MAXIS_friendly_date_with_YYYY(date_variable, variable_length, sc
 END FUNCTION
 
 FUNCTION create_MAXIS_friendly_phone_number(phone_number_variable, screen_row, screen_col)
+'--- This function creates a MAXIS friendly phone number 
+'~~~~~ phone_number_variable: the name of the variable to output 
+'~~~~~ screen_row: row to start writing phone number
+'~~~~~ screen_col: column to start writing phone number
+'===== Keywords: MAXIS, date, create
 	WITH (new RegExp)                                                            	'Uses RegExp to bring in special string functions to remove the unneeded strings
                 .Global = True                                                   	'I don't know what this means but David made it work so we're going with it
                 .Pattern = "\D"                                                	 	'Again, no clue. Just do it.
@@ -2471,6 +2497,9 @@ FUNCTION create_MAXIS_friendly_phone_number(phone_number_variable, screen_row, s
 END FUNCTION
 
 Function create_panel_if_nonexistent()
+'--- This function creates a panel if a panel does not exist. This is currently only used within the FuncLib itself.
+'~~~~~ (): keep this parameter empty
+'===== Keywords: MAXIS, FuncLib only, create 
 	EMWriteScreen reference_number , 20, 76
 	transmit
 	EMReadScreen case_panel_check, 44, 24, 2
