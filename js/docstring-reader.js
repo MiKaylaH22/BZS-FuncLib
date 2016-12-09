@@ -18,8 +18,10 @@ request.onreadystatechange = function () {
             // Create a variable filled with the contents of the FuncLib file
             var funclibContentsArray = request.responseText.split("\n");
             
-            // Creating a blank variable for the contents-to-be-displayed-on-the-site. This will be filled in by what's to come!
+            // Creating blank variables for the contents-to-be-displayed-on-the-site. This will be filled in by what's to come!
             var contentsForSite = "";
+            var listOfParameters = "";
+        
 
             // <<<<<<<<<<   I have temporarily commented this out because there's extra functions that should be (eventually) placed in the primary
             //              order of functions. For now, these extra functions aren't included in the regular documentation and thus aren't described.
@@ -40,8 +42,28 @@ request.onreadystatechange = function () {
                     // ...then we grab the docstring definition for the function...
                     var functionDefinition = funclibContentsArray[i + 1].replace("'--- ", "");
                     
+                    // ...we set an increment variable for the following do loop...
+                    var parameterLineToCheck = i + 2;
+                    
+                    // ...now we need to grab all of the parameters used by the function...
+                    do {
+                        var areWeDoneYet = false;                                                                   // sets this initial value
+                        var parameterCheck = funclibContentsArray[parameterLineToCheck].startsWith("'~~~~~ ");      // checks to see if this is a parameter
+                        if (parameterCheck == true) {                                                               // if it is a parameter, add it! 
+                            // This adds it to the list of parameters!
+                            listOfParameters = listOfParameters + "<li>" + funclibContentsArray[parameterLineToCheck].replace("'~~~~~ ", "") + "</li>";    
+                        } else {                                                                                    // otherwise...
+                            areWeDoneYet = true;                                                                    // ...we're done with parameters!
+                        }
+                        parameterLineToCheck++;                                                                     // increment i one more so we can go through again!
+                    }
+                    while (areWeDoneYet != true);                                                                   // do this until we're done with parameters or tags!
+                    
                     // ...and finally we write the contents to the contentsForSite variable.
-                    contentsForSite = contentsForSite + "<h1>" + nameOfFunction + "</h1>" + "\n" + "<h2>" + functionDefinition + "</h2>";
+                    contentsForSite = contentsForSite + "<h1>" + nameOfFunction + "</h1>" + "\n" + "<h2>" + functionDefinition + "</h2> \n <ul>" + listOfParameters + "</ul>";
+                    
+                    // We need to clear the listOfParameters before proceeding
+                    listOfParameters = "";
                 }                
             }
             

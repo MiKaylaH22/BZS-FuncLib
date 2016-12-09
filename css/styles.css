@@ -110,16 +110,17 @@ nav {
 h1 {
     font-family: 'Oxygen', sans-serif;
     font-weight: 300;
-    font-size: 20px;
+    font-size: 24px;
 }
 
 h2 {
     font-family: 'Source Sans Pro', sans-serif;
-    font-size: 14px;
+    font-size: 16px;
 }
 
-p {
+p, li {
     font-family: 'Source Sans Pro', sans-serif;
+    font-size: 14px;
 }
 
 /* Updating color of panels */
