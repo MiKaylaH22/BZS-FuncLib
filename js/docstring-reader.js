@@ -1,5 +1,9 @@
 // TODO: Add tag features
 // TODO: Switch branch to classic
+// TODO: scan script files for a list of scripts where each function is used IRL
+// TODO: Create alpha links bar in navbar, corresponding functionality in the long lists
+// TODO: add Source Code Pro font for monospace, and break out functional examples in monospace like GitHub markdown does
+// TODO: add a Favicon
 
 // read text from URL location
 var request = new XMLHttpRequest();
