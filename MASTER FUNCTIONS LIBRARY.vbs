@@ -2678,6 +2678,11 @@ Function end_excel_and_script
 End function
 
 Function enter_PRISM_case_number(case_number_variable, row, col)
+'--- This function enters a PRISM case number
+'~~~~~ case_number_variable: use PRISM_case_number
+'~~~~~ row: row to write case number
+'~~~~~ col: column to write case number
+'===== Keywords: PRISM, case number
 	EMSetCursor row, col
 	EMSendKey replace(case_number_variable, "-", "")                                                                                                                                       'Entering the specific case indicated
 	EMSendKey "<enter>"
@@ -2685,6 +2690,13 @@ Function enter_PRISM_case_number(case_number_variable, row, col)
 End function
 
 Function excel_open(file_url, visible_status, alerts_status, ObjExcel, objWorkbook)
+'--- This function opens a specific excel file
+'~~~~~ file_url: name of the file
+'~~~~~ visable_status: set to either TRUE (visible) or FALSE (not-visible)
+'~~~~~ alerts_status: set to either TRUE (show alerts) or FALSE (suppress alerts)
+'~~~~~ ObjExcel: leave as 'objExcel'
+'~~~~~ objWorkbook: leave as 'objWorkbook' 
+'===== Keywords: MAXIS, PRISM, MMIS, Excel
 	Set objExcel = CreateObject("Excel.Application") 'Allows a user to perform functions within Microsoft Excel
 	objExcel.Visible = visible_status
 	Set objWorkbook = objExcel.Workbooks.Open(file_url) 'Opens an excel file from a specific URL
@@ -2692,6 +2704,11 @@ Function excel_open(file_url, visible_status, alerts_status, ObjExcel, objWorkbo
 End Function
 
 Function find_variable(opening_string, variable_name, length_of_variable)
+'--- This function finds a string on a page in BlueZone
+'~~~~~ opening_string: string to search for
+'~~~~~ variable_name: variable name of the string
+'~~~~~ length_of_variable: length of the string
+'===== Keywords: MAXIS, MMIS, PRISM, find
   row = 1
   col = 1
   EMSearch opening_string, row, col
@@ -2699,6 +2716,10 @@ Function find_variable(opening_string, variable_name, length_of_variable)
 End function
 
 Function file_selection_system_dialog(file_selected, file_extension_restriction)
+'--- This function allows a user to select a file to be opened in a script
+'~~~~~ file_selected: variable for the name of the file
+'~~~~~ file_extension_restriction: restricts all other file type besides allowed file type. Example: ".csv" only allows a CSV file to be accessed.
+'===== Keywords: MAXIS, MMIS, PRISM, file
 	'Creates a Windows Script Host object
 	Set wShell=CreateObject("WScript.Shell")
 
@@ -2719,6 +2740,9 @@ Function file_selection_system_dialog(file_selected, file_extension_restriction)
 End function
 
 FUNCTION find_MAXIS_worker_number(x_number)
+'--- This function finds a MAXIS worker's X number
+'~~~~~ x_number: worker number variable
+'===== Keywords: MAXIS, worker number
 	EMReadScreen SELF_check, 4, 2, 50		'Does this to check to see if we're on SELF screen
 	IF SELF_check = "SELF" THEN				'if on the self screen then x # is read from coordinates
 		EMReadScreen x_number, 7, 22, 8
@@ -2748,9 +2772,10 @@ Function fix_case(phrase_to_split, smallest_length_to_skip)										'Ex: fix_ca
 	phrase_to_split = output_phrase																'making the phrase_to_split equal to the output, so that it can be used by the rest of the script.
 End function
 
-'This function takes in a client's name and outputs the name (accounting for hyphenated surnames) with Ucase first character
-'and lcase the rest. This is like fix_case but this function is a bit more specific for names
 FUNCTION fix_case_for_name(name_variable)
+'--- This function takes in a client's name and outputs the name (accounting for hyphenated surnames) with Ucase first character & and lcase the rest. This is like fix_case but this function is a bit more specific for names
+'~~~~~ name_variable: should be client_name for function to work
+'===== Keywords: MAXIS, MMIS, PRISM, name, case
 	name_variable = split(name_variable, " ")
 	FOR EACH client_name IN name_variable
 		IF client_name <> "" THEN
@@ -2770,10 +2795,10 @@ FUNCTION fix_case_for_name(name_variable)
 	name_variable = output_variable
 END FUNCTION
 
-'This is a custom function to fix data that we are reading from PRISM that includes underscores.  The parameter is a string for the
-'variable to be searched.  The function searches the variable and removes underscores.  Then, the fix case function is called to format
-'the string in the correct case.  Finally, the data is trimmed to remove any excess spaces.
 FUNCTION fix_read_data (search_string)
+'--- This function fixes data that we are reading from PRISM that includes underscores. The function searches the variable and removes underscores. Then, the fix case function is called to format the string to the correct case & the data is trimmed to remove any excess spaces.
+'~~~~~ search_string: the string for the variable to be searched
+'===== Keywords: PRISM, name, data, fix
 	search_string = replace(search_string, "_", "")
 	call fix_case(search_string, 1)
 	search_string = trim(search_string)
