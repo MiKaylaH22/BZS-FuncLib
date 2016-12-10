@@ -123,8 +123,18 @@ p, li {
     font-size: 14px;
 }
 
+.tag-buttons {
+    font-family: 'Oxygen', sans-serif;
+    font-weight: bold;
+}
+
 /* Updating color of panels */
 
 .panel-default>.panel-heading {
     background-color: #f3fff3;
+}
+
+/* Creating buttons for tags */
+.tag-buttons {
+    margin-right: 5px;
 }
