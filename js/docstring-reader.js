@@ -1,5 +1,10 @@
-// TODO: Add tag features
 // TODO: Switch branch to classic
+// TODO: scan script files for a list of scripts where each function is used IRL
+// TODO: Create alpha links bar in navbar, corresponding functionality in the long lists
+// TODO: add Source Code Pro font for monospace, and break out functional examples in monospace like GitHub markdown does
+// TODO: add a Favicon
+// TODO: turn dummy tag buttons into useable tag buttons which sort and integrate with the Functions by tags menu
+// TODO: make sure all FuncLib functions have "()" in them
 
 // read text from URL location
 var request = new XMLHttpRequest();
@@ -21,6 +26,7 @@ request.onreadystatechange = function () {
             // Creating blank variables for the contents-to-be-displayed-on-the-site. This will be filled in by what's to come!
             var contentsForSite = "";
             var listOfParameters = "";
+            var listOfTags = "";
         
 
             // <<<<<<<<<<   I have temporarily commented this out because there's extra functions that should be (eventually) placed in the primary
@@ -47,23 +53,31 @@ request.onreadystatechange = function () {
                     
                     // ...now we need to grab all of the parameters used by the function...
                     do {
-                        var areWeDoneYet = false;                                                                   // sets this initial value
-                        var parameterCheck = funclibContentsArray[parameterLineToCheck].startsWith("'~~~~~ ");      // checks to see if this is a parameter
-                        if (parameterCheck == true) {                                                               // if it is a parameter, add it! 
-                            // This adds it to the list of parameters!
-                            listOfParameters = listOfParameters + "<li>" + funclibContentsArray[parameterLineToCheck].replace("'~~~~~ ", "") + "</li>";    
-                        } else {                                                                                    // otherwise...
-                            areWeDoneYet = true;                                                                    // ...we're done with parameters!
+                        var areWeDoneYet = false;                                                                                                           // sets this initial value
+                        var parameterCheck = funclibContentsArray[parameterLineToCheck].startsWith("'~~~~~ ");                                              // checks to see if this is a parameter
+                        var tagCheck = funclibContentsArray[parameterLineToCheck].startsWith("'===== Keywords: ");                                          // also checks to see if this is a list of keywords or tags
+                        if (parameterCheck == true) {                                                                                                       // if it is a parameter, add it!     
+                            listOfParameters = listOfParameters + "<li>" + funclibContentsArray[parameterLineToCheck].replace("'~~~~~ ", "") + "</li>";     // This adds it to the list of parameters!
+                        } else if (tagCheck = true) {
+                            var tagList = funclibContentsArray[parameterLineToCheck].replace("'===== Keywords: ", "");
+                            var tagArray = tagList.split(",");
+                            for (var j = 0; j < tagArray.length; j++) {
+                                listOfTags = listOfTags + "<button class='btn btn-info btn-xs tag-buttons' type='button'>" + tagArray[j].trim() + "</button>";                 // This adds it to the list of tags!
+                            }
+                            areWeDoneYet = true;
+                        } else {                                                                                                                            // otherwise...
+                            areWeDoneYet = true;                                                                                                            // ...then we're done with parameters and tags!
                         }
-                        parameterLineToCheck++;                                                                     // increment i one more so we can go through again!
+                        parameterLineToCheck++;                                                                                                                                                                 // increment i one more so we can go through again!
                     }
-                    while (areWeDoneYet != true);                                                                   // do this until we're done with parameters or tags!
+                    while (areWeDoneYet != true);                                                                                                                                                               // do this until we're done with parameters or tags!
                     
                     // ...and finally we write the contents to the contentsForSite variable.
-                    contentsForSite = contentsForSite + "<h1>" + nameOfFunction + "</h1>" + "\n" + "<h2>" + functionDefinition + "</h2> \n <ul>" + listOfParameters + "</ul>";
+                    contentsForSite = contentsForSite + "<h1>" + nameOfFunction + "</h1>" + "\n" + "<p>" + functionDefinition + "</p> \n <p>Parameters used by this function: </p> <ul>" + listOfParameters + "</ul> \n" + listOfTags;
                     
-                    // We need to clear the listOfParameters before proceeding
+                    // We need to clear the listOfParameters and listOfTags before proceeding
                     listOfParameters = "";
+                    listOfTags = "";
                 }                
             }
             
