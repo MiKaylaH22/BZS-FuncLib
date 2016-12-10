@@ -4917,8 +4917,12 @@ End function
 
 
 'FUNCTIONS for PROJECT KRABAPPEL (UTILITIES - TRAINING CASE CREATOR)====================================================================================================================================================
-'write_panel_to_MAXIS comes from Krabappel
+'writing in placeholder information for now re: the functions and parameters to be in line with the new documentation process. 
+
 Function write_panel_to_MAXIS_ABPS(abps_supp_coop,abps_gc_status)
+'--- This function writes to MAXIS in Krabappel only 
+'~~~~~ abps_supp_coop,abps_gc_status: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	call navigate_to_MAXIS_screen("STAT","PARE")							'Starts by creating an array of all the kids on PARE
 	EMReadScreen abps_pare_check, 1, 2, 78
 	If abps_pare_check = "0" then
@@ -4970,6 +4974,9 @@ Function write_panel_to_MAXIS_ABPS(abps_supp_coop,abps_gc_status)
 End Function
 
 Function write_panel_to_MAXIS_ACCT(acct_type, acct_numb, acct_location, acct_balance, acct_bal_ver, acct_date, acct_withdraw, acct_cash_count, acct_snap_count, acct_HC_count, acct_GRH_count, acct_IV_count, acct_joint_owner, acct_share_ratio, acct_interest_date_mo, acct_interest_date_yr)
+'--- This function writes to MAXIS in Krabappel only 
+'~~~~~ acct_type, acct_numb, acct_location, acct_balance, acct_bal_ver, acct_date, acct_withdraw, acct_cash_count, acct_snap_count, acct_HC_count, acct_GRH_count, acct_IV_count, acct_joint_owner, acct_share_ratio, acct_interest_date_mo, acct_interest_date_yr: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator	
 	Call navigate_to_MAXIS_screen("STAT", "ACCT")  'navigates to the stat panel
 	call create_panel_if_nonexistent
 	Emwritescreen acct_type, 6, 44  'enters the account type code
@@ -5009,6 +5016,9 @@ Function write_panel_to_MAXIS_ACCT(acct_type, acct_numb, acct_location, acct_bal
 End Function
 
 FUNCTION write_panel_to_MAXIS_ACUT(ACUT_shared, ACUT_heat, ACUT_air, ACUT_electric, ACUT_fuel, ACUT_garbage, ACUT_water, ACUT_sewer, ACUT_other, ACUT_phone, ACUT_heat_verif, ACUT_air_verif, ACUT_electric_verif, ACUT_fuel_verif, ACUT_garbage_verif, ACUT_water_verif, ACUT_sewer_verif, ACUT_other_verif)
+'--- This function writes to MAXIS in Krabappel only 
+'~~~~~ ACUT_shared, ACUT_heat, ACUT_air, ACUT_electric, ACUT_fuel, ACUT_garbage, ACUT_water, ACUT_sewer, ACUT_other, ACUT_phone, ACUT_heat_verif, ACUT_air_verif, ACUT_electric_verif, ACUT_fuel_verif, ACUT_garbage_verif, ACUT_water_verif, ACUT_sewer_verif, ACUT_other_verif: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	call navigate_to_MAXIS_screen("STAT", "ACUT")
 	call create_panel_if_nonexistent
 		EMWritescreen ACUT_shared, 6, 42
@@ -5034,6 +5044,9 @@ end function
 
 '---This function writes the information for BILS.
 FUNCTION write_panel_to_MAXIS_BILS(bils_1_ref_num, bils_1_serv_date, bils_1_serv_type, bils_1_gross_amt, bils_1_third_party, bils_1_verif, bils_1_bils_type, bils_2_ref_num, bils_2_serv_date, bils_2_serv_type, bils_2_gross_amt, bils_2_third_party, bils_2_verif, bils_2_bils_type, bils_3_ref_num, bils_3_serv_date, bils_3_serv_type, bils_3_gross_amt, bils_3_third_party, bils_3_verif, bils_3_bils_type, bils_4_ref_num, bils_4_serv_date, bils_4_serv_type, bils_4_gross_amt, bils_4_third_party, bils_4_verif, bils_4_bils_type, bils_5_ref_num, bils_5_serv_date, bils_5_serv_type, bils_5_gross_amt, bils_5_third_party, bils_5_verif, bils_5_bils_type, bils_6_ref_num, bils_6_serv_date, bils_6_serv_type, bils_6_gross_amt, bils_6_third_party, bils_6_verif, bils_6_bils_type, bils_7_ref_num, bils_7_serv_date, bils_7_serv_type, bils_7_gross_amt, bils_7_third_party, bils_7_verif, bils_7_bils_type, bils_8_ref_num, bils_8_serv_date, bils_8_serv_type, bils_8_gross_amt, bils_8_third_party, bils_8_verif, bils_8_bils_type, bils_9_ref_num, bils_9_serv_date, bils_9_serv_type, bils_9_gross_amt, bils_9_third_party, bils_9_verif, bils_9_bils_type)
+'--- This function writes to MAXIS in Krabappel only 
+'~~~~~ bils_1_ref_num, bils_1_serv_date, bils_1_serv_type, bils_1_gross_amt, bils_1_third_party, bils_1_verif, bils_1_bils_type, bils_2_ref_num, bils_2_serv_date, bils_2_serv_type, bils_2_gross_amt, bils_2_third_party, bils_2_verif, bils_2_bils_type, bils_3_ref_num, bils_3_serv_date, bils_3_serv_type, bils_3_gross_amt, bils_3_third_party, bils_3_verif, bils_3_bils_type, bils_4_ref_num, bils_4_serv_date, bils_4_serv_type, bils_4_gross_amt, bils_4_third_party, bils_4_verif, bils_4_bils_type, bils_5_ref_num, bils_5_serv_date, bils_5_serv_type, bils_5_gross_amt, bils_5_third_party, bils_5_verif, bils_5_bils_type, bils_6_ref_num, bils_6_serv_date, bils_6_serv_type, bils_6_gross_amt, bils_6_third_party, bils_6_verif, bils_6_bils_type, bils_7_ref_num, bils_7_serv_date, bils_7_serv_type, bils_7_gross_amt, bils_7_third_party, bils_7_verif, bils_7_bils_type, bils_8_ref_num, bils_8_serv_date, bils_8_serv_type, bils_8_gross_amt, bils_8_third_party, bils_8_verif, bils_8_bils_type, bils_9_ref_num, bils_9_serv_date, bils_9_serv_type, bils_9_gross_amt, bils_9_third_party, bils_9_verif, bils_9_bils_type: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator	
 	CALL navigate_to_MAXIS_screen("STAT", "BILS")
 	EMReadScreen ERRR_check, 4, 2, 52			'Checking for the ERRR screen
 	If ERRR_check = "ERRR" then transmit		'If the ERRR screen is found, it transmits
@@ -5200,9 +5213,10 @@ FUNCTION write_panel_to_MAXIS_BILS(bils_1_ref_num, bils_1_serv_date, bils_1_serv
 	END IF
 END FUNCTION
 
-
-'---This function writes using the variables read off of the specialized excel template to the busi panel in MAXIS
 Function write_panel_to_MAXIS_BUSI(busi_type, busi_start_date, busi_end_date, busi_cash_total_retro, busi_cash_total_prosp, busi_cash_total_ver, busi_IV_total_prosp, busi_IV_total_ver, busi_snap_total_retro, busi_snap_total_prosp, busi_snap_total_ver, busi_hc_total_prosp_a, busi_hc_total_ver_a, busi_hc_total_prosp_b, busi_hc_total_ver_b, busi_cash_exp_retro, busi_cash_exp_prosp, busi_cash_exp_ver, busi_IV_exp_prosp, busi_IV_exp_ver, busi_snap_exp_retro, busi_snap_exp_prosp, busi_snap_exp_ver, busi_hc_exp_prosp_a, busi_hc_exp_ver_a, busi_hc_exp_prosp_b, busi_hc_exp_ver_b, busi_retro_hours, busi_prosp_hours, busi_hc_total_est_a, busi_hc_total_est_b, busi_hc_exp_est_a, busi_hc_exp_est_b, busi_hc_hours_est)
+'--- This function writes to MAXIS in Krabappel only (writes using the variables read off of the specialized excel template to the busi panel in MAXIS)
+'~~~~~ busi_type, busi_start_date, busi_end_date, busi_cash_total_retro, busi_cash_total_prosp, busi_cash_total_ver, busi_IV_total_prosp, busi_IV_total_ver, busi_snap_total_retro, busi_snap_total_prosp, busi_snap_total_ver, busi_hc_total_prosp_a, busi_hc_total_ver_a, busi_hc_total_prosp_b, busi_hc_total_ver_b, busi_cash_exp_retro, busi_cash_exp_prosp, busi_cash_exp_ver, busi_IV_exp_prosp, busi_IV_exp_ver, busi_snap_exp_retro, busi_snap_exp_prosp, busi_snap_exp_ver, busi_hc_exp_prosp_a, busi_hc_exp_ver_a, busi_hc_exp_prosp_b, busi_hc_exp_ver_b, busi_retro_hours, busi_prosp_hours, busi_hc_total_est_a, busi_hc_total_est_b, busi_hc_exp_est_a, busi_hc_exp_est_b, busi_hc_hours_est: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator		
 	Call navigate_to_MAXIS_screen("STAT", "BUSI")  'navigates to the stat panel
 	Emwritescreen reference_number, 20, 76
 	transmit
@@ -5329,6 +5343,9 @@ Function write_panel_to_MAXIS_BUSI(busi_type, busi_start_date, busi_end_date, bu
 end function
 
 Function write_panel_to_MAXIS_CARS(cars_type, cars_year, cars_make, cars_model, cars_trade_in, cars_loan, cars_value_source, cars_ownership_ver, cars_amount_owed, cars_amount_owed_ver, cars_date, cars_use, cars_HC_benefit, cars_joint_owner, cars_share_ratio)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ cars_type, cars_year, cars_make, cars_model, cars_trade_in, cars_loan, cars_value_source, cars_ownership_ver, cars_amount_owed, cars_amount_owed_ver, cars_date, cars_use, cars_HC_benefit, cars_joint_owner, cars_share_ratio: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator		
 	Call navigate_to_MAXIS_screen("STAT", "CARS")  'navigates to the stat screen
 	call create_panel_if_nonexistent
 	Emwritescreen cars_type, 6, 43  'enters the vehicle type
@@ -5349,15 +5366,19 @@ Function write_panel_to_MAXIS_CARS(cars_type, cars_year, cars_make, cars_model, 
 	Emwritescreen right(cars_share_ratio, 1), 16, 80  'enters the ratio of ownership using the right 1 digit of what is entered into the file
 End Function
 
-'---This function writes using the variables read off of the specialized excel template to the cash panel in MAXIS
 Function write_panel_to_MAXIS_CASH(cash_amount)
+'--- This function writes to MAXIS in Krabappel only (writes using the variables read off of the specialized excel template to the cash panel in MAXIS)
+'~~~~~ cash_amount: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator	
 	Call navigate_to_MAXIS_screen("STAT", "CASH")  'navigates to the stat panel
 	call create_panel_if_nonexistent
 	Emwritescreen cash_amount, 8, 39
 End Function
 
-'---This function writes using the variables read off of the specialized excel template to the COEX panel in MAXIS.
 FUNCTION write_panel_to_MAXIS_COEX(retro_support, prosp_support, support_verif, retro_alimony, prosp_alimony, alimony_verif, retro_tax_dep, prosp_tax_dep, tax_dep_verif, retro_other, prosp_other, other_verif, change_in_circum, hc_exp_support, hc_exp_alimony, hc_exp_tax_dep, hc_exp_other)
+'--- This function writes to MAXIS in Krabappel only (writes using the variables read off of the specialized excel template to the COEX panel in MAXIS.)
+'~~~~~ retro_support, prosp_support, support_verif, retro_alimony, prosp_alimony, alimony_verif, retro_tax_dep, prosp_tax_dep, tax_dep_verif, retro_other, prosp_other, other_verif, change_in_circum, hc_exp_support, hc_exp_alimony, hc_exp_tax_dep, hc_exp_other: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	CALL navigate_to_MAXIS_screen("STAT", "COEX")
 	EMReadScreen ERRR_check, 4, 2, 52			'Checking for the ERRR screen
 	If ERRR_check = "ERRR" then transmit		'If the ERRR screen is found, it transmits
@@ -5407,8 +5428,10 @@ FUNCTION write_panel_to_MAXIS_COEX(retro_support, prosp_support, support_verif, 
 	transmit
 END FUNCTION
 
-
 FUNCTION write_panel_to_MAXIS_DCEX(DCEX_provider, DCEX_reason, DCEX_subsidy, DCEX_child_number1, DCEX_child_number1_ver, DCEX_child_number1_retro, DCEX_child_number1_pro, DCEX_child_number2, DCEX_child_number2_ver, DCEX_child_number2_retro, DCEX_child_number2_pro, DCEX_child_number3, DCEX_child_number3_ver, DCEX_child_number3_retro, DCEX_child_number3_pro, DCEX_child_number4, DCEX_child_number4_ver, DCEX_child_number4_retro, DCEX_child_number4_pro, DCEX_child_number5, DCEX_child_number5_ver, DCEX_child_number5_retro, DCEX_child_number5_pro, DCEX_child_number6, DCEX_child_number6_ver, DCEX_child_number6_retro, DCEX_child_number6_pro)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ DCEX_provider, DCEX_reason, DCEX_subsidy, DCEX_child_number1, DCEX_child_number1_ver, DCEX_child_number1_retro, DCEX_child_number1_pro, DCEX_child_number2, DCEX_child_number2_ver, DCEX_child_number2_retro, DCEX_child_number2_pro, DCEX_child_number3, DCEX_child_number3_ver, DCEX_child_number3_retro, DCEX_child_number3_pro, DCEX_child_number4, DCEX_child_number4_ver, DCEX_child_number4_retro, DCEX_child_number4_pro, DCEX_child_number5, DCEX_child_number5_ver, DCEX_child_number5_retro, DCEX_child_number5_pro, DCEX_child_number6, DCEX_child_number6_ver, DCEX_child_number6_retro, DCEX_child_number6_pro: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator	
 	call navigate_to_MAXIS_screen("STAT", "DCEX")
 	EMWriteScreen reference_number, 20, 76
 	transmit
@@ -5494,6 +5517,9 @@ FUNCTION write_panel_to_MAXIS_DCEX(DCEX_provider, DCEX_reason, DCEX_subsidy, DCE
 End function
 
 FUNCTION write_panel_to_MAXIS_DFLN(conv_dt_1, conv_juris_1, conv_st_1, conv_dt_2, conv_juris_2, conv_st_2, rnd_test_dt_1, rnd_test_provider_1, rnd_test_result_1, rnd_test_dt_2, rnd_test_provider_2, rnd_test_result_2)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ conv_dt_1, conv_juris_1, conv_st_1, conv_dt_2, conv_juris_2, conv_st_2, rnd_test_dt_1, rnd_test_provider_1, rnd_test_result_1, rnd_test_dt_2, rnd_test_provider_2, rnd_test_result_2: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	CALL navigate_to_MAXIS_screen("STAT", "DFLN")
 	EMReadScreen num_of_DFLN, 1, 2, 78
 	IF num_of_DFLN = "0" THEN
@@ -5525,6 +5551,9 @@ FUNCTION write_panel_to_MAXIS_DFLN(conv_dt_1, conv_juris_1, conv_st_1, conv_dt_2
 END FUNCTION
 
 FUNCTION write_panel_to_MAXIS_DIET(DIET_mfip_1, DIET_mfip_1_ver, DIET_mfip_2, DIET_mfip_2_ver, DIET_msa_1, DIET_msa_1_ver, DIET_msa_2, DIET_msa_2_ver, DIET_msa_3, DIET_msa_3_ver, DIET_msa_4, DIET_msa_4_ver)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ DIET_mfip_1, DIET_mfip_1_ver, DIET_mfip_2, DIET_mfip_2_ver, DIET_msa_1, DIET_msa_1_ver, DIET_msa_2, DIET_msa_2_ver, DIET_msa_3, DIET_msa_3_ver, DIET_msa_4, DIET_msa_4_ver: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	call navigate_to_MAXIS_screen("STAT", "DIET")
 	EMWriteScreen reference_number, 20, 76
 	EMWriteScreen "NN", 20, 79
@@ -5545,8 +5574,10 @@ FUNCTION write_panel_to_MAXIS_DIET(DIET_mfip_1, DIET_mfip_1_ver, DIET_mfip_2, DI
 	transmit
 END FUNCTION
 
-'---This function writes using the variables read off of the specialized excel template to the disa panel in MAXIS
 Function write_panel_to_MAXIS_DISA(disa_begin_date, disa_end_date, disa_cert_begin, disa_cert_end, disa_wavr_begin, disa_wavr_end, disa_grh_begin, disa_grh_end, disa_cash_status, disa_cash_status_ver, disa_snap_status, disa_snap_status_ver, disa_hc_status, disa_hc_status_ver, disa_waiver, disa_drug_alcohol)
+'--- This function writes to MAXIS in Krabappel only (writes using the variables read off of the specialized excel template to the disa panel in MAXIS)
+'~~~~~ disa_begin_date, disa_end_date, disa_cert_begin, disa_cert_end, disa_wavr_begin, disa_wavr_end, disa_grh_begin, disa_grh_end, disa_cash_status, disa_cash_status_ver, disa_snap_status, disa_snap_status_ver, disa_hc_status, disa_hc_status_ver, disa_waiver, disa_drug_alcohol: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator	
 	Call navigate_to_MAXIS_screen("STAT", "DISA")  'navigates to the stat panel
 	call create_panel_if_nonexistent
 	IF disa_begin_date <> "" THEN
@@ -5593,6 +5624,9 @@ Function write_panel_to_MAXIS_DISA(disa_begin_date, disa_end_date, disa_cert_beg
 End Function
 
 Function write_panel_to_MAXIS_DSTT(DSTT_ongoing_income, DSTT_HH_income_stop_date, DSTT_income_expected_amt)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ DSTT_ongoing_income, DSTT_HH_income_stop_date, DSTT_income_expected_amt: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator	
 	call navigate_to_MAXIS_screen("STAT", "DSTT")
 	EMReadScreen ERRR_check, 4, 2, 52			'Checking for the ERRR screen
 	If ERRR_check = "ERRR" then transmit		'If the ERRR screen is found, it transmits
@@ -5603,6 +5637,9 @@ Function write_panel_to_MAXIS_DSTT(DSTT_ongoing_income, DSTT_HH_income_stop_date
 End function
 
 FUNCTION write_panel_to_MAXIS_EATS(eats_together, eats_boarder, eats_group_one, eats_group_two, eats_group_three)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ eats_together, eats_boarder, eats_group_one, eats_group_two, eats_group_three: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator	
 	IF reference_number = "01" THEN
 		call navigate_to_MAXIS_screen("STAT", "EATS")
 		call create_panel_if_nonexistent
@@ -5641,6 +5678,9 @@ FUNCTION write_panel_to_MAXIS_EATS(eats_together, eats_boarder, eats_group_one, 
 END FUNCTION
 
 Function write_panel_to_MAXIS_EMMA(EMMA_medical_emergency, EMMA_health_consequence, EMMA_verification, EMMA_begin_date, EMMA_end_date)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ EMMA_medical_emergency, EMMA_health_consequence, EMMA_verification, EMMA_begin_date, EMMA_end_date: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator		
 	call navigate_to_MAXIS_screen("STAT", "EMMA")
 	EMReadScreen ERRR_check, 4, 2, 52			'Checking for the ERRR screen
 	If ERRR_check = "ERRR" then transmit		'If the ERRR screen is found, it transmits
@@ -5653,6 +5693,9 @@ Function write_panel_to_MAXIS_EMMA(EMMA_medical_emergency, EMMA_health_consequen
 End function
 
 FUNCTION write_panel_to_MAXIS_EMPS(EMPS_orientation_date, EMPS_orientation_attended, EMPS_good_cause, EMPS_sanc_begin, EMPS_sanc_end, EMPS_memb_at_home, EMPS_care_family, EMPS_crisis, EMPS_hard_employ, EMPS_under1, EMPS_DWP_date)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ EMPS_orientation_date, EMPS_orientation_attended, EMPS_good_cause, EMPS_sanc_begin, EMPS_sanc_end, EMPS_memb_at_home, EMPS_care_family, EMPS_crisis, EMPS_hard_employ, EMPS_under1, EMPS_DWP_date: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator	
 	call navigate_to_MAXIS_screen("STAT", "EMPS")
 	call create_panel_if_nonexistent
 	If EMPS_orientation_date <> "" then call create_MAXIS_friendly_date(EMPS_orientation_date, 0, 5, 39) 'enter orientation date
@@ -5703,6 +5746,9 @@ FUNCTION write_panel_to_MAXIS_EMPS(EMPS_orientation_date, EMPS_orientation_atten
 End Function
 
 Function write_panel_to_MAXIS_FACI(FACI_vendor_number, FACI_name, FACI_type, FACI_FS_eligible, FACI_FS_facility_type, FACI_date_in, FACI_date_out)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ FACI_vendor_number, FACI_name, FACI_type, FACI_FS_eligible, FACI_FS_facility_type, FACI_date_in, FACI_date_out: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator	
 	call navigate_to_MAXIS_screen("STAT", "FACI")
 	EMReadScreen ERRR_check, 4, 2, 52			'Checking for the ERRR screen
 	If ERRR_check = "ERRR" then transmit		'If the ERRR screen is found, it transmits
@@ -5723,8 +5769,10 @@ Function write_panel_to_MAXIS_FACI(FACI_vendor_number, FACI_name, FACI_type, FAC
 	transmit
 End function
 
-'---The custom function to pull FMED information from the Excel file. This function can handle up to 4 FMED rows per client.
 FUNCTION write_panel_to_MAXIS_FMED(FMED_medical_mileage, FMED_1_type, FMED_1_verif, FMED_1_ref_num, FMED_1_category, FMED_1_begin, FMED_1_end, FMED_1_amount, FMED_2_type, FMED_2_verif, FMED_2_ref_num, FMED_2_category, FMED_2_begin, FMED_2_end, FMED_2_amount, FMED_3_type, FMED_3_verif, FMED_3_ref_num, FMED_3_category, FMED_3_begin, FMED_3_end, FMED_3_amount, FMED_4_type, FMED_4_verif, FMED_4_ref_num, FMED_4_category, FMED_4_begin, FMED_4_end, FMED_4_amount)
+'--- This function writes to MAXIS in Krabappel only (pulls FMED information from the Excel file. This function can handle up to 4 FMED rows per client.)
+'~~~~~ FMED_medical_mileage, FMED_1_type, FMED_1_verif, FMED_1_ref_num, FMED_1_category, FMED_1_begin, FMED_1_end, FMED_1_amount, FMED_2_type, FMED_2_verif, FMED_2_ref_num, FMED_2_category, FMED_2_begin, FMED_2_end, FMED_2_amount, FMED_3_type, FMED_3_verif, FMED_3_ref_num, FMED_3_category, FMED_3_begin, FMED_3_end, FMED_3_amount, FMED_4_type, FMED_4_verif, FMED_4_ref_num, FMED_4_category, FMED_4_begin, FMED_4_end, FMED_4_amount: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	CALL navigate_to_MAXIS_screen("STAT", "FMED")
 	EMReadScreen ERRR_check, 4, 2, 52			'Checking for the ERRR screen
 	If ERRR_check = "ERRR" then transmit		'If the ERRR screen is found, it transmits
@@ -5884,6 +5932,9 @@ FUNCTION write_panel_to_MAXIS_FMED(FMED_medical_mileage, FMED_1_type, FMED_1_ver
 END FUNCTION
 
 Function write_panel_to_MAXIS_HCRE(hcre_appl_addnd_date_input,hcre_retro_months_input,hcre_recvd_by_service_date_input)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ hcre_appl_addnd_date_input,hcre_retro_months_input,hcre_recvd_by_service_date_input: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator	
 	call navigate_to_MAXIS_screen("STAT","HCRE")
 	call create_panel_if_nonexistent
 	'Converting the Appl Addendum Date into a usable format
@@ -5907,11 +5958,13 @@ Function write_panel_to_MAXIS_HCRE(hcre_appl_addnd_date_input,hcre_retro_months_
 	EMWriteScreen left(hcre_recvd_by_service_date_output,2)	, row, col + 51
 	EMWriteScreen mid(hcre_recvd_by_service_date_output,4,2), row, col + 54
 	EMWriteScreen right(hcre_recvd_by_service_date_output,2), row, col + 57
-
 	transmit
 End Function
 
 FUNCTION write_panel_to_MAXIS_HEST(HEST_FS_choice_date, HEST_first_month, HEST_heat_air_retro, HEST_electric_retro, HEST_phone_retro, HEST_heat_air_pro, HEST_electric_pro, HEST_phone_pro)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ HEST_FS_choice_date, HEST_first_month, HEST_heat_air_retro, HEST_electric_retro, HEST_phone_retro, HEST_heat_air_pro, HEST_electric_pro, HEST_phone_pro: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator	
 	call navigate_to_MAXIS_screen("STAT", "HEST")
 	call create_panel_if_nonexistent
 	Emwritescreen "01", 6, 40
@@ -5934,6 +5987,9 @@ FUNCTION write_panel_to_MAXIS_HEST(HEST_FS_choice_date, HEST_first_month, HEST_h
 End function
 
 Function write_panel_to_MAXIS_IMIG(IMIG_imigration_status, IMIG_entry_date, IMIG_status_date, IMIG_status_ver, IMIG_status_LPR_adj_from, IMIG_nationality, IMIG_40_soc_sec, IMIG_40_soc_sec_verif, IMIG_battered_spouse_child, IMIG_battered_spouse_child_verif, IMIG_military_status, IMIG_military_status_verif, IMIG_hmong_lao_nat_amer, IMIG_st_prog_esl_ctzn_coop, IMIG_st_prog_esl_ctzn_coop_verif, IMIG_fss_esl_skills_training)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ IMIG_imigration_status, IMIG_entry_date, IMIG_status_date, IMIG_status_ver, IMIG_status_LPR_adj_from, IMIG_nationality, IMIG_40_soc_sec, IMIG_40_soc_sec_verif, IMIG_battered_spouse_child, IMIG_battered_spouse_child_verif, IMIG_military_status, IMIG_military_status_verif, IMIG_hmong_lao_nat_amer, IMIG_st_prog_esl_ctzn_coop, IMIG_st_prog_esl_ctzn_coop_verif, IMIG_fss_esl_skills_training: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator		
 	call navigate_to_MAXIS_screen("STAT", "IMIG")
 	EMReadScreen ERRR_check, 4, 2, 52			'Checking for the ERRR screen
 	If ERRR_check = "ERRR" then transmit		'If the ERRR screen is found, it transmits
@@ -5967,6 +6023,9 @@ Function write_panel_to_MAXIS_IMIG(IMIG_imigration_status, IMIG_entry_date, IMIG
 End function
 
 Function write_panel_to_MAXIS_INSA(insa_pers_coop_ohi, insa_good_cause_status, insa_good_cause_cliam_date, insa_good_cause_evidence, insa_coop_cost_effect, insa_insur_name, insa_prescrip_drug_cover, insa_prescrip_end_date, insa_persons_covered)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ insa_pers_coop_ohi, insa_good_cause_status, insa_good_cause_cliam_date, insa_good_cause_evidence, insa_coop_cost_effect, insa_insur_name, insa_prescrip_drug_cover, insa_prescrip_end_date, insa_persons_covered: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	call navigate_to_MAXIS_screen("STAT","INSA")
 	call create_panel_if_nonexistent
 
@@ -5994,11 +6053,13 @@ Function write_panel_to_MAXIS_INSA(insa_pers_coop_ohi, insa_good_cause_status, i
 			insa_row = 16
 		END IF
 	NEXT
-
 	transmit
 End Function
 
 FUNCTION write_panel_to_MAXIS_JOBS(jobs_number, jobs_inc_type, jobs_inc_verif, jobs_employer_name, jobs_inc_start, jobs_wkly_hrs, jobs_hrly_wage, jobs_pay_freq)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ jobs_number, jobs_inc_type, jobs_inc_verif, jobs_employer_name, jobs_inc_start, jobs_wkly_hrs, jobs_hrly_wage, jobs_pay_freq: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	call navigate_to_MAXIS_screen("STAT", "JOBS")
 	EMWriteScreen reference_number, 20, 76
 	EMWriteScreen jobs_number, 20, 79
@@ -6132,6 +6193,9 @@ FUNCTION write_panel_to_MAXIS_JOBS(jobs_number, jobs_inc_type, jobs_inc_verif, j
 END FUNCTION
 
 Function write_panel_to_MAXIS_MEDI(SSN_first, SSN_mid, SSN_last, MEDI_claim_number_suffix, MEDI_part_A_premium, MEDI_part_B_premium, MEDI_part_A_begin_date, MEDI_part_B_begin_date, MEDI_apply_prem_to_spdn, MEDI_apply_prem_end_date)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ SSN_first, SSN_mid, SSN_last, MEDI_claim_number_suffix, MEDI_part_A_premium, MEDI_part_B_premium, MEDI_part_A_begin_date, MEDI_part_B_begin_date, MEDI_apply_prem_to_spdn, MEDI_apply_prem_end_date: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	call navigate_to_MAXIS_screen("STAT", "MEDI")
 	EMReadScreen ERRR_check, 4, 2, 52			'Checking for the ERRR screen
 	If ERRR_check = "ERRR" then transmit		'If the ERRR screen is found, it transmits
@@ -6154,6 +6218,9 @@ Function write_panel_to_MAXIS_MEDI(SSN_first, SSN_mid, SSN_last, MEDI_claim_numb
 End function
 
 FUNCTION write_panel_to_MAXIS_MMSA(mmsa_liv_arr, mmsa_cont_elig, mmsa_spous_inc, mmsa_shared_hous)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ mmsa_liv_arr, mmsa_cont_elig, mmsa_spous_inc, mmsa_shared_hous: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	IF mmsa_liv_arr <> "" THEN
 		call navigate_to_MAXIS_screen("STAT", "MMSA")
 		EMWriteScreen "NN", 20, 79
@@ -6167,6 +6234,9 @@ FUNCTION write_panel_to_MAXIS_MMSA(mmsa_liv_arr, mmsa_cont_elig, mmsa_spous_inc,
 END FUNCTION
 
 Function write_panel_to_MAXIS_MSUR(msur_begin_date)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ msur_begin_date: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	call navigate_to_MAXIS_screen("STAT","MSUR")
 	call create_panel_if_nonexistent
 
@@ -6186,8 +6256,10 @@ Function write_panel_to_MAXIS_MSUR(msur_begin_date)
 	transmit
 End Function
 
-'---This function writes using the variables read off of the specialized excel template to the othr panel in MAXIS
 Function write_panel_to_MAXIS_OTHR(othr_type, othr_cash_value, othr_cash_value_ver, othr_owed, othr_owed_ver, othr_date, othr_cash_count, othr_SNAP_count, othr_HC_count, othr_IV_count, othr_joint_owner, othr_share_ratio)
+'--- This function writes to MAXIS in Krabappel only (writes using the variables read off of the specialized excel template to the othr panel in MAXIS)
+'~~~~~ othr_type, othr_cash_value, othr_cash_value_ver, othr_owed, othr_owed_ver, othr_date, othr_cash_count, othr_SNAP_count, othr_HC_count, othr_IV_count, othr_joint_owner, othr_share_ratio: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	Call navigate_to_MAXIS_screen("STAT", "OTHR")  'navigates to the stat panel
 	call create_panel_if_nonexistent
 	Emwritescreen othr_type, 6, 40  'enters other asset type
@@ -6208,6 +6280,9 @@ Function write_panel_to_MAXIS_OTHR(othr_type, othr_cash_value, othr_cash_value_v
 End Function
 
 FUNCTION write_panel_to_MAXIS_PARE(appl_date, reference_number, PARE_child_1, PARE_child_1_relation, PARE_child_1_verif, PARE_child_2, PARE_child_2_relation, PARE_child_2_verif, PARE_child_3, PARE_child_3_relation, PARE_child_3_verif, PARE_child_4, PARE_child_4_relation, PARE_child_4_verif, PARE_child_5, PARE_child_5_relation, PARE_child_5_verif, PARE_child_6, PARE_child_6_relation, PARE_child_6_verif)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ appl_date, reference_number, PARE_child_1, PARE_child_1_relation, PARE_child_1_verif, PARE_child_2, PARE_child_2_relation, PARE_child_2_verif, PARE_child_3, PARE_child_3_relation, PARE_child_3_verif, PARE_child_4, PARE_child_4_relation, PARE_child_4_verif, PARE_child_5, PARE_child_5_relation, PARE_child_5_verif, PARE_child_6, PARE_child_6_relation, PARE_child_6_verif: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	Call navigate_to_MAXIS_screen("STAT", "PARE")
 	CALL write_value_and_transmit(reference_number, 20, 76)
 	EMReadScreen num_of_PARE, 1, 2, 78
@@ -6246,8 +6321,10 @@ FUNCTION write_panel_to_MAXIS_PARE(appl_date, reference_number, PARE_child_1, PA
 	transmit
 end function
 
-'---This function writes using the variables read off of the specialized excel template to the pben panel in MAXIS
 Function write_panel_to_MAXIS_PBEN(pben_referal_date, pben_type, pben_appl_date, pben_appl_ver, pben_IAA_date, pben_disp)
+'--- This function writes to MAXIS in Krabappel only (writes using the variables read off of the specialized excel template to the pben panel in MAXIS)
+'~~~~~ pben_referal_date, pben_type, pben_appl_date, pben_appl_ver, pben_IAA_date, pben_disp: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	Call navigate_to_MAXIS_screen("STAT", "PBEN")  'navigates to the stat panel
 	call create_panel_if_nonexistent
 	Emreadscreen pben_row_check, 2, 8, 24  'reads the MAXIS screen to find out if the PBEN row has already been used.
@@ -6284,6 +6361,9 @@ Function write_panel_to_MAXIS_PBEN(pben_referal_date, pben_type, pben_appl_date,
 End Function
 
 Function write_panel_to_MAXIS_PDED(PDED_wid_deduction, PDED_adult_child_disregard, PDED_wid_disregard, PDED_unea_income_deduction_reason, PDED_unea_income_deduction_value, PDED_earned_income_deduction_reason, PDED_earned_income_deduction_value, PDED_ma_epd_inc_asset_limit, PDED_guard_fee, PDED_rep_payee_fee, PDED_other_expense, PDED_shel_spcl_needs, PDED_excess_need, PDED_restaurant_meals)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ PDED_wid_deduction, PDED_adult_child_disregard, PDED_wid_disregard, PDED_unea_income_deduction_reason, PDED_unea_income_deduction_value, PDED_earned_income_deduction_reason, PDED_earned_income_deduction_value, PDED_ma_epd_inc_asset_limit, PDED_guard_fee, PDED_rep_payee_fee, PDED_other_expense, PDED_shel_spcl_needs, PDED_excess_need, PDED_restaurant_meals: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	call navigate_to_MAXIS_screen("STAT","PDED")
 	call create_panel_if_nonexistent
 
@@ -6368,12 +6448,13 @@ Function write_panel_to_MAXIS_PDED(PDED_wid_deduction, PDED_adult_child_disregar
 		pded_restaurant_meals = left(pded_restaurant_meals,1)
 		EMWriteScreen pded_restaurant_meals, 19, 78
 	End If
-
 	Transmit
-
 End Function
 
 FUNCTION write_panel_to_MAXIS_PREG(PREG_conception_date, PREG_conception_date_ver, PREG_third_trimester_ver, PREG_due_date, PREG_multiple_birth)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ PREG_conception_date, PREG_conception_date_ver, PREG_third_trimester_ver, PREG_due_date, PREG_multiple_birth: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	call navigate_to_MAXIS_screen("STAT", "PREG")
 	call create_panel_if_nonexistent
 	EMWritescreen "NN", 20, 79
@@ -6388,8 +6469,10 @@ FUNCTION write_panel_to_MAXIS_PREG(PREG_conception_date, PREG_conception_date_ve
 	transmit
 end function
 
-'---This function writes using the variables read off of the specialized excel template to the rbic panel in MAXIS
 Function write_panel_to_MAXIS_RBIC(rbic_type, rbic_start_date, rbic_end_date, rbic_group_1, rbic_retro_income_group_1, rbic_prosp_income_group_1, rbic_ver_income_group_1, rbic_group_2, rbic_retro_income_group_2, rbic_prosp_income_group_2, rbic_ver_income_group_2, rbic_group_3, rbic_retro_income_group_3, rbic_prosp_income_group_3, rbic_ver_income_group_3, rbic_retro_hours, rbic_prosp_hours, rbic_exp_type_1, rbic_exp_retro_1, rbic_exp_prosp_1, rbic_exp_ver_1, rbic_exp_type_2, rbic_exp_retro_2, rbic_exp_prosp_2, rbic_exp_ver_2)
+'--- This function writes to MAXIS in Krabappel only (writes using the variables read off of the specialized excel template to the rbic panel in MAXIS)
+'~~~~~ rbic_type, rbic_start_date, rbic_end_date, rbic_group_1, rbic_retro_income_group_1, rbic_prosp_income_group_1, rbic_ver_income_group_1, rbic_group_2, rbic_retro_income_group_2, rbic_prosp_income_group_2, rbic_ver_income_group_2, rbic_group_3, rbic_retro_income_group_3, rbic_prosp_income_group_3, rbic_ver_income_group_3, rbic_retro_hours, rbic_prosp_hours, rbic_exp_type_1, rbic_exp_retro_1, rbic_exp_prosp_1, rbic_exp_ver_1, rbic_exp_type_2, rbic_exp_retro_2, rbic_exp_prosp_2, rbic_exp_ver_2: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	call navigate_to_MAXIS_screen("STAT", "RBIC")  'navigates to the stat panel
 	call create_panel_if_nonexistent
 	EMwritescreen rbic_type, 5, 44  'enters rbic type code
@@ -6437,8 +6520,10 @@ Function write_panel_to_MAXIS_RBIC(rbic_type, rbic_start_date, rbic_end_date, rb
 	EMwritescreen rbic_exp_ver_2, 16, 76    'enters the expenses verification code for group 2
 end function
 
-'---This function writes using the variables read off of the specialized excel template to the rest panel in MAXIS
 Function write_panel_to_MAXIS_REST(rest_type, rest_type_ver, rest_market, rest_market_ver, rest_owed, rest_owed_ver, rest_date, rest_status, rest_joint, rest_share_ratio, rest_agreement_date)
+'--- This function writes to MAXIS in Krabappel only (writes using the variables read off of the specialized excel template to the rest panel in MAXIS)
+'~~~~~ rest_type, rest_type_ver, rest_market, rest_market_ver, rest_owed, rest_owed_ver, rest_date, rest_status, rest_joint, rest_share_ratio, rest_agreement_date: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	Call navigate_to_MAXIS_screen("STAT", "REST")  'navigates to the stat panel
 	call create_panel_if_nonexistent
 	Emwritescreen rest_type, 6, 39  'enters residence type
@@ -6456,6 +6541,9 @@ Function write_panel_to_MAXIS_REST(rest_type, rest_type_ver, rest_market, rest_m
 End Function
 
 Function write_panel_to_MAXIS_SCHL(appl_date, SCHL_status, SCHL_ver, SCHL_type, SCHL_district_nbr, SCHL_kindergarten_start_date, SCHL_grad_date, SCHL_grad_date_ver, SCHL_primary_secondary_funding, SCHL_FS_eligibility_status, SCHL_higher_ed)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ appl_date, SCHL_status, SCHL_ver, SCHL_type, SCHL_district_nbr, SCHL_kindergarten_start_date, SCHL_grad_date, SCHL_grad_date_ver, SCHL_primary_secondary_funding, SCHL_FS_eligibility_status, SCHL_higher_ed: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	EMWriteScreen "SCHL", 20, 71
 	EMWriteScreen reference_number, 20, 76
 	transmit
@@ -6487,8 +6575,10 @@ Function write_panel_to_MAXIS_SCHL(appl_date, SCHL_status, SCHL_ver, SCHL_type, 
 	END IF
 End function
 
-'---This function writes using the variables read off of the specialized excel template to the secu panel in MAXIS
 Function write_panel_to_MAXIS_SECU(secu_type, secu_pol_numb, secu_name, secu_cash_val, secu_date, secu_cash_ver, secu_face_val, secu_withdraw, secu_cash_count, secu_SNAP_count, secu_HC_count, secu_GRH_count, secu_IV_count, secu_joint, secu_share_ratio)
+'--- This function writes to MAXIS in Krabappel only (writes using the variables read off of the specialized excel template to the secu panel in MAXIS)
+'~~~~~ secu_type, secu_pol_numb, secu_name, secu_cash_val, secu_date, secu_cash_ver, secu_face_val, secu_withdraw, secu_cash_count, secu_SNAP_count, secu_HC_count, secu_GRH_count, secu_IV_count, secu_joint, secu_share_ratio: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	Call navigate_to_MAXIS_screen("STAT", "SECU")  'navigates to the stat panel
 	call create_panel_if_nonexistent
 	Emwritescreen secu_type, 6, 50  'enters security type
@@ -6510,6 +6600,9 @@ Function write_panel_to_MAXIS_SECU(secu_type, secu_pol_numb, secu_name, secu_cas
 End Function
 
 FUNCTION write_panel_to_MAXIS_SHEL(SHEL_subsidized, SHEL_shared, SHEL_paid_to, SHEL_rent_retro, SHEL_rent_retro_ver, SHEL_rent_pro, SHEL_rent_pro_ver, SHEL_lot_rent_retro, SHEL_lot_rent_retro_ver, SHEL_lot_rent_pro, SHEL_lot_rent_pro_ver, SHEL_mortgage_retro, SHEL_mortgage_retro_ver, SHEL_mortgage_pro, SHEL_mortgage_pro_ver, SHEL_insur_retro, SHEL_insur_retro_ver, SHEL_insur_pro, SHEL_insur_pro_ver, SHEL_taxes_retro, SHEL_taxes_retro_ver, SHEL_taxes_pro, SHEL_taxes_pro_ver, SHEL_room_retro, SHEL_room_retro_ver, SHEL_room_pro, SHEL_room_pro_ver, SHEL_garage_retro, SHEL_garage_retro_ver, SHEL_garage_pro, SHEL_garage_pro_ver, SHEL_subsidy_retro, SHEL_subsidy_retro_ver, SHEL_subsidy_pro, SHEL_subsidy_pro_ver)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ SHEL_subsidized, SHEL_shared, SHEL_paid_to, SHEL_rent_retro, SHEL_rent_retro_ver, SHEL_rent_pro, SHEL_rent_pro_ver, SHEL_lot_rent_retro, SHEL_lot_rent_retro_ver, SHEL_lot_rent_pro, SHEL_lot_rent_pro_ver, SHEL_mortgage_retro, SHEL_mortgage_retro_ver, SHEL_mortgage_pro, SHEL_mortgage_pro_ver, SHEL_insur_retro, SHEL_insur_retro_ver, SHEL_insur_pro, SHEL_insur_pro_ver, SHEL_taxes_retro, SHEL_taxes_retro_ver, SHEL_taxes_pro, SHEL_taxes_pro_ver, SHEL_room_retro, SHEL_room_retro_ver, SHEL_room_pro, SHEL_room_pro_ver, SHEL_garage_retro, SHEL_garage_retro_ver, SHEL_garage_pro, SHEL_garage_pro_ver, SHEL_subsidy_retro, SHEL_subsidy_retro_ver, SHEL_subsidy_pro, SHEL_subsidy_pro_ver: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	call navigate_to_MAXIS_screen("STAT", "SHEL")
 	call create_panel_if_nonexistent
 	EMWritescreen SHEL_subsidized, 6, 46
@@ -6551,6 +6644,9 @@ FUNCTION write_panel_to_MAXIS_SHEL(SHEL_subsidized, SHEL_shared, SHEL_paid_to, S
 end function
 
 FUNCTION write_panel_to_MAXIS_SIBL(SIBL_group_1, SIBL_group_2, SIBL_group_3)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ SIBL_group_1, SIBL_group_2, SIBL_group_3: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	call navigate_to_MAXIS_screen("STAT", "SIBL")
 	EMReadScreen num_of_SIBL, 1, 2, 78
 	IF num_of_SIBL = "0" THEN
@@ -6594,6 +6690,9 @@ FUNCTION write_panel_to_MAXIS_SIBL(SIBL_group_1, SIBL_group_2, SIBL_group_3)
 end function
 
 Function write_panel_to_MAXIS_SPON(SPON_type, SPON_ver, SPON_name, SPON_state)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ SPON_type, SPON_ver, SPON_name, SPON_state: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	call navigate_to_MAXIS_screen("STAT", "SPON")
 	EMReadScreen ERRR_check, 4, 2, 52			'Checking for the ERRR screen
 	If ERRR_check = "ERRR" then transmit		'If the ERRR screen is found, it transmits
@@ -6606,6 +6705,9 @@ Function write_panel_to_MAXIS_SPON(SPON_type, SPON_ver, SPON_name, SPON_state)
 End function
 
 Function write_panel_to_MAXIS_STEC(STEC_type_1, STEC_amt_1, STEC_actual_from_thru_months_1, STEC_ver_1, STEC_earmarked_amt_1, STEC_earmarked_from_thru_months_1, STEC_type_2, STEC_amt_2, STEC_actual_from_thru_months_2, STEC_ver_2, STEC_earmarked_amt_2, STEC_earmarked_from_thru_months_2)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ STEC_type_1, STEC_amt_1, STEC_actual_from_thru_months_1, STEC_ver_1, STEC_earmarked_amt_1, STEC_earmarked_from_thru_months_1, STEC_type_2, STEC_amt_2, STEC_actual_from_thru_months_2, STEC_ver_2, STEC_earmarked_amt_2, STEC_earmarked_from_thru_months_2: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	EMWriteScreen "STEC", 20, 71
 	EMWriteSCreen reference_number, 20, 76
 	transmit
@@ -6648,6 +6750,9 @@ Function write_panel_to_MAXIS_STEC(STEC_type_1, STEC_amt_1, STEC_actual_from_thr
 End function
 
 Function write_panel_to_MAXIS_STIN(STIN_type_1, STIN_amt_1, STIN_avail_date_1, STIN_months_covered_1, STIN_ver_1, STIN_type_2, STIN_amt_2, STIN_avail_date_2, STIN_months_covered_2, STIN_ver_2)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ STIN_type_1, STIN_amt_1, STIN_avail_date_1, STIN_months_covered_1, STIN_ver_1, STIN_type_2, STIN_amt_2, STIN_avail_date_2, STIN_months_covered_2, STIN_ver_2: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	EMWriteScreen "STIN", 20, 71
 	EMWriteSCreen reference_number, 20, 76
 	transmit
@@ -6680,6 +6785,9 @@ Function write_panel_to_MAXIS_STIN(STIN_type_1, STIN_amt_1, STIN_avail_date_1, S
 End function
 
 Function write_panel_to_MAXIS_STWK(STWK_empl_name, STWK_wrk_stop_date, STWK_wrk_stop_date_verif, STWK_inc_stop_date, STWK_refused_empl_yn, STWK_vol_quit, STWK_ref_empl_date, STWK_gc_cash, STWK_gc_grh, STWK_gc_fs, STWK_fs_pwe, STWK_maepd_ext)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ STWK_empl_name, STWK_wrk_stop_date, STWK_wrk_stop_date_verif, STWK_inc_stop_date, STWK_refused_empl_yn, STWK_vol_quit, STWK_ref_empl_date, STWK_gc_cash, STWK_gc_grh, STWK_gc_fs, STWK_fs_pwe, STWK_maepd_ext: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	call navigate_to_MAXIS_screen("STAT","STWK")
 	call create_panel_if_nonexistent
 
@@ -6699,6 +6807,9 @@ Function write_panel_to_MAXIS_STWK(STWK_empl_name, STWK_wrk_stop_date, STWK_wrk_
 End Function
 
 FUNCTION write_panel_to_MAXIS_TYPE_PROG_REVW(appl_date, type_cash_yn, type_hc_yn, type_fs_yn, prog_mig_worker, revw_ar_or_ir, revw_exempt)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ appl_date, type_cash_yn, type_hc_yn, type_fs_yn, prog_mig_worker, revw_ar_or_ir, revw_exempt: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	call navigate_to_MAXIS_screen("STAT", "TYPE")
 	IF reference_number = "01" THEN
 		EMWriteScreen "NN", 20, 79
@@ -6801,6 +6912,9 @@ FUNCTION write_panel_to_MAXIS_TYPE_PROG_REVW(appl_date, type_cash_yn, type_hc_yn
 END FUNCTION
 
 FUNCTION write_panel_to_MAXIS_UNEA(unea_number, unea_inc_type, unea_inc_verif, unea_claim_suffix, unea_start_date, unea_pay_freq, unea_inc_amount, ssn_first, ssn_mid, ssn_last)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ unea_number, unea_inc_type, unea_inc_verif, unea_claim_suffix, unea_start_date, unea_pay_freq, unea_inc_amount, ssn_first, ssn_mid, ssn_last: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	call navigate_to_MAXIS_screen("STAT", "UNEA")
 	PF10
 	EMWriteScreen reference_number, 20, 76
@@ -6922,6 +7036,9 @@ FUNCTION write_panel_to_MAXIS_UNEA(unea_number, unea_inc_type, unea_inc_verif, u
 END FUNCTION
 
 FUNCTION write_panel_to_MAXIS_WKEX(program, fed_tax_retro, fed_tax_prosp, fed_tax_verif, state_tax_retro, state_tax_prosp, state_tax_verif, fica_retro, fica_prosp, fica_verif, tran_retro, tran_prosp, tran_verif, tran_imp_rel, meals_retro, meals_prosp, meals_verif, meals_imp_rel, uniforms_retro, uniforms_prosp, uniforms_verif, uniforms_imp_rel, tools_retro, tools_prosp, tools_verif, tools_imp_rel, dues_retro, dues_prosp, dues_verif, dues_imp_rel, othr_retro, othr_prosp, othr_verif, othr_imp_rel, HC_Exp_Fed_Tax, HC_Exp_State_Tax, HC_Exp_FICA, HC_Exp_Tran, HC_Exp_Tran_imp_rel, HC_Exp_Meals, HC_Exp_Meals_Imp_Rel, HC_Exp_Uniforms, HC_Exp_Uniforms_Imp_Rel, HC_Exp_Tools, HC_Exp_Tools_Imp_Rel, HC_Exp_Dues, HC_Exp_Dues_Imp_Rel, HC_Exp_Othr, HC_Exp_Othr_Imp_Rel)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ program, fed_tax_retro, fed_tax_prosp, fed_tax_verif, state_tax_retro, state_tax_prosp, state_tax_verif, fica_retro, fica_prosp, fica_verif, tran_retro, tran_prosp, tran_verif, tran_imp_rel, meals_retro, meals_prosp, meals_verif, meals_imp_rel, uniforms_retro, uniforms_prosp, uniforms_verif, uniforms_imp_rel, tools_retro, tools_prosp, tools_verif, tools_imp_rel, dues_retro, dues_prosp, dues_verif, dues_imp_rel, othr_retro, othr_prosp, othr_verif, othr_imp_rel, HC_Exp_Fed_Tax, HC_Exp_State_Tax, HC_Exp_FICA, HC_Exp_Tran, HC_Exp_Tran_imp_rel, HC_Exp_Meals, HC_Exp_Meals_Imp_Rel, HC_Exp_Uniforms, HC_Exp_Uniforms_Imp_Rel, HC_Exp_Tools, HC_Exp_Tools_Imp_Rel, HC_Exp_Dues, HC_Exp_Dues_Imp_Rel, HC_Exp_Othr, HC_Exp_Othr_Imp_Rel: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	CALL navigate_to_MAXIS_screen("STAT", "WKEX")
 	EMReadScreen ERRR_check, 4, 2, 52			'Checking for the ERRR screen
 	If ERRR_check = "ERRR" then transmit		'If the ERRR screen is found, it transmits0
@@ -7007,6 +7124,9 @@ FUNCTION write_panel_to_MAXIS_WKEX(program, fed_tax_retro, fed_tax_prosp, fed_ta
 END FUNCTION
 
 FUNCTION write_panel_to_MAXIS_WREG(wreg_fs_pwe, wreg_fset_status, wreg_defer_fs, wreg_fset_orientation_date, wreg_fset_sanction_date, wreg_num_sanctions, wreg_abawd_status, wreg_ga_basis)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ wreg_fs_pwe, wreg_fset_status, wreg_defer_fs, wreg_fset_orientation_date, wreg_fset_sanction_date, wreg_num_sanctions, wreg_abawd_status, wreg_ga_basis: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	call navigate_to_MAXIS_screen("STAT", "WREG")
 	call create_panel_if_nonexistent
 
@@ -7018,6 +7138,5 @@ FUNCTION write_panel_to_MAXIS_WREG(wreg_fs_pwe, wreg_fset_status, wreg_defer_fs,
 	IF wreg_num_sanctions <> "" THEN EMWriteScreen wreg_num_sanctions, 11, 50
 	EMWriteScreen wreg_abawd_status, 13, 50
 	EMWriteScreen wreg_ga_basis, 15, 50
-
 	transmit
 END FUNCTION
