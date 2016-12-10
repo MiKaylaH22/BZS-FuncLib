@@ -1,9 +1,10 @@
-// TODO: Add tag features
 // TODO: Switch branch to classic
 // TODO: scan script files for a list of scripts where each function is used IRL
 // TODO: Create alpha links bar in navbar, corresponding functionality in the long lists
 // TODO: add Source Code Pro font for monospace, and break out functional examples in monospace like GitHub markdown does
 // TODO: add a Favicon
+// TODO: turn dummy tag buttons into useable tag buttons which sort and integrate with the Functions by tags menu
+// TODO: make sure all FuncLib functions have "()" in them
 
 // read text from URL location
 var request = new XMLHttpRequest();
