@@ -1,4 +1,3 @@
-// TODO: make sure all FuncLib functions have "()" in them\
 // TODO: add explanation text for the tool
 // TODO: shrink the details with an accordion or something
 // TODO: add Source Code Pro font for monospace, and break out functional examples in monospace like GitHub markdown does
