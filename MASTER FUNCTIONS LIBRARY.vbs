@@ -205,10 +205,37 @@ class script
 	end property
 
 end class
+'=========================================================================================================================================================================== END OF CLASSES
 
-'BELOW ARE THE ACTUAL FUNCTIONS----------------------------------------------------------------------------------------------------
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+'BELOW ARE THE ACTUAL FUNCTIONS--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 Function add_ACCI_to_variable(ACCI_variable)
+'--- This function adds STAT/ACCI data to a variable, which can then be displayed in a dialog. See autofill_editbox_from_MAXIS.
+'~~~~~ ACCI_variable: the variable used by the editbox you wish to autofill.
+'===== Keywords: MAXIS, autofill, ACCI
   EMReadScreen ACCI_date, 8, 6, 73
   ACCI_date = replace(ACCI_date, " ", "/")
   If datediff("yyyy", ACCI_date, now) < 5 then
@@ -231,6 +258,9 @@ Function add_ACCI_to_variable(ACCI_variable)
 End function
 
 Function add_ACCT_to_variable(ACCT_variable)
+'--- This function adds STAT/ACCT data to a variable, which can then be displayed in a dialog. See autofill_editbox_from_MAXIS.
+'~~~~~ ACCT_variable: the variable used by the editbox you wish to autofill.
+'===== Keywords: MAXIS, autofill, ACCT
   EMReadScreen ACCT_amt, 8, 10, 46
   ACCT_amt = trim(ACCT_amt)
   ACCT_amt = "$" & ACCT_amt
@@ -260,6 +290,10 @@ Function add_ACCT_to_variable(ACCT_variable)
 End function
 
 Function add_BUSI_to_variable(variable_name_for_BUSI)
+'--- This function adds STAT/BUSI data to a variable, which can then be displayed in a dialog. See autofill_editbox_from_MAXIS.
+'~~~~~ BUSI_variable: the variable used by the editbox you wish to autofill.
+'===== Keywords: MAXIS, autofill, BUSI
+
 	'Reading the footer month, converting to an actual date, we'll need this for determining if the panel is 02/15 or later (there was a change in 02/15 which moved stuff)
 	EMReadScreen BUSI_footer_month, 5, 20, 55
 	BUSI_footer_month = replace(BUSI_footer_month, " ", "/01/")
@@ -445,6 +479,9 @@ Function add_BUSI_to_variable(variable_name_for_BUSI)
 End function
 
 Function add_CARS_to_variable(CARS_variable)
+'--- This function adds STAT/CARS data to a variable, which can then be displayed in a dialog. See autofill_editbox_from_MAXIS.
+'~~~~~ CARS_variable: the variable used by the editbox you wish to autofill.
+'===== Keywords: MAXIS, autofill, CARS
   EMReadScreen CARS_year, 4, 8, 31
   EMReadScreen CARS_make, 15, 8, 43
   CARS_make = replace(CARS_make, "_", "")
@@ -467,6 +504,9 @@ Function add_CARS_to_variable(CARS_variable)
 End function
 
 Function add_JOBS_to_variable(variable_name_for_JOBS)
+'--- This function adds STAT/JOBS data to a variable, which can then be displayed in a dialog. See autofill_editbox_from_MAXIS.
+'~~~~~ JOBS_variable: the variable used by the editbox you wish to autofill.
+'===== Keywords: MAXIS, autofill, JOBS
   EMReadScreen JOBS_month, 5, 20, 55									'reads Footer month
   JOBS_month = replace(JOBS_month, " ", "/")					'Cleans up the read number by putting a / in place of the blank space between MM YY
   EMReadScreen JOBS_type, 30, 7, 42										'Reads up name of the employer and then cleans it up
@@ -563,6 +603,9 @@ Function add_JOBS_to_variable(variable_name_for_JOBS)
 End function
 
 Function add_OTHR_to_variable(OTHR_variable)
+'--- This function adds STAT/OTHR data to a variable, which can then be displayed in a dialog. See autofill_editbox_from_MAXIS.
+'~~~~~ OTHR_variable: the variable used by the editbox you wish to autofill.
+'===== Keywords: MAXIS, autofill, OTHR
   EMReadScreen OTHR_type, 16, 6, 43
   OTHR_type = trim(OTHR_type)
   EMReadScreen OTHR_amt, 10, 8, 40
@@ -573,6 +616,9 @@ Function add_OTHR_to_variable(OTHR_variable)
 End function
 
 Function add_RBIC_to_variable(variable_name_for_RBIC)
+'--- This function adds STAT/RBIC data to a variable, which can then be displayed in a dialog. See autofill_editbox_from_MAXIS.
+'~~~~~ RBIC_variable: the variable used by the editbox you wish to autofill.
+'===== Keywords: MAXIS, autofill, RBIC
 	EMReadScreen RBIC_month, 5, 20, 55
 	RBIC_month = replace(RBIC_month, " ", "/")
 	EMReadScreen RBIC_type, 14, 5, 48
@@ -657,6 +703,9 @@ Function add_RBIC_to_variable(variable_name_for_RBIC)
 End function
 
 Function add_REST_to_variable(REST_variable)
+'--- This function adds STAT/REST data to a variable, which can then be displayed in a dialog. See autofill_editbox_from_MAXIS.
+'~~~~~ REST_variable: the variable used by the editbox you wish to autofill.
+'===== Keywords: MAXIS, autofill, REST
   EMReadScreen REST_type, 16, 6, 41
   REST_type = trim(REST_type)
   EMReadScreen REST_amt, 10, 8, 41
@@ -667,6 +716,9 @@ Function add_REST_to_variable(REST_variable)
 End function
 
 Function add_SECU_to_variable(SECU_variable)
+'--- This function adds STAT/SECU data to a variable, which can then be displayed in a dialog. See autofill_editbox_from_MAXIS.
+'~~~~~ SECU_variable: the variable used by the editbox you wish to autofill.
+'===== Keywords: MAXIS, autofill, SECU
   EMReadScreen SECU_amt, 8, 10, 52
   SECU_amt = trim(SECU_amt)
   SECU_amt = "$" & SECU_amt
@@ -696,6 +748,9 @@ Function add_SECU_to_variable(SECU_variable)
 End function
 
 Function add_UNEA_to_variable(variable_name_for_UNEA)
+'--- This function adds STAT/UNEA data to a variable, which can then be displayed in a dialog. See autofill_editbox_from_MAXIS.
+'~~~~~ UNEA_variable: the variable used by the editbox you wish to autofill.
+'===== Keywords: MAXIS, autofill, UNEA
   EMReadScreen UNEA_month, 5, 20, 55
   UNEA_month = replace(UNEA_month, " ", "/")
   EMReadScreen UNEA_type, 16, 5, 40
@@ -759,8 +814,11 @@ Function add_UNEA_to_variable(variable_name_for_UNEA)
   End if
 End function
 
-'This function will assign an address to a variable selected from the interview_location variable in the Appt Letter script.
 Function assign_county_address_variables(address_line_01, address_line_02)
+'--- This function will assign an address to a variable selected from the interview_location variable in the Appt Letter script.
+'~~~~~ address_line_01: 1st line of address (street address) from new_office_array
+'~~~~~ address_line_02: 2nd line of address (city/state/zip) from new_office_array
+'===== Keywords: MAXIS, APPT LETTER, ADDRESS
 	For each office in county_office_array				'Splits the county_office_array, which is set by the config program and declared earlier in this file
 		If instr(office, interview_location) <> 0 then		'If the name of the office is found in the "interview_location" variable, which is contained in the MEMO - appt letter script.
 			new_office_array = split(office, "|")		'Split the office into its own array
@@ -771,12 +829,18 @@ Function assign_county_address_variables(address_line_01, address_line_02)
 End function
 
 Function attn
+ '--- This function sends or hits the ESC (escape) key. 
+  '===== Keywords: MAXIS, MMIS, PRISM, ESC
   EMSendKey "<attn>"
   EMWaitReady -1, 0
 End function
 
 Function autofill_editbox_from_MAXIS(HH_member_array, panel_read_from, variable_written_to)
- 'First it navigates to the screen. Only does the first four characters because we use separate handling for HCRE-retro. This is something that should be fixed someday!!!!!!!!!
+ '--- This function autofills information for all HH members idenified from the HH_member_array from a selected MAXIS panel into an edit box in a dialog.
+ '~~~~~ HH_member_array: array of HH members from function HH_member_custom_dialog(HH_member_array). User selects which HH members are added to array. 
+ '~~~~~ read_panel_from: first four characters because we use separate handling for HCRE-retro. This is something that should be fixed someday!!!!!!!!!
+ '~~~~~ variable_written_to: the variable used by the editbox you wish to autofill.
+ '===== Keywords: MAXIS, autofill, HH_member_array
   call navigate_to_MAXIS_screen("stat", left(panel_read_from, 4))
 
   'Now it checks for the total number of panels. If there's 0 Of 0 it'll exit the function for you so as to save oodles of time.
@@ -1963,6 +2027,8 @@ Function autofill_editbox_from_MAXIS(HH_member_array, panel_read_from, variable_
 End function
 
 function back_to_SELF
+'--- This function will return back to the 'SELF' menu or the MAXIS home menu 
+'===== Keywords: MAXIS, SELF, navigate
   Do
     EMSendKey "<PF3>"
     EMWaitReady 0, 0
@@ -1970,8 +2036,9 @@ function back_to_SELF
   Loop until SELF_check = "SELF"
 End function
 
-'This function asks if you want to cancel. If you say yes, it sends StopScript.
 FUNCTION cancel_confirmation
+'--- This function asks if the user if they want to cancel. If you say yes, the script will end. If no, the dialog will appear for the user again.
+'===== Keywords: MAXIS, PRISM, MMIS, cancel, script_end_procedure
 	If ButtonPressed = 0 then
 		cancel_confirm = MsgBox("Are you sure you want to cancel the script? Press YES to cancel. Press NO to return to the script.", vbYesNo)
 		If cancel_confirm = vbYes then script_end_procedure("~PT: user pressed cancel")
@@ -1979,9 +2046,10 @@ FUNCTION cancel_confirmation
 	End if
 END FUNCTION
 
-' This is a custom function to change the format of a participant name.  The parameter is a string with the
-' client's name formatted like "Levesseur, Wendy K", and will change it to "Wendy K LeVesseur".
 FUNCTION change_client_name_to_FML(client_name)
+'--- This function changes the format of a participant name. client's name formatted like "Levesseur, Wendy K", and will change it to "Wendy K LeVesseur".
+'~~~~~ client_name: variable used within the script for name to be converted
+'===== Keywords: PRISM, name, change
 	client_name = trim(client_name)
 	length = len(client_name)
 	position = InStr(client_name, ", ")
@@ -1994,7 +2062,10 @@ FUNCTION change_client_name_to_FML(client_name)
 END FUNCTION
 
 function changelog_display()
-
+'--- This function determines if the user has been informed of a change to a script, and if not will display a mesage box with the script's change log information
+'~~~~~ (): always leave the parameter empty
+'===== Keywords: MAXIS, PRISM, change, info, information
+	
 	'Needs to determine MyDocs directory before proceeding.
 	Set wshshell = CreateObject("WScript.Shell")
 	user_myDocs_folder = wshShell.SpecialFolders("MyDocuments") & "\"
@@ -2117,17 +2188,26 @@ function changelog_display()
 
 		end if
 
-		Set objTextStream = Nothing
+		'Close the file
+		objTextStream.Close
 	End with
 
 end function
 
 function changelog_update(date_of_change, text_of_change, scriptwriter_of_change)
+'--- This function adds the change to the scripts to the user change log to be displayed in function changelog_display()
+'~~~~~ date_of_change: date the change was made/committed to the script file. Surround date in ""
+'~~~~~ text_of_change: information about the change to the script that users statewide will see. Please be clear about your updates. You can write several sentences. Surround text in "".
+'~~~~~ scriptwriter_of_change: scriptwriter name and county seperated by a comma. Surround name and county name with "".
+'===== Keywords: MAXIS, PRISM, change, info, information
 	ReDim Preserve changelog(UBound(changelog) + 1)
 	changelog(ubound(changelog)) = date_of_change & " | " & text_of_change & " | " & scriptwriter_of_change
 end function
 
 Function check_for_MAXIS(end_script)
+'--- This function checks to ensure the user is in a MAXIS panel
+'~~~~~ end_script: If end_script = TRUE the script will end. If end_script = FALSE, the user will be given the option to cancel the script, or manually navigate to a MAXIS screen.
+'===== Keywords: MAXIS, production, script_end_procedure
 	Do
 		transmit
 		EMReadScreen MAXIS_check, 5, 1, 39
@@ -2142,9 +2222,10 @@ Function check_for_MAXIS(end_script)
 	Loop until MAXIS_check = "MAXIS" or MAXIS_check = "AXIS "
 End function
 
-
 Function check_for_MMIS(end_script)
-'Sending MMIS back to the beginning screen and checking for a password prompt. If end_script is set to true, the script will end; if set to false, script will continue once password is entered
+'--- This function checks to ensure the user is in a MMIS panel
+'~~~~~ end_script: If end_script = TRUE the script will end. If end_script = FALSE, the user will be given the option to cancel the script, or manually navigate to a MMIS screen.
+'===== Keywords: MMIS, production, script_end_procedure
 	Do
 		transmit
 		row = 1
@@ -2162,6 +2243,9 @@ Function check_for_MMIS(end_script)
 End function
 
 Function check_for_password(are_we_passworded_out)
+'--- This function checks to make sure a user is not passworded out. If they are, it allows the user to password back in. NEEDS TO BE ADDED INTO dialog DO...lOOPS
+'~~~~~ are_we_passworded_out: When adding to dialog enter "Call check_for_password(are_we_passworded_out)", then Loop until are_we_passworded_out = false. Parameter will remain true if the user still needs to input password.
+'===== Keywords: MAXIS, PRISM, password
 	Transmit 'transmitting to see if the password screen appears
 	Emreadscreen password_check, 8, 2, 33 'checking for the word password which will indicate you are passworded out
 	If password_check = "PASSWORD" then 'If the word password is found then it will tell the worker and set the parameter to be true, otherwise it will be set to false.
@@ -2172,8 +2256,10 @@ Function check_for_password(are_we_passworded_out)
 	End If
 End Function
 
-
 Function check_for_PRISM(end_script)
+'--- This function checks to ensure the user is in a PRISM panel
+'~~~~~ end_script: If end_script = TRUE the script will end. If end_script = FALSE, the user will be given the option to cancel the script, or manually navigate to a PRISM screen.
+'===== Keywords: PRISM, production, script_end_procedure
 	EMReadScreen PRISM_check, 5, 1, 36
 	if end_script = True then
 		If PRISM_check <> "PRISM" then script_end_procedure("You do not appear to be in PRISM. You may be passworded out. Please check your PRISM screen and try again.")
@@ -2183,13 +2269,20 @@ Function check_for_PRISM(end_script)
 end function
 
 Function clear_line_of_text(row, start_column)
+'--- This function clears out a single line of text 
+'~~~~~ row: coordinate of row to clear
+'~~~~~ start_column: coordinate of column to start clearing 
+'===== Keywords: MAXIS, PRISM, production, clear
   EMSetCursor row, start_column
   EMSendKey "<EraseEof>"
   EMWaitReady 0, 0
 End function
 
-'This function converts an array into a droplist to be used by a dialog
 Function convert_array_to_droplist_items(array_to_convert, output_droplist_box)
+'--- This function converts an array into a droplist to be used within dialog
+'~~~~~ array_to_convert: name of the array
+'~~~~~ output_droplist_box: name of droplist variant/variable
+'===== Keywords: MAXIS, PRISM, production, array, droplist 
 	For each item in array_to_convert
 		If output_droplist_box = "" then
 			output_droplist_box = item
@@ -2199,17 +2292,24 @@ Function convert_array_to_droplist_items(array_to_convert, output_droplist_box)
 	Next
 End Function
 
-'This function converts a date (MM/DD/YY or MM/DD/YYYY format) into a separate footer month and footer year variables. For best results, always use MAXIS_footer_month and MAXIS_footer_year as the appropriate variables.
 FUNCTION convert_date_into_MAXIS_footer_month(date_to_convert, MAXIS_footer_month, MAXIS_footer_year)
+'--- This function converts a date (MM/DD/YY or MM/DD/YYYY format) into a separate footer month and footer year variables.
+'~~~~~ date_to_convert: variable name of date you want to convert 
+'~~~~~ MAXIS_footer_month: footer month to convert the date into 
+'~~~~~ MAXIS_footer_month: footer year to convert the date into
+'===== Keywords: MAXIS, production, array, droplist, convert
 	MAXIS_footer_month = DatePart("m", date_to_convert)										'Uses DatePart function to copy the month from date_to_convert into the MAXIS_footer_month variable.
 	IF Len(MAXIS_footer_month) = 1 THEN MAXIS_footer_month = "0" & MAXIS_footer_month		'Uses Len function to determine if the MAXIS_footer_month is a single digit month. If so, it adds a 0, which MAXIS needs.
 	MAXIS_footer_year = DatePart("yyyy", date_to_convert)									'Uses DatePart function to copy the year from date_to_convert into the MAXIS_footer_year variable.
 	MAXIS_footer_year = Right(MAXIS_footer_year, 2)											'Uses Right function to reduce the MAXIS_footer_year variable to it's right 2 characters (allowing for a 2 digit footer year).
 END FUNCTION
 
-'This function converts a numeric digit to an Excel column, up to 104 digits (columns).
 function convert_digit_to_excel_column(col_in_excel)
+'--- This function converts a numeric digit to an Excel column, up to 104 digits (columns).
+'~~~~~ col_in_excel: must be a numeric, cannot exceed 104. Do not put in "".
+'===== Keywords: MAXIS, PRISM, convert, Excel
 	'Create string with the alphabet
+	
 	alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 	'Assigning a letter, based on that column. Uses "mid" function to determine it. If number > 26, it handles by adding a letter (per Excel).
@@ -2222,8 +2322,13 @@ function convert_digit_to_excel_column(col_in_excel)
 	If col_in_excel >= 105 then script_end_procedure("This script is only able to assign excel columns to 104 distinct digits. You've exceeded this number, and this script cannot continue.")
 end function
 
-'This function is used to grab all active X numbers according to the supervisor X number(s) inputted
+
 FUNCTION create_array_of_all_active_x_numbers_by_supervisor(array_name, supervisor_array)
+'--- This function is used to grab all active X numbers according to the supervisor X number(s) inputted
+'~~~~~ array_name: name of array that will contain all the supervisor's staff x numbers
+'~~~~~ supervisor_array: list of supervisor's x numbers seperated by comma
+'===== Keywords: MAXIS, array, supervisor, worker number, create
+	'Create string with the alphabet	
 	'Getting to REPT/USER
 	CALL navigate_to_MAXIS_screen("REPT", "USER")
 
@@ -2261,6 +2366,10 @@ FUNCTION create_array_of_all_active_x_numbers_by_supervisor(array_name, supervis
 END FUNCTION
 
 Function create_array_of_all_active_x_numbers_in_county(array_name, county_code)
+'--- This function is used to grab all active X numbers in a county
+'~~~~~ array_name: name of array that will contain all the x numbers
+'~~~~~ county_code: inserted by reading the county code under REPT/USER
+'===== Keywords: MAXIS, array, worker number, create
 	'Getting to REPT/USER
 	call navigate_to_MAXIS_screen("rept", "user")
 
@@ -2297,6 +2406,12 @@ Function create_array_of_all_active_x_numbers_in_county(array_name, county_code)
 End function
 
 FUNCTION create_mainframe_friendly_date(date_variable, screen_row, screen_col, year_type)
+'--- This function creates a mainframe friendly date. This can be used for both year formats and input spacing.
+'~~~~~ date_variable: the name of the variable to output 
+'~~~~~ screen_row: row to start writing date
+'~~~~~ screen_col: column to start writing date
+'~~~~~ year_type: formatting to export date year as "YY" or "YYYY"
+'===== Keywords: MAXIS, PRISM, MMIS, date, create
 	var_month = datepart("m", date_variable)
 	IF len(var_month) = 1 THEN var_month = "0" & var_month
 	EMWriteScreen var_month & "/", screen_row, screen_col
@@ -2314,8 +2429,13 @@ FUNCTION create_mainframe_friendly_date(date_variable, screen_row, screen_col, y
 	EMWriteScreen var_year, screen_row, screen_col + 6
 END FUNCTION
 
-'Creates a MM DD YY date entry at screen_row and screen_col. The variable_length variable is the amount of days to offset the date entered. I.e., 10 for 10 days, -10 for 10 days in the past, etc.
 Function create_MAXIS_friendly_date(date_variable, variable_length, screen_row, screen_col)
+'--- This function creates a MM DD YY date entry into BlueZone.
+'~~~~~ date_variable: the name of the variable to output 
+'~~~~~ variable_length:the amount of days to offset the date entered. I.e., 10 for 10 days, -10 for 10 days in the past, etc.
+'~~~~~ screen_row: row to start writing date
+'~~~~~ screen_col: column to start writing date
+'===== Keywords: MAXIS, date, create
 	var_month = datepart("m", dateadd("d", variable_length, date_variable))
 	If len(var_month) = 1 then var_month = "0" & var_month
 	EMWriteScreen var_month, screen_row, screen_col
@@ -2327,6 +2447,12 @@ Function create_MAXIS_friendly_date(date_variable, variable_length, screen_row, 
 End function
 
 FUNCTION create_MAXIS_friendly_date_three_spaces_between(date_variable, variable_length, screen_row, screen_col)
+'--- This function creates a MM  DD  YY date entry into BlueZone.
+'~~~~~ date_variable: the name of the variable to output 
+'~~~~~ variable_length:the amount of days to offset the date entered. I.e., 10 for 10 days, -10 for 10 days in the past, etc.
+'~~~~~ screen_row: row to start writing date
+'~~~~~ screen_col: column to start writing date
+'===== Keywords: MAXIS, date, create
 	var_month = datepart("m", dateadd("d", variable_length, date_variable))		'determines the date based on the variable length: month
 	If len(var_month) = 1 then var_month = "0" & var_month				'adds a '0' in front of a single digit month
 	EMWriteScreen var_month, screen_row, screen_col					'writes in var_month at coordinates set in FUNCTION line
@@ -2337,8 +2463,13 @@ FUNCTION create_MAXIS_friendly_date_three_spaces_between(date_variable, variable
 	EMWriteScreen right(var_year, 2), screen_row, screen_col + 10 			'writes in var_year at coordinates set in FUNCTION line , and starts 5 columns into date field in MAXIS
 END FUNCTION
 
-'Creates a MM DD YYYY date entry at screen_row and screen_col. The variable_length variable is the amount of days to offset the date entered. I.e., 10 for 10 days, -10 for 10 days in the past, etc.
 FUNCTION create_MAXIS_friendly_date_with_YYYY(date_variable, variable_length, screen_row, screen_col)
+'--- This function creates a MM DD YYYY date entry into BlueZone.
+'~~~~~ date_variable: the name of the variable to output 
+'~~~~~ variable_length:the amount of days to offset the date entered. I.e., 10 for 10 days, -10 for 10 days in the past, etc.
+'~~~~~ screen_row: row to start writing date
+'~~~~~ screen_col: column to start writing date
+'===== Keywords: MAXIS, date, create
 	var_month = datepart("m", dateadd("d", variable_length, date_variable))
 	IF len(var_month) = 1 THEN var_month = "0" & var_month
 	EMWriteScreen var_month, screen_row, screen_col
@@ -2350,6 +2481,11 @@ FUNCTION create_MAXIS_friendly_date_with_YYYY(date_variable, variable_length, sc
 END FUNCTION
 
 FUNCTION create_MAXIS_friendly_phone_number(phone_number_variable, screen_row, screen_col)
+'--- This function creates a MAXIS friendly phone number 
+'~~~~~ phone_number_variable: the name of the variable to output 
+'~~~~~ screen_row: row to start writing phone number
+'~~~~~ screen_col: column to start writing phone number
+'===== Keywords: MAXIS, date, create
 	WITH (new RegExp)                                                            	'Uses RegExp to bring in special string functions to remove the unneeded strings
                 .Global = True                                                   	'I don't know what this means but David made it work so we're going with it
                 .Pattern = "\D"                                                	 	'Again, no clue. Just do it.
@@ -2361,6 +2497,9 @@ FUNCTION create_MAXIS_friendly_phone_number(phone_number_variable, screen_row, s
 END FUNCTION
 
 Function create_panel_if_nonexistent()
+'--- This function creates a panel if a panel does not exist. This is currently only used within the FuncLib itself.
+'~~~~~ (): keep this parameter empty
+'===== Keywords: MAXIS, FuncLib only, create 
 	EMWriteScreen reference_number , 20, 76
 	transmit
 	EMReadScreen case_panel_check, 44, 24, 2
@@ -2391,6 +2530,11 @@ Function create_panel_if_nonexistent()
 End Function
 
 FUNCTION date_array_generator(initial_month, initial_year, date_array)
+'--- This function creates a series of dates (Example: for each footer month/year through current month plus 1)
+'~~~~~ initial_month: first footer month 
+'~~~~~ initial_year: first footer year
+'~~~~~ date_array: the name of the array that holds the dates/number of months to create dates for
+'===== Keywords: MAXIS, create, date, array
 	'defines an intial date from the initial_month and initial_year parameters
 	initial_date = initial_month & "/1/" & initial_year
 	'defines a date_list, which starts with just the initial date
@@ -2408,7 +2552,9 @@ FUNCTION date_array_generator(initial_month, initial_year, date_array)
 End function
 
 FUNCTION date_converter_PALC_PAPL (date_variable)
-
+'--- This function creates a creates a date in MM/DD/YY format 
+'~~~~~ date_variable: name of variable that holds the date info
+'===== Keywords: PRISM, date convert, PALC, PAPL
 	date_year = left (date_variable, 2)
 	date_day = right (date_variable, 2)
 	date_month = right (left (date_variable, 4), 2)
@@ -2417,15 +2563,14 @@ FUNCTION date_converter_PALC_PAPL (date_variable)
 END FUNCTION
 
 Function dynamic_calendar_dialog(selected_dates_array, month_to_use, text_prompt, one_date_only, disable_weekends, disable_month_change, start_date, end_date)
-	'Instructions for function
-	' PARAMETERS:
-	' selected_dates_array  - is the output array it will contain dates in MM/DD/YY format
-	' month_to_use          - this can be MM/YY or MM/DD/YY format as long as it is considered a date it will work.
-	' one_date_only         - this is a True/false parameter which will restrict the function to only allow one date to be selected if set to TRUE
-	' disable_weekends      - this is a True/false parameter which will restrict the selection of weekends if set to TRUE
-	' disable_month_change  - this is a True/false parameter which will restrict the selection of different months if set to TRUE
-	' start_date & end_date - This will provide a range of dates which cannot be selected. These are to be entered as numbers. For example start_date = 3 and end_date = 14 the days 3 through 14 will be unavailable to select
-
+'--- This function creates a dynamic calendar that users can select dates from to be used in scheduleing. This is used in BULK - REVS SCRUBBER. 
+'~~~~~ selected_dates_array:the output array it will contain dates in MM/DD/YY format
+'~~~~~ month_to_use: this can be MM/YY or MM/DD/YY format as long as it is considered a date it will work.
+'~~~~~ one_date_only: this is a True/false parameter which will restrict the function to only allow one date to be selected if set to TRUE
+'~~~~~ disable_weekends: this is a True/false parameter which will restrict the selection of weekends if set to TRUE
+'~~~~~ disable_month_change: this is a True/false parameter which will restrict the selection of different months if set to TRUE
+'~~~~~ start_date & end_date: this will provide a range of dates which cannot be selected. These are to be entered as numbers. For example start_date = 3 and end_date = 14 the days 3 through 14 will be unavailable to select 
+'===== Keywords: MAXIS, PRISM, create, date, calendar, dialog
 	'dimming array to display the dates
 	DIM display_dates_array
 	DO
@@ -2533,6 +2678,11 @@ Function end_excel_and_script
 End function
 
 Function enter_PRISM_case_number(case_number_variable, row, col)
+'--- This function enters a PRISM case number
+'~~~~~ case_number_variable: use PRISM_case_number
+'~~~~~ row: row to write case number
+'~~~~~ col: column to write case number
+'===== Keywords: PRISM, case number
 	EMSetCursor row, col
 	EMSendKey replace(case_number_variable, "-", "")                                                                                                                                       'Entering the specific case indicated
 	EMSendKey "<enter>"
@@ -2540,6 +2690,13 @@ Function enter_PRISM_case_number(case_number_variable, row, col)
 End function
 
 Function excel_open(file_url, visible_status, alerts_status, ObjExcel, objWorkbook)
+'--- This function opens a specific excel file
+'~~~~~ file_url: name of the file
+'~~~~~ visable_status: set to either TRUE (visible) or FALSE (not-visible)
+'~~~~~ alerts_status: set to either TRUE (show alerts) or FALSE (suppress alerts)
+'~~~~~ ObjExcel: leave as 'objExcel'
+'~~~~~ objWorkbook: leave as 'objWorkbook' 
+'===== Keywords: MAXIS, PRISM, MMIS, Excel
 	Set objExcel = CreateObject("Excel.Application") 'Allows a user to perform functions within Microsoft Excel
 	objExcel.Visible = visible_status
 	Set objWorkbook = objExcel.Workbooks.Open(file_url) 'Opens an excel file from a specific URL
@@ -2547,6 +2704,11 @@ Function excel_open(file_url, visible_status, alerts_status, ObjExcel, objWorkbo
 End Function
 
 Function find_variable(opening_string, variable_name, length_of_variable)
+'--- This function finds a string on a page in BlueZone
+'~~~~~ opening_string: string to search for
+'~~~~~ variable_name: variable name of the string
+'~~~~~ length_of_variable: length of the string
+'===== Keywords: MAXIS, MMIS, PRISM, find
   row = 1
   col = 1
   EMSearch opening_string, row, col
@@ -2554,6 +2716,10 @@ Function find_variable(opening_string, variable_name, length_of_variable)
 End function
 
 Function file_selection_system_dialog(file_selected, file_extension_restriction)
+'--- This function allows a user to select a file to be opened in a script
+'~~~~~ file_selected: variable for the name of the file
+'~~~~~ file_extension_restriction: restricts all other file type besides allowed file type. Example: ".csv" only allows a CSV file to be accessed.
+'===== Keywords: MAXIS, MMIS, PRISM, file
 	'Creates a Windows Script Host object
 	Set wShell=CreateObject("WScript.Shell")
 
@@ -2574,6 +2740,9 @@ Function file_selection_system_dialog(file_selected, file_extension_restriction)
 End function
 
 FUNCTION find_MAXIS_worker_number(x_number)
+'--- This function finds a MAXIS worker's X number
+'~~~~~ x_number: worker number variable
+'===== Keywords: MAXIS, worker number
 	EMReadScreen SELF_check, 4, 2, 50		'Does this to check to see if we're on SELF screen
 	IF SELF_check = "SELF" THEN				'if on the self screen then x # is read from coordinates
 		EMReadScreen x_number, 7, 22, 8
@@ -2603,9 +2772,10 @@ Function fix_case(phrase_to_split, smallest_length_to_skip)										'Ex: fix_ca
 	phrase_to_split = output_phrase																'making the phrase_to_split equal to the output, so that it can be used by the rest of the script.
 End function
 
-'This function takes in a client's name and outputs the name (accounting for hyphenated surnames) with Ucase first character
-'and lcase the rest. This is like fix_case but this function is a bit more specific for names
 FUNCTION fix_case_for_name(name_variable)
+'--- This function takes in a client's name and outputs the name (accounting for hyphenated surnames) with Ucase first character & and lcase the rest. This is like fix_case but this function is a bit more specific for names
+'~~~~~ name_variable: should be client_name for function to work
+'===== Keywords: MAXIS, MMIS, PRISM, name, case
 	name_variable = split(name_variable, " ")
 	FOR EACH client_name IN name_variable
 		IF client_name <> "" THEN
@@ -2625,17 +2795,19 @@ FUNCTION fix_case_for_name(name_variable)
 	name_variable = output_variable
 END FUNCTION
 
-'This is a custom function to fix data that we are reading from PRISM that includes underscores.  The parameter is a string for the
-'variable to be searched.  The function searches the variable and removes underscores.  Then, the fix case function is called to format
-'the string in the correct case.  Finally, the data is trimmed to remove any excess spaces.
 FUNCTION fix_read_data (search_string)
+'--- This function fixes data that we are reading from PRISM that includes underscores. The function searches the variable and removes underscores. Then, the fix case function is called to format the string to the correct case & the data is trimmed to remove any excess spaces.
+'~~~~~ search_string: the string for the variable to be searched
+'===== Keywords: MAXIS, MMIS, PRISM, name, data, fix
 	search_string = replace(search_string, "_", "")
 	call fix_case(search_string, 1)
 	search_string = trim(search_string)
 	fix_read_data = search_string 'To make this a return function, this statement must set the value of the function name
 END FUNCTION
 
-Function get_county_code		'Determines county_name from worker_county_code, and asks for it if it's blank
+Function get_county_code		
+'--- This function determines county_name from worker_county_code, and asks for it if it's blank
+'===== Keywords: MAXIS, MMIS, PRISM, county 
 	If left(code_from_installer, 2) = "PT" then 'special handling for Pine Tech
 		worker_county_code = "PWVTS"
 	Else
@@ -2835,6 +3007,8 @@ Function get_county_code		'Determines county_name from worker_county_code, and a
 End function
 
 Function get_to_MMIS_session_begin
+'--- This function brings a MMIS user all the way out of MMIS by PF6'ing until the session is terminated.
+'===== Keywords: MMIS, PF6
   Do
     EMSendkey "<PF6>"
     EMWaitReady 0, 0
@@ -2843,7 +3017,9 @@ Function get_to_MMIS_session_begin
 End function
 
 Function HH_member_custom_dialog(HH_member_array)
-
+'--- This function creates an array of all household members in a MAXIS case, and allows users to select which members to seek/add information to add to edit boxes in dialogs. 
+'~~~~~ HH_member_array: should be HH_member_array for function to work
+'===== Keywords: MAXIS, member, array, dialog
 	CALL Navigate_to_MAXIS_screen("STAT", "MEMB")   'navigating to stat memb to gather the ref number and name.
 
 	DO								'reads the reference number, last name, first name, and then puts it into a single string then into the array
@@ -2902,7 +3078,9 @@ Function HH_member_custom_dialog(HH_member_array)
 	HH_member_array = SPLIT(HH_member_array, " ")
 End function
 
-function log_usage_stats_without_closing 'For use when logging usage stats but then running another script, i.e. DAIL scrubber
+function log_usage_stats_without_closing 
+'--- This function allows logging usage stats but then running another script without closing, i.e. DAIL scrubber
+'===== Keywords: MAXIS, MMIS, PRISM, statistics
 	stop_time = timer
 	script_run_time = stop_time - start_time
 	If is_county_collecting_stats = True then
@@ -2928,6 +3106,8 @@ function log_usage_stats_without_closing 'For use when logging usage stats but t
 end function
 
 Function MAXIS_background_check
+'--- This function checks to see if a user is in background 
+'===== Keywords: MAXIS, background 
 	Do
 		call navigate_to_MAXIS_screen("STAT", "SUMM")
 		EMReadScreen SELF_check, 4, 2, 50
@@ -2939,6 +3119,9 @@ Function MAXIS_background_check
 End function
 
 Function MAXIS_case_number_finder(variable_for_MAXIS_case_number)
+'--- This function finds the MAXIS case number if listed on a MAXIS screen
+'~~~~~ variable_for_MAXIS_case_number: this should be 'MAXIS_case_number'
+'===== Keywords: MAXIS, case number 
 	EMReadScreen variable_for_SELF_check, 4, 2, 50
 	IF variable_for_SELF_check = "SELF" then
 		EMReadScreen variable_for_MAXIS_case_number, 8, 18, 43
@@ -2957,8 +3140,9 @@ Function MAXIS_case_number_finder(variable_for_MAXIS_case_number)
 
 End function
 
-'This function navigates to various panels in MAXIS. You need to name your buttons using the button names in the function.
 FUNCTION MAXIS_dialog_navigation
+'--- This function navigates to various panels in MAXIS. You need to name your buttons using the button names in the function.
+'===== Keywords: MAXIS, dialog, navigation
 	'This part works with the prev/next buttons on several of our dialogs. You need to name your buttons prev_panel_button, next_panel_button, prev_memb_button, and next_memb_button in order to use them.
 	EMReadScreen STAT_check, 4, 20, 21
 	If STAT_check = "STAT" then
@@ -3071,8 +3255,11 @@ FUNCTION MAXIS_dialog_navigation
 	If ButtonPressed = WREG_button then call navigate_to_MAXIS_screen("stat", "WREG")
 END FUNCTION
 
-FUNCTION MAXIS_footer_finder(MAXIS_footer_month, MAXIS_footer_year)'Grabbing the footer month/year
-	'Does this to check to see if we're on SELF screen
+FUNCTION MAXIS_footer_finder(MAXIS_footer_month, MAXIS_footer_year)
+'--- This function finds the MAXIS footer month/year for MAXIS cases in SELF, MAXIS panels or MEMO screens.
+'~~~~~ MAXIS_footer_month: needs to be 'MAXIS_footer_month'
+'~~~~~ MAXIS_footer_year: needs to be 'MAXIS_footer_year'
+'===== Keywords: MAXIS, footer, month, year
 	EMReadScreen SELF_check, 4, 2, 50
 	IF SELF_check = "SELF" THEN
 		EMReadScreen MAXIS_footer_month, 2, 20, 43
@@ -3090,8 +3277,9 @@ FUNCTION MAXIS_footer_finder(MAXIS_footer_month, MAXIS_footer_year)'Grabbing the
 	End if
 END FUNCTION
 
-'Function for checking and changing the footer month to the MAXIS_footer_month & MAXIS_footer_year selected by the user in the inital dialog if necessary
-FUNCTION MAXIS_footer_month_confirmation	'Must use MAXIS_footer_month & MAXIS MAXIS_footer_year as variables for this function to work
+FUNCTION MAXIS_footer_month_confirmation
+'--- This function is for checking and changing the footer month to the MAXIS_footer_month & MAXIS_footer_year selected by the user in the inital dialog if necessary
+'===== Keywords: MAXIS, footer, month, year	
 	EMReadScreen SELF_check, 4, 2, 50			'Does this to check to see if we're on SELF screen
 	IF SELF_check = "SELF" THEN
 		EMReadScreen panel_footer_month, 2, 20, 43
@@ -3115,8 +3303,9 @@ FUNCTION MAXIS_footer_month_confirmation	'Must use MAXIS_footer_month & MAXIS MA
 END FUNCTION
 
 Function MMIS_RKEY_finder
-  'Now we use a Do Loop to get to the start screen for MMIS.
-  Do
+'--- This function finds the 'RKEY' screen in MMIS
+'===== Keywords: MMIS, find, panel
+  Do	  						'Now we use a Do Loop to get to the start screen for MMIS.
     EMSendkey "<PF6>"
     EMWaitReady 0, 0
     EMReadScreen session_start, 18, 1, 7
@@ -3143,6 +3332,13 @@ Function MMIS_RKEY_finder
 End function
 
 FUNCTION month_change(interval, starting_month, starting_year, result_month, result_year)
+'--- This function may be deleted soon. Waiting for feedback from scriptwriters. 
+'~~~~~ interval: numeric amount of intervals
+'~~~~~ starting_month: month to start
+'~~~~~ starting_year: year to start
+'~~~~~ result_month: This should be 'result_month'...maybe
+'~~~~~ result_year: This should be 'result_year'...maybe 
+'===== Keywords: MAXIS, month, year, change
 	result_month = abs(starting_month)
 	result_year = abs(starting_year)
 	valid_month = FALSE
@@ -3172,7 +3368,10 @@ FUNCTION month_change(interval, starting_month, starting_year, result_month, res
 	result_year = right(result_year, 2)
 END FUNCTION
 
-FUNCTION navigate_to_MAXIS(maxis_mode)  'This function is to be used when navigating back to MAXIS from another function in BlueZone (MMIS, PRISM, INFOPAC, etc.)
+FUNCTION navigate_to_MAXIS(maxis_mode)
+'--- This function is to be used when navigating back to MAXIS from another function in BlueZone (MMIS, PRISM, INFOPAC, etc.)
+'~~~~~ maxis_mode: This parameter needs to be "maxis_mode"
+'===== Keywords: MAXIS, navigate
 	attn
 	EMConnect "A"
 	IF maxis_mode = "PRODUCTION" THEN
@@ -3215,7 +3414,9 @@ FUNCTION navigate_to_MAXIS(maxis_mode)  'This function is to be used when naviga
 	END IF
 END FUNCTION
 
-FUNCTION navigate_to_MMIS   'This function is to be used when navigating to MMIS from another function in BlueZone (MAXIS, PRISM, INFOPAC, etc.)
+FUNCTION navigate_to_MMIS   
+'--- This function is to be used when navigating to MMIS from another function in BlueZone (MAXIS, PRISM, INFOPAC, etc.)
+'===== Keywords: MMIS, navigate
 	attn
 	Do
 		EMReadScreen MAI_check, 3, 1, 33
@@ -3310,6 +3511,10 @@ FUNCTION navigate_to_MMIS   'This function is to be used when navigating to MMIS
 END FUNCTION
 
 Function navigate_to_MAXIS_screen(function_to_go_to, command_to_go_to)
+'--- This function is to be used to navigate to a specific MAXIS screen
+'~~~~~ function_to_go_to: needs to be MAXIS function like "STAT" or "REPT"
+'~~~~~ command_to_go_to: needs to be MAXIS function like "WREG" or "ACTV"
+'===== Keywords: MAXIS, navigate
   EMSendKey "<enter>"
   EMWaitReady 0, 0
   EMReadScreen MAXIS_check, 5, 1, 39
@@ -3363,13 +3568,17 @@ Function navigate_to_MAXIS_screen(function_to_go_to, command_to_go_to)
   End if
 End function
 
-Function navigate_to_PRISM_screen(x) 'x is the name of the screen
+Function navigate_to_PRISM_screen(x) 
+'--- This function is to be used to navigate to a specific PRISM screen
+'~~~~~ x: name of the PRISM screen
+'===== Keywords: PRISM, navigate
   EMWriteScreen x, 21, 18
   EMSendKey "<enter>"
   EMWaitReady 0, 0
 End function
 
 function new_page_check
+
   EMGetCursor MAXIS_row, MAXIS_col
   If MAXIS_row = 17 then
     EMSendKey ">>>>MORE>>>>"
@@ -3380,132 +3589,185 @@ function new_page_check
 end function
 
 Function open_URL_in_browser(URL_to_open)
+'--- This function is to be used to open a URL in user's default browser
+'~~~~~ URL_to_open: web address to open
+'===== Keywords: URL, open, web
 	CreateObject("WScript.Shell").Run(URL_to_open)
 End function
 
 Function PF1
+'--- This function sends or hits the PF1 key. 
+ '===== Keywords: MAXIS, MMIS, PRISM, PF1
   EMSendKey "<PF1>"
   EMWaitReady 0, 0
 End function
 
 Function PF2
+'--- This function sends or hits the PF2 key. 
+ '===== Keywords: MAXIS, MMIS, PRISM, PF2
   EMSendKey "<PF2>"
   EMWaitReady 0, 0
 End function
 
 function PF3
+'--- This function sends or hits the PF3 key. 
+ '===== Keywords: MAXIS, MMIS, PRISM, PF3
   EMSendKey "<PF3>"
   EMWaitReady 0, 0
 end function
 
 Function PF4
+'--- This function sends or hits the PF4 key. 
+ '===== Keywords: MAXIS, MMIS, PRISM, PF4
   EMSendKey "<PF4>"
   EMWaitReady 0, 0
 End function
 
 Function PF5
+'--- This function sends or hits the PF5 key. 
+ '===== Keywords: MAXIS, MMIS, PRISM, PF5
   EMSendKey "<PF5>"
   EMWaitReady 0, 0
 End function
 
 Function PF6
+'--- This function sends or hits the PF6 key. 
+ '===== Keywords: MAXIS, MMIS, PRISM, PF6
   EMSendKey "<PF6>"
   EMWaitReady 0, 0
 End function
 
 Function PF7
+'--- This function sends or hits the PF7 key. 
+ '===== Keywords: MAXIS, MMIS, PRISM, PF7
   EMSendKey "<PF7>"
   EMWaitReady 0, 0
 End function
 
 function PF8
+'--- This function sends or hits the PF8 key. 
+ '===== Keywords: MAXIS, MMIS, PRISM, PF8
   EMSendKey "<PF8>"
   EMWaitReady 0, 0
 end function
 
 function PF9
+'--- This function sends or hits the PF9 key. 
+ '===== Keywords: MAXIS, MMIS, PRISM, PF9
   EMSendKey "<PF9>"
   EMWaitReady 0, 0
 end function
 
 function PF10
+'--- This function sends or hits the PF10 key. 
+ '===== Keywords: MAXIS, MMIS, PRISM, PF10
   EMSendKey "<PF10>"
   EMWaitReady 0, 0
 end function
 
 Function PF11
+'--- This function sends or hits the PF11 key. 
+ '===== Keywords: MAXIS, MMIS, PRISM, PF11
   EMSendKey "<PF11>"
   EMWaitReady 0, 0
 End function
 
 Function PF12
+'--- This function sends or hits the PF12 key. 
+ '===== Keywords: MAXIS, MMIS, PRISM, PF12
   EMSendKey "<PF12>"
   EMWaitReady 0, 0
 End function
 
 Function PF13
+'--- This function sends or hits the PF13 key. 
+ '===== Keywords: MAXIS, MMIS, PRISM, PF13
   EMSendKey "<PF13>"
   EMWaitReady 0, 0
 End function
 
 Function PF14
+'--- This function sends or hits the PF14 key. 
+ '===== Keywords: MAXIS, MMIS, PRISM, PF14
   EMSendKey "<PF14>"
   EMWaitReady 0, 0
 End function
 
 Function PF15
+'--- This function sends or hits the PF15 key. 
+ '===== Keywords: MAXIS, MMIS, PRISM, PF15
   EMSendKey "<PF15>"
   EMWaitReady 0, 0
 End function
 
 Function PF16
+'--- This function sends or hits the PF16 key. 
+ '===== Keywords: MAXIS, MMIS, PRISM, PF16
   EMSendKey "<PF16>"
   EMWaitReady 0, 0
 End function
 
 Function PF17
+'--- This function sends or hits the PF17 key. 
+ '===== Keywords: MAXIS, MMIS, PRISM, PF17
   EMSendKey "<PF17>"
   EMWaitReady 0, 0
 End function
 
 Function PF18
+'--- This function sends or hits the PF18 key. 
+ '===== Keywords: MAXIS, MMIS, PRISM, PF18
   EMSendKey "<PF18>"
   EMWaitReady 0, 0
 End function
 
 function PF19
+'--- This function sends or hits the PF19 key. 
+ '===== Keywords: MAXIS, MMIS, PRISM, PF19
   EMSendKey "<PF19>"
   EMWaitReady 0, 0
 end function
 
 function PF20
+'--- This function sends or hits the PF20 key. 
+ '===== Keywords: MAXIS, MMIS, PRISM, PF20
   EMSendKey "<PF20>"
   EMWaitReady 0, 0
 end function
 
 function PF21
+'--- This function sends or hits the PF21 key. 
+ '===== Keywords: MAXIS, MMIS, PRISM, PF21
   EMSendKey "<PF21>"
   EMWaitReady 0, 0
 end function
 
 function PF22
+'--- This function sends or hits the PF22 key. 
+ '===== Keywords: MAXIS, MMIS, PRISM, PF22
   EMSendKey "<PF22>"
   EMWaitReady 0, 0
 end function
 
 function PF23
+'--- This function sends or hits the PF23 key. 
+ '===== Keywords: MAXIS, MMIS, PRISM, PF23
   EMSendKey "<PF23>"
   EMWaitReady 0, 0
 end function
 
 function PF24
+'--- This function sends or hits the PF24 key. 
+ '===== Keywords: MAXIS, MMIS, PRISM, PF24
   EMSendKey "<PF24>"
   EMWaitReady 0, 0
 end function
 
 Function PRISM_case_number_finder(variable_for_PRISM_case_number)
-	'Searches for the case number.
-	PRISM_row = 1
+'--- This function finds the PRISM case number if listed on a PRISM screen
+'~~~~~ variable_for_PRISM_case_number: this should be 'PRISM_case_number'
+'===== Keywords: PRISM, case number 
+	PRISM_row = 1 'Searches for the case number.
 	PRISM_col = 1
 	EMSearch "Case: ", PRISM_row, PRISM_col
 	If PRISM_row <> 0 then
@@ -3524,6 +3786,10 @@ Function PRISM_case_number_finder(variable_for_PRISM_case_number)
 End function
 
 Function PRISM_case_number_validation(case_number_to_validate, outcome)
+'--- This function finds the PRISM case number if listed on a PRISM screen
+'~~~~~ case_number_to_validate: needs to be 'PRISM_case_number'
+'~~~~~ outcome: needs to be 'outcome'
+'===== Keywords: PRISM, case number
   If len(case_number_to_validate) <> 13 then
     outcome = False
   Elseif isnumeric(left(case_number_to_validate, 10)) = False then
@@ -3537,8 +3803,10 @@ Function PRISM_case_number_validation(case_number_to_validate, outcome)
   End if
 End function
 
-'Asks the user if they want to proceed. Result_of_msgbox parameter returns TRUE if Yes is pressed, and FALSE if No is pressed.
 FUNCTION proceed_confirmation(result_of_msgbox)
+'--- This function asks the user if they want to proceed.
+'~~~~~ result_of_msgbox: returns TRUE if Yes is pressed, and FALSE if No is pressed.
+'===== Keywords: MAXIS, MMIS, PRISM, dialog, proceed, confirmation 
 	If ButtonPressed = -1 then
 		proceed_confirm = MsgBox("Are you sure you want to proceed? Press Yes to continue, No to return to the previous screen, and Cancel to end the script.", vbYesNoCancel)
 		If proceed_confirm = vbCancel then stopscript
@@ -3547,14 +3815,18 @@ FUNCTION proceed_confirmation(result_of_msgbox)
 	End if
 END FUNCTION
 
-'This function clears out PRISM global variables
 function regl
+'--- This function clears out PRISM global variables
+'===== Keywords: PRISM, REGL, global variables, clear
 	EMWriteScreen "REGL", 21, 18		'This writes REGL to the command line
 	transmit							'Sends the REGL command
 	transmit							'Transmits past the REGL screen
 end function
 
 function run_another_script(script_path)
+'--- This function runs another script from a specific file either stored locally or on the web.
+'~~~~~ script_path: path of script to run
+'===== Keywords: MAXIS, MMIS, PRISM, run, script, script path 
   Set run_another_script_fso = CreateObject("Scripting.FileSystemObject")
   Set fso_command = run_another_script_fso.OpenTextFile(script_path)
   text_from_the_other_script = fso_command.ReadAll
@@ -3563,6 +3835,9 @@ function run_another_script(script_path)
 end function
 
 FUNCTION run_from_GitHub(url)
+'--- This function runs a script file from GitHub
+'~~~~~ url: web address of script file on GitHub
+'===== Keywords: MAXIS, MMIS, PRISM, run, script, url, GitHub
 	'Creates a list of items to remove from anything run from GitHub. This will allow for counties to use Option Explicit handling without fear.
 	list_of_things_to_remove = array("OPTION EXPLICIT", _
 									"option explicit", _
@@ -3594,6 +3869,9 @@ FUNCTION run_from_GitHub(url)
 END FUNCTION
 
 function script_end_procedure(closing_message)
+'--- This function is how all user stats are collected when a script ends. 
+'~~~~~ closing_message: message to user in a MsgBox that appears once the script is complete. Example: "Success! Your actions are complete."
+'===== Keywords: MAXIS, MMIS, PRISM, end, script, statistics, stopscript
 	stop_time = timer
 	If closing_message <> "" AND left(closing_message, 3) <> "~PT" then MsgBox closing_message '"~PT" forces the message to "pass through", i.e. not create a pop-up, but to continue without further diversion to the database, where it will write a record with the message
 	script_run_time = stop_time - start_time
@@ -3643,8 +3921,13 @@ function script_end_procedure(closing_message)
 	If disable_StopScript = FALSE or disable_StopScript = "" then stopscript
 end function
 
-'This code is helpful for bulk scripts. This script is used to select the caseload by the 8 digit worker ID code entered in the dialog.
+
 FUNCTION select_cso_caseload(ButtonPressed, cso_id, cso_name)
+'--- This function is helpful for bulk scripts. This script is used to select the caseload by the 8 digit worker ID code entered in the dialog.
+'~~~~~ ButtonPressed: should be 'ButtonPressed
+'~~~~~ cso_id: should be 'cso_id'
+'~~~~~ cso_name: should be 'cso_name'
+'===== Keywords: PRISM, cso, select, caseload, BULK
 	DO
 		DO
 			CALL navigate_to_PRISM_screen("USWT")
@@ -3688,9 +3971,11 @@ FUNCTION select_cso_caseload(ButtonPressed, cso_id, cso_name)
 	LOOP UNTIL err_msg = ""
 END FUNCTION
 
-'This function requires a recipient (the recipient code from the DORD screen), and the document code (also from the DORD screen).
-'This function adds the document.  Some user involvement (resolving required labels, hard-copy printing) may be required.
 FUNCTION send_dord_doc(recipient, dord_doc)
+'--- This function adds the document.  Some user involvement (resolving required labels, hard-copy printing) may be required.
+'~~~~~ recipient: the recipient code from the DORD screen
+'~~~~~ dord_doc: document code (also from the DORD screen)
+'===== Keywords: PRISM, cso, select, caseload, BULK
 	call navigate_to_PRISM_screen("DORD")
 	EMWriteScreen "C", 3, 29
 	transmit
@@ -3700,8 +3985,9 @@ FUNCTION send_dord_doc(recipient, dord_doc)
 	transmit
 END FUNCTION
 
-'Navigates you to a blank case note, presses PF9, and checks to make sure you're in edit mode (keeping you from writing all of the case note on an inquiry screen).
 FUNCTION start_a_blank_CASE_NOTE
+'--- This function navigates user to a blank case note, presses PF9, and checks to make sure you're in edit mode (keeping you from writing all of the case note on an inquiry screen).
+'===== Keywords: MAXIS, case note, navigate, edit
 	call navigate_to_MAXIS_screen("case", "note")
 	DO
 		PF9
@@ -3712,11 +3998,18 @@ FUNCTION start_a_blank_CASE_NOTE
 END FUNCTION
 
 function transmit
+'--- This function sends or hits the transmit key. 
+ '===== Keywords: MAXIS, MMIS, PRISM, transmit
   EMSendKey "<enter>"
   EMWaitReady 0, 0
 end function
 
 FUNCTION word_doc_open(doc_location, objWord, objDoc)
+'--- This function opens a specific word document. 
+'~~~~~ doc_location: location of word document
+'~~~~~ ObjWord: leave as 'ObjWord'
+'~~~~~ objDoc: leave as 'objDoc' 
+'===== Keywords: MAXIS, PRISM, MMIS, Word
 	'Opens Word object
 	Set objWord = CreateObject("Word.Application")
 	objWord.Visible = True		'We want to see it
@@ -3726,11 +4019,19 @@ FUNCTION word_doc_open(doc_location, objWord, objDoc)
 END FUNCTION
 
 FUNCTION word_doc_update_field(field_name, variable_for_field, objDoc)
-	'Simply enters the Word document field based on these three criteria
-	objDoc.FormFields(field_name).Result = variable_for_field
+'--- This function updates specific fields on a word document 
+'~~~~~ field_name: name of the field to update
+'~~~~~ variable_for_field: information to be updated
+'~~~~~ objDoc: leave as 'objDoc' 
+'===== Keywords: MAXIS, PRISM, MMIS, Word
+	objDoc.FormFields(field_name).Result = variable_for_field	'Simply enters the Word document field based on these three criteria
 END FUNCTION
 
 Function write_bullet_and_variable_in_CAAD(bullet, variable)
+'--- This function creates an asterisk, a bullet, a colon then a variable to style CAAD notes
+'~~~~~ bullet: name of the field to update. Put bullet in "".
+'~~~~~ variable: variable from script to be written into CAAD note
+'===== Keywords: PRISM, bullet, CAAD note
 IF variable <> "" THEN
   spaces_count = 6	'Temporary just to make it work
 
@@ -3788,6 +4089,10 @@ END IF
 End Function
 
 Function write_bullet_and_variable_in_CASE_NOTE(bullet, variable)
+'--- This function creates an asterisk, a bullet, a colon then a variable to style CASE notes
+'~~~~~ bullet: name of the field to update. Put bullet in "".
+'~~~~~ variable: variable from script to be written into CASE note
+'===== Keywords: MAXIS, bullet, CASE note
 	If trim(variable) <> "" then
 		EMGetCursor noting_row, noting_col						'Needs to get the row and col to start. Doesn't need to get it in the array function because that uses EMWriteScreen.
 		noting_col = 3											'The noting col should always be 3 at this point, because it's the beginning. But, this will be dynamically recreated each time.
@@ -3889,7 +4194,10 @@ Function write_bullet_and_variable_in_CASE_NOTE(bullet, variable)
 End function
 
 Function write_bullet_and_variable_in_CCOL_NOTE(bullet, variable)
-
+'--- This function creates an asterisk, a bullet, a colon then a variable to style CCOL notes
+'~~~~~ bullet: name of the field to update. Put bullet in "".
+'~~~~~ variable: variable from script to be written into CCOL note
+'===== Keywords: MAXIS, bullet, CCOL note
 	EMGetCursor noting_row, noting_col						'Needs to get the row and col to start. Doesn't need to get it in the array function because that uses EMWriteScreen.
 	noting_col = 3											'The noting col should always be 3 at this point, because it's the beginning. But, this will be dynamically recreated each time.
 	'The following figures out if we need a new page, or if we need a new case note entirely as well.
@@ -3986,12 +4294,15 @@ Function write_bullet_and_variable_in_CCOL_NOTE(bullet, variable)
 
 	'After the array is processed, set the cursor on the following row, in col 3, so that the user can enter in information here (just like writing by hand). If you're on row 18 (which isn't writeable), hit a PF8. If the panel is at the very end (page 5), it will back out and go into another case note, as we did above.
 	EMSetCursor noting_row + 1, 3
-
 End function
 
-'This function will write a date in any format desired.
 FUNCTION write_date(date_variable, date_format_variable, screen_row, screen_col)
-
+'--- This function will write a date in any format desired.
+'~~~~~ date_variable: date to write 
+'~~~~~ date_format_variable: format of date. Need to put in spaces between month/day/year if necessary to update your field. Example: MM DD YY or MM/DD/YYYY
+'~~~~~ screen_row: row to write date
+'~~~~~ screen_col: column to write date 
+'===== Keywords: MAXIS, MMIS, PRISM, date, format
 	'Figures out the format of the month. If it was "MM", "M", or not present.
 	If instr(ucase(date_format_variable), "MM") <> 0 then
 		month_format = "MM"
@@ -4052,22 +4363,21 @@ FUNCTION write_date(date_variable, date_format_variable, screen_row, screen_col)
 		screen_col_to_write = screen_col + (i - 1)
 		EMWriteScreen mid(output_date_variable, i, 1), screen_row, screen_col_to_write
 	Next
-
 END FUNCTION
 
-'This function will open the ES_statistics database, check for an existing case and edit it with new info, or add a new entry if there is no existing case in the database.
 Function write_MAXIS_info_to_ES_database(ESCaseNbr, ESMembNbr, ESMembName, EsSanctionPercentage, ESEmpsStatus, ESTANFMosUsed, ESExtensionReason, ESDisaEnd, ESPrimaryActivity, ESDate, ESSite, ESCounselor, ESActive, insert_string)
+'--- This function will open the ES_statistics database, check for an existing case and edit it with new info, or add a new entry if there is no existing case in the database.
+'~~~~~ dESCaseNbr, ESMembNbr, ESMembName, EsSanctionPercentage, ESEmpsStatus, ESTANFMosUsed, ESExtensionReason, ESDisaEnd, ESPrimaryActivity, ESDate, ESSite, ESCounselor, ESActive, insert_string: all required parameters from script to be inputted into database
+'===== Keywords: MAXIS, statistics, ES 
 	info_array = array(ESCaseNbr, ESMembNbr, ESMembName, EsSanctionPercentage, ESEmpsStatus, ESTANFMosUsed, ESExtensionReason, ESDisaEnd, ESPrimaryActivity, ESDate, ESSite, ESCounselor, ESActive)
 	'Creating objects for Access
 	Set objConnection = CreateObject("ADODB.Connection")
 	Set objRecordSet = CreateObject("ADODB.Recordset")
 
-
 	'Opening DB
 	objConnection.Open "Provider = Microsoft.ACE.OLEDB.12.0; Data Source = " & ES_database_path
 		'This looks for an existing case number and edits it if needed
 	set rs = objConnection.Execute("SELECT * FROM ESTrackingTbl WHERE ESCaseNbr = " & ESCaseNbr & " AND ESMembNbr = " & ESMembNbr & "") 'pulling all existing case / member info into a recordset
-
 
 	IF NOT(rs.EOF) THEN 'There is an existing case, we need to update
 		'we don't want to overwrite existing data that isn't updated by the script,
@@ -4189,10 +4499,17 @@ Function write_MAXIS_info_to_ES_database(ESCaseNbr, ESMembNbr, ESMembName, EsSan
 	ESCounselor = ""
 	ESActive = ""
 	insert_string = ""
-
 END FUNCTION
 
 Function write_three_columns_in_CASE_NOTE(col_01_start_point, col_01_variable, col_02_start_point, col_02_variable, col_03_start_point, col_03_variable)
+'--- This function writes variables into three seperate columns into case notes 
+'~~~~~ col_01_start_point: column where to write the 1st variable
+'~~~~~ col_01_variable: name of 1st variable to write
+'~~~~~ col_02_start_point: column where to write the 2nd variable
+'~~~~~ col_02_variable: name of 2nd variable to write
+'~~~~~ col_03_start_point: column where to write the 3rd variable
+'~~~~~ col_03_variable: name of 3rd variable to write
+'===== Keywords: MAXIS, case note, three columns, format
   EMGetCursor row, col
   If (row = 17 and col + (len(x)) >= 80 + 1 ) or (row = 4 and col = 3) then
     EMSendKey "<PF8>"
@@ -4216,11 +4533,19 @@ Function write_three_columns_in_CASE_NOTE(col_01_start_point, col_01_variable, c
 End function
 
 FUNCTION write_value_and_transmit(input_value, MAXIS_row, MAXIS_col)
+'--- This function writes a specific value and transmits.
+'~~~~~ input_value: information to be entered 
+'~~~~~ MAXIS_row: row to write the input_value
+'~~~~~ MAXIS_col: column to write the input_value
+'===== Keywords: MAXIS, case note, three columns, format
 	EMWriteScreen input_value, MAXIS_row, MAXIS_col
 	transmit
 END FUNCTION
 
 Function write_variable_in_CAAD(variable)
+'--- This function writes a variable in CAAD note
+'~~~~~ variable: information to be entered into CAAD note from script/edit box
+'===== Keywords: PRISM, CAAD note
     IF variable <> "" THEN
         EMGetCursor row, col
         EMReadScreen line_check, 2, 15, 2
@@ -4244,6 +4569,9 @@ Function write_variable_in_CAAD(variable)
 End function
 
 Function write_variable_in_CASE_NOTE(variable)
+'--- This function writes a variable in CASE note
+'~~~~~ variable: information to be entered into CASE note from script/edit box
+'===== Keywords: MAXIS, CASE note
 	If trim(variable) <> "" THEN
 		EMGetCursor noting_row, noting_col						'Needs to get the row and col to start. Doesn't need to get it in the array function because that uses EMWriteScreen.
 		noting_col = 3											'The noting col should always be 3 at this point, because it's the beginning. But, this will be dynamically recreated each time.
@@ -4319,7 +4647,9 @@ Function write_variable_in_CASE_NOTE(variable)
 End function
 
 Function write_variable_in_CCOL_NOTE(variable)
-
+'--- This function writes a variable in CCOL note
+'~~~~~ variable: information to be entered into CCOL note from script/edit box
+'===== Keywords: MAXIS, CCOL note
 	EMGetCursor noting_row, noting_col						'Needs to get the row and col to start. Doesn't need to get it in the array function because that uses EMWriteScreen.
 	noting_col = 3											'The noting col should always be 3 at this point, because it's the beginning. But, this will be dynamically recreated each time.
 	'The following figures out if we need a new page, or if we need a new case note entirely as well.
@@ -4390,10 +4720,13 @@ Function write_variable_in_CCOL_NOTE(variable)
 
 	'After the array is processed, set the cursor on the following row, in col 3, so that the user can enter in information here (just like writing by hand). If you're on row 18 (which isn't writeable), hit a PF8. If the panel is at the very end (page 5), it will back out and go into another case note, as we did above.
 	EMSetCursor noting_row + 1, 3
-
 End function
 
 FUNCTION write_variable_in_DORD(string_to_write, recipient)
+'--- This function writes a variable in DORD document
+'~~~~~ string_to_write: information to be entered into document
+'~~~~~ recipient: recipeint of DORD document
+'===== Keywords: PRISM, DORD 
 	call navigate_to_PRISM_screen("DORD")
 	EMWriteScreen "A", 3, 29
 	EMWriteScreen "F0104", 6, 36
@@ -4446,6 +4779,9 @@ FUNCTION write_variable_in_DORD(string_to_write, recipient)
 END FUNCTION
 
 Function write_variable_in_SPEC_MEMO(variable)
+'--- This function writes a variable in SPEC/MEMO
+'~~~~~ variable: information to be entered into SPEC/MEMO 
+'===== Keywords: MAXIS, SPEC, MEMO
 	EMGetCursor memo_row, memo_col						'Needs to get the row and col to start. Doesn't need to get it in the array function because that uses EMWriteScreen.
 	memo_col = 15										'The memo col should always be 15 at this point, because it's the beginning. But, this will be dynamically recreated each time.
 	'The following figures out if we need a new page
@@ -4490,6 +4826,9 @@ Function write_variable_in_SPEC_MEMO(variable)
 End function
 
 Function write_variable_in_TIKL(variable)
+'--- This function writes a variable in TIKL
+'~~~~~ variable: information to be entered into TIKL 
+'===== Keywords: MAXIS, TIKL
 	IF len(variable) <= 60 THEN
 		tikl_line_one = variable
 	ELSE
@@ -4562,8 +4901,28 @@ Function write_variable_in_TIKL(variable)
 	transmit
 End function
 
-'write_panel_to_MAXIS comes from Krabappel
+'END OF MAIN FUNCTIONS LIBRARY========================================================================================================================================================================================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+'FUNCTIONS for PROJECT KRABAPPEL (UTILITIES - TRAINING CASE CREATOR)====================================================================================================================================================
+'writing in placeholder information for now re: the functions and parameters to be in line with the new documentation process. 
+
 Function write_panel_to_MAXIS_ABPS(abps_supp_coop,abps_gc_status)
+'--- This function writes to MAXIS in Krabappel only 
+'~~~~~ abps_supp_coop,abps_gc_status: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	call navigate_to_MAXIS_screen("STAT","PARE")							'Starts by creating an array of all the kids on PARE
 	EMReadScreen abps_pare_check, 1, 2, 78
 	If abps_pare_check = "0" then
@@ -4615,6 +4974,9 @@ Function write_panel_to_MAXIS_ABPS(abps_supp_coop,abps_gc_status)
 End Function
 
 Function write_panel_to_MAXIS_ACCT(acct_type, acct_numb, acct_location, acct_balance, acct_bal_ver, acct_date, acct_withdraw, acct_cash_count, acct_snap_count, acct_HC_count, acct_GRH_count, acct_IV_count, acct_joint_owner, acct_share_ratio, acct_interest_date_mo, acct_interest_date_yr)
+'--- This function writes to MAXIS in Krabappel only 
+'~~~~~ acct_type, acct_numb, acct_location, acct_balance, acct_bal_ver, acct_date, acct_withdraw, acct_cash_count, acct_snap_count, acct_HC_count, acct_GRH_count, acct_IV_count, acct_joint_owner, acct_share_ratio, acct_interest_date_mo, acct_interest_date_yr: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator	
 	Call navigate_to_MAXIS_screen("STAT", "ACCT")  'navigates to the stat panel
 	call create_panel_if_nonexistent
 	Emwritescreen acct_type, 6, 44  'enters the account type code
@@ -4654,6 +5016,9 @@ Function write_panel_to_MAXIS_ACCT(acct_type, acct_numb, acct_location, acct_bal
 End Function
 
 FUNCTION write_panel_to_MAXIS_ACUT(ACUT_shared, ACUT_heat, ACUT_air, ACUT_electric, ACUT_fuel, ACUT_garbage, ACUT_water, ACUT_sewer, ACUT_other, ACUT_phone, ACUT_heat_verif, ACUT_air_verif, ACUT_electric_verif, ACUT_fuel_verif, ACUT_garbage_verif, ACUT_water_verif, ACUT_sewer_verif, ACUT_other_verif)
+'--- This function writes to MAXIS in Krabappel only 
+'~~~~~ ACUT_shared, ACUT_heat, ACUT_air, ACUT_electric, ACUT_fuel, ACUT_garbage, ACUT_water, ACUT_sewer, ACUT_other, ACUT_phone, ACUT_heat_verif, ACUT_air_verif, ACUT_electric_verif, ACUT_fuel_verif, ACUT_garbage_verif, ACUT_water_verif, ACUT_sewer_verif, ACUT_other_verif: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	call navigate_to_MAXIS_screen("STAT", "ACUT")
 	call create_panel_if_nonexistent
 		EMWritescreen ACUT_shared, 6, 42
@@ -4679,6 +5044,9 @@ end function
 
 '---This function writes the information for BILS.
 FUNCTION write_panel_to_MAXIS_BILS(bils_1_ref_num, bils_1_serv_date, bils_1_serv_type, bils_1_gross_amt, bils_1_third_party, bils_1_verif, bils_1_bils_type, bils_2_ref_num, bils_2_serv_date, bils_2_serv_type, bils_2_gross_amt, bils_2_third_party, bils_2_verif, bils_2_bils_type, bils_3_ref_num, bils_3_serv_date, bils_3_serv_type, bils_3_gross_amt, bils_3_third_party, bils_3_verif, bils_3_bils_type, bils_4_ref_num, bils_4_serv_date, bils_4_serv_type, bils_4_gross_amt, bils_4_third_party, bils_4_verif, bils_4_bils_type, bils_5_ref_num, bils_5_serv_date, bils_5_serv_type, bils_5_gross_amt, bils_5_third_party, bils_5_verif, bils_5_bils_type, bils_6_ref_num, bils_6_serv_date, bils_6_serv_type, bils_6_gross_amt, bils_6_third_party, bils_6_verif, bils_6_bils_type, bils_7_ref_num, bils_7_serv_date, bils_7_serv_type, bils_7_gross_amt, bils_7_third_party, bils_7_verif, bils_7_bils_type, bils_8_ref_num, bils_8_serv_date, bils_8_serv_type, bils_8_gross_amt, bils_8_third_party, bils_8_verif, bils_8_bils_type, bils_9_ref_num, bils_9_serv_date, bils_9_serv_type, bils_9_gross_amt, bils_9_third_party, bils_9_verif, bils_9_bils_type)
+'--- This function writes to MAXIS in Krabappel only 
+'~~~~~ bils_1_ref_num, bils_1_serv_date, bils_1_serv_type, bils_1_gross_amt, bils_1_third_party, bils_1_verif, bils_1_bils_type, bils_2_ref_num, bils_2_serv_date, bils_2_serv_type, bils_2_gross_amt, bils_2_third_party, bils_2_verif, bils_2_bils_type, bils_3_ref_num, bils_3_serv_date, bils_3_serv_type, bils_3_gross_amt, bils_3_third_party, bils_3_verif, bils_3_bils_type, bils_4_ref_num, bils_4_serv_date, bils_4_serv_type, bils_4_gross_amt, bils_4_third_party, bils_4_verif, bils_4_bils_type, bils_5_ref_num, bils_5_serv_date, bils_5_serv_type, bils_5_gross_amt, bils_5_third_party, bils_5_verif, bils_5_bils_type, bils_6_ref_num, bils_6_serv_date, bils_6_serv_type, bils_6_gross_amt, bils_6_third_party, bils_6_verif, bils_6_bils_type, bils_7_ref_num, bils_7_serv_date, bils_7_serv_type, bils_7_gross_amt, bils_7_third_party, bils_7_verif, bils_7_bils_type, bils_8_ref_num, bils_8_serv_date, bils_8_serv_type, bils_8_gross_amt, bils_8_third_party, bils_8_verif, bils_8_bils_type, bils_9_ref_num, bils_9_serv_date, bils_9_serv_type, bils_9_gross_amt, bils_9_third_party, bils_9_verif, bils_9_bils_type: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator	
 	CALL navigate_to_MAXIS_screen("STAT", "BILS")
 	EMReadScreen ERRR_check, 4, 2, 52			'Checking for the ERRR screen
 	If ERRR_check = "ERRR" then transmit		'If the ERRR screen is found, it transmits
@@ -4845,9 +5213,10 @@ FUNCTION write_panel_to_MAXIS_BILS(bils_1_ref_num, bils_1_serv_date, bils_1_serv
 	END IF
 END FUNCTION
 
-
-'---This function writes using the variables read off of the specialized excel template to the busi panel in MAXIS
 Function write_panel_to_MAXIS_BUSI(busi_type, busi_start_date, busi_end_date, busi_cash_total_retro, busi_cash_total_prosp, busi_cash_total_ver, busi_IV_total_prosp, busi_IV_total_ver, busi_snap_total_retro, busi_snap_total_prosp, busi_snap_total_ver, busi_hc_total_prosp_a, busi_hc_total_ver_a, busi_hc_total_prosp_b, busi_hc_total_ver_b, busi_cash_exp_retro, busi_cash_exp_prosp, busi_cash_exp_ver, busi_IV_exp_prosp, busi_IV_exp_ver, busi_snap_exp_retro, busi_snap_exp_prosp, busi_snap_exp_ver, busi_hc_exp_prosp_a, busi_hc_exp_ver_a, busi_hc_exp_prosp_b, busi_hc_exp_ver_b, busi_retro_hours, busi_prosp_hours, busi_hc_total_est_a, busi_hc_total_est_b, busi_hc_exp_est_a, busi_hc_exp_est_b, busi_hc_hours_est)
+'--- This function writes to MAXIS in Krabappel only (writes using the variables read off of the specialized excel template to the busi panel in MAXIS)
+'~~~~~ busi_type, busi_start_date, busi_end_date, busi_cash_total_retro, busi_cash_total_prosp, busi_cash_total_ver, busi_IV_total_prosp, busi_IV_total_ver, busi_snap_total_retro, busi_snap_total_prosp, busi_snap_total_ver, busi_hc_total_prosp_a, busi_hc_total_ver_a, busi_hc_total_prosp_b, busi_hc_total_ver_b, busi_cash_exp_retro, busi_cash_exp_prosp, busi_cash_exp_ver, busi_IV_exp_prosp, busi_IV_exp_ver, busi_snap_exp_retro, busi_snap_exp_prosp, busi_snap_exp_ver, busi_hc_exp_prosp_a, busi_hc_exp_ver_a, busi_hc_exp_prosp_b, busi_hc_exp_ver_b, busi_retro_hours, busi_prosp_hours, busi_hc_total_est_a, busi_hc_total_est_b, busi_hc_exp_est_a, busi_hc_exp_est_b, busi_hc_hours_est: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator		
 	Call navigate_to_MAXIS_screen("STAT", "BUSI")  'navigates to the stat panel
 	Emwritescreen reference_number, 20, 76
 	transmit
@@ -4974,6 +5343,9 @@ Function write_panel_to_MAXIS_BUSI(busi_type, busi_start_date, busi_end_date, bu
 end function
 
 Function write_panel_to_MAXIS_CARS(cars_type, cars_year, cars_make, cars_model, cars_trade_in, cars_loan, cars_value_source, cars_ownership_ver, cars_amount_owed, cars_amount_owed_ver, cars_date, cars_use, cars_HC_benefit, cars_joint_owner, cars_share_ratio)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ cars_type, cars_year, cars_make, cars_model, cars_trade_in, cars_loan, cars_value_source, cars_ownership_ver, cars_amount_owed, cars_amount_owed_ver, cars_date, cars_use, cars_HC_benefit, cars_joint_owner, cars_share_ratio: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator		
 	Call navigate_to_MAXIS_screen("STAT", "CARS")  'navigates to the stat screen
 	call create_panel_if_nonexistent
 	Emwritescreen cars_type, 6, 43  'enters the vehicle type
@@ -4994,15 +5366,19 @@ Function write_panel_to_MAXIS_CARS(cars_type, cars_year, cars_make, cars_model, 
 	Emwritescreen right(cars_share_ratio, 1), 16, 80  'enters the ratio of ownership using the right 1 digit of what is entered into the file
 End Function
 
-'---This function writes using the variables read off of the specialized excel template to the cash panel in MAXIS
 Function write_panel_to_MAXIS_CASH(cash_amount)
+'--- This function writes to MAXIS in Krabappel only (writes using the variables read off of the specialized excel template to the cash panel in MAXIS)
+'~~~~~ cash_amount: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator	
 	Call navigate_to_MAXIS_screen("STAT", "CASH")  'navigates to the stat panel
 	call create_panel_if_nonexistent
 	Emwritescreen cash_amount, 8, 39
 End Function
 
-'---This function writes using the variables read off of the specialized excel template to the COEX panel in MAXIS.
 FUNCTION write_panel_to_MAXIS_COEX(retro_support, prosp_support, support_verif, retro_alimony, prosp_alimony, alimony_verif, retro_tax_dep, prosp_tax_dep, tax_dep_verif, retro_other, prosp_other, other_verif, change_in_circum, hc_exp_support, hc_exp_alimony, hc_exp_tax_dep, hc_exp_other)
+'--- This function writes to MAXIS in Krabappel only (writes using the variables read off of the specialized excel template to the COEX panel in MAXIS.)
+'~~~~~ retro_support, prosp_support, support_verif, retro_alimony, prosp_alimony, alimony_verif, retro_tax_dep, prosp_tax_dep, tax_dep_verif, retro_other, prosp_other, other_verif, change_in_circum, hc_exp_support, hc_exp_alimony, hc_exp_tax_dep, hc_exp_other: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	CALL navigate_to_MAXIS_screen("STAT", "COEX")
 	EMReadScreen ERRR_check, 4, 2, 52			'Checking for the ERRR screen
 	If ERRR_check = "ERRR" then transmit		'If the ERRR screen is found, it transmits
@@ -5052,8 +5428,10 @@ FUNCTION write_panel_to_MAXIS_COEX(retro_support, prosp_support, support_verif, 
 	transmit
 END FUNCTION
 
-
 FUNCTION write_panel_to_MAXIS_DCEX(DCEX_provider, DCEX_reason, DCEX_subsidy, DCEX_child_number1, DCEX_child_number1_ver, DCEX_child_number1_retro, DCEX_child_number1_pro, DCEX_child_number2, DCEX_child_number2_ver, DCEX_child_number2_retro, DCEX_child_number2_pro, DCEX_child_number3, DCEX_child_number3_ver, DCEX_child_number3_retro, DCEX_child_number3_pro, DCEX_child_number4, DCEX_child_number4_ver, DCEX_child_number4_retro, DCEX_child_number4_pro, DCEX_child_number5, DCEX_child_number5_ver, DCEX_child_number5_retro, DCEX_child_number5_pro, DCEX_child_number6, DCEX_child_number6_ver, DCEX_child_number6_retro, DCEX_child_number6_pro)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ DCEX_provider, DCEX_reason, DCEX_subsidy, DCEX_child_number1, DCEX_child_number1_ver, DCEX_child_number1_retro, DCEX_child_number1_pro, DCEX_child_number2, DCEX_child_number2_ver, DCEX_child_number2_retro, DCEX_child_number2_pro, DCEX_child_number3, DCEX_child_number3_ver, DCEX_child_number3_retro, DCEX_child_number3_pro, DCEX_child_number4, DCEX_child_number4_ver, DCEX_child_number4_retro, DCEX_child_number4_pro, DCEX_child_number5, DCEX_child_number5_ver, DCEX_child_number5_retro, DCEX_child_number5_pro, DCEX_child_number6, DCEX_child_number6_ver, DCEX_child_number6_retro, DCEX_child_number6_pro: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator	
 	call navigate_to_MAXIS_screen("STAT", "DCEX")
 	EMWriteScreen reference_number, 20, 76
 	transmit
@@ -5139,6 +5517,9 @@ FUNCTION write_panel_to_MAXIS_DCEX(DCEX_provider, DCEX_reason, DCEX_subsidy, DCE
 End function
 
 FUNCTION write_panel_to_MAXIS_DFLN(conv_dt_1, conv_juris_1, conv_st_1, conv_dt_2, conv_juris_2, conv_st_2, rnd_test_dt_1, rnd_test_provider_1, rnd_test_result_1, rnd_test_dt_2, rnd_test_provider_2, rnd_test_result_2)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ conv_dt_1, conv_juris_1, conv_st_1, conv_dt_2, conv_juris_2, conv_st_2, rnd_test_dt_1, rnd_test_provider_1, rnd_test_result_1, rnd_test_dt_2, rnd_test_provider_2, rnd_test_result_2: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	CALL navigate_to_MAXIS_screen("STAT", "DFLN")
 	EMReadScreen num_of_DFLN, 1, 2, 78
 	IF num_of_DFLN = "0" THEN
@@ -5170,6 +5551,9 @@ FUNCTION write_panel_to_MAXIS_DFLN(conv_dt_1, conv_juris_1, conv_st_1, conv_dt_2
 END FUNCTION
 
 FUNCTION write_panel_to_MAXIS_DIET(DIET_mfip_1, DIET_mfip_1_ver, DIET_mfip_2, DIET_mfip_2_ver, DIET_msa_1, DIET_msa_1_ver, DIET_msa_2, DIET_msa_2_ver, DIET_msa_3, DIET_msa_3_ver, DIET_msa_4, DIET_msa_4_ver)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ DIET_mfip_1, DIET_mfip_1_ver, DIET_mfip_2, DIET_mfip_2_ver, DIET_msa_1, DIET_msa_1_ver, DIET_msa_2, DIET_msa_2_ver, DIET_msa_3, DIET_msa_3_ver, DIET_msa_4, DIET_msa_4_ver: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	call navigate_to_MAXIS_screen("STAT", "DIET")
 	EMWriteScreen reference_number, 20, 76
 	EMWriteScreen "NN", 20, 79
@@ -5190,8 +5574,10 @@ FUNCTION write_panel_to_MAXIS_DIET(DIET_mfip_1, DIET_mfip_1_ver, DIET_mfip_2, DI
 	transmit
 END FUNCTION
 
-'---This function writes using the variables read off of the specialized excel template to the disa panel in MAXIS
 Function write_panel_to_MAXIS_DISA(disa_begin_date, disa_end_date, disa_cert_begin, disa_cert_end, disa_wavr_begin, disa_wavr_end, disa_grh_begin, disa_grh_end, disa_cash_status, disa_cash_status_ver, disa_snap_status, disa_snap_status_ver, disa_hc_status, disa_hc_status_ver, disa_waiver, disa_drug_alcohol)
+'--- This function writes to MAXIS in Krabappel only (writes using the variables read off of the specialized excel template to the disa panel in MAXIS)
+'~~~~~ disa_begin_date, disa_end_date, disa_cert_begin, disa_cert_end, disa_wavr_begin, disa_wavr_end, disa_grh_begin, disa_grh_end, disa_cash_status, disa_cash_status_ver, disa_snap_status, disa_snap_status_ver, disa_hc_status, disa_hc_status_ver, disa_waiver, disa_drug_alcohol: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator	
 	Call navigate_to_MAXIS_screen("STAT", "DISA")  'navigates to the stat panel
 	call create_panel_if_nonexistent
 	IF disa_begin_date <> "" THEN
@@ -5238,6 +5624,9 @@ Function write_panel_to_MAXIS_DISA(disa_begin_date, disa_end_date, disa_cert_beg
 End Function
 
 Function write_panel_to_MAXIS_DSTT(DSTT_ongoing_income, DSTT_HH_income_stop_date, DSTT_income_expected_amt)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ DSTT_ongoing_income, DSTT_HH_income_stop_date, DSTT_income_expected_amt: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator	
 	call navigate_to_MAXIS_screen("STAT", "DSTT")
 	EMReadScreen ERRR_check, 4, 2, 52			'Checking for the ERRR screen
 	If ERRR_check = "ERRR" then transmit		'If the ERRR screen is found, it transmits
@@ -5248,6 +5637,9 @@ Function write_panel_to_MAXIS_DSTT(DSTT_ongoing_income, DSTT_HH_income_stop_date
 End function
 
 FUNCTION write_panel_to_MAXIS_EATS(eats_together, eats_boarder, eats_group_one, eats_group_two, eats_group_three)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ eats_together, eats_boarder, eats_group_one, eats_group_two, eats_group_three: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator	
 	IF reference_number = "01" THEN
 		call navigate_to_MAXIS_screen("STAT", "EATS")
 		call create_panel_if_nonexistent
@@ -5286,6 +5678,9 @@ FUNCTION write_panel_to_MAXIS_EATS(eats_together, eats_boarder, eats_group_one, 
 END FUNCTION
 
 Function write_panel_to_MAXIS_EMMA(EMMA_medical_emergency, EMMA_health_consequence, EMMA_verification, EMMA_begin_date, EMMA_end_date)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ EMMA_medical_emergency, EMMA_health_consequence, EMMA_verification, EMMA_begin_date, EMMA_end_date: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator		
 	call navigate_to_MAXIS_screen("STAT", "EMMA")
 	EMReadScreen ERRR_check, 4, 2, 52			'Checking for the ERRR screen
 	If ERRR_check = "ERRR" then transmit		'If the ERRR screen is found, it transmits
@@ -5298,6 +5693,9 @@ Function write_panel_to_MAXIS_EMMA(EMMA_medical_emergency, EMMA_health_consequen
 End function
 
 FUNCTION write_panel_to_MAXIS_EMPS(EMPS_orientation_date, EMPS_orientation_attended, EMPS_good_cause, EMPS_sanc_begin, EMPS_sanc_end, EMPS_memb_at_home, EMPS_care_family, EMPS_crisis, EMPS_hard_employ, EMPS_under1, EMPS_DWP_date)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ EMPS_orientation_date, EMPS_orientation_attended, EMPS_good_cause, EMPS_sanc_begin, EMPS_sanc_end, EMPS_memb_at_home, EMPS_care_family, EMPS_crisis, EMPS_hard_employ, EMPS_under1, EMPS_DWP_date: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator	
 	call navigate_to_MAXIS_screen("STAT", "EMPS")
 	call create_panel_if_nonexistent
 	If EMPS_orientation_date <> "" then call create_MAXIS_friendly_date(EMPS_orientation_date, 0, 5, 39) 'enter orientation date
@@ -5348,6 +5746,9 @@ FUNCTION write_panel_to_MAXIS_EMPS(EMPS_orientation_date, EMPS_orientation_atten
 End Function
 
 Function write_panel_to_MAXIS_FACI(FACI_vendor_number, FACI_name, FACI_type, FACI_FS_eligible, FACI_FS_facility_type, FACI_date_in, FACI_date_out)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ FACI_vendor_number, FACI_name, FACI_type, FACI_FS_eligible, FACI_FS_facility_type, FACI_date_in, FACI_date_out: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator	
 	call navigate_to_MAXIS_screen("STAT", "FACI")
 	EMReadScreen ERRR_check, 4, 2, 52			'Checking for the ERRR screen
 	If ERRR_check = "ERRR" then transmit		'If the ERRR screen is found, it transmits
@@ -5368,8 +5769,10 @@ Function write_panel_to_MAXIS_FACI(FACI_vendor_number, FACI_name, FACI_type, FAC
 	transmit
 End function
 
-'---The custom function to pull FMED information from the Excel file. This function can handle up to 4 FMED rows per client.
 FUNCTION write_panel_to_MAXIS_FMED(FMED_medical_mileage, FMED_1_type, FMED_1_verif, FMED_1_ref_num, FMED_1_category, FMED_1_begin, FMED_1_end, FMED_1_amount, FMED_2_type, FMED_2_verif, FMED_2_ref_num, FMED_2_category, FMED_2_begin, FMED_2_end, FMED_2_amount, FMED_3_type, FMED_3_verif, FMED_3_ref_num, FMED_3_category, FMED_3_begin, FMED_3_end, FMED_3_amount, FMED_4_type, FMED_4_verif, FMED_4_ref_num, FMED_4_category, FMED_4_begin, FMED_4_end, FMED_4_amount)
+'--- This function writes to MAXIS in Krabappel only (pulls FMED information from the Excel file. This function can handle up to 4 FMED rows per client.)
+'~~~~~ FMED_medical_mileage, FMED_1_type, FMED_1_verif, FMED_1_ref_num, FMED_1_category, FMED_1_begin, FMED_1_end, FMED_1_amount, FMED_2_type, FMED_2_verif, FMED_2_ref_num, FMED_2_category, FMED_2_begin, FMED_2_end, FMED_2_amount, FMED_3_type, FMED_3_verif, FMED_3_ref_num, FMED_3_category, FMED_3_begin, FMED_3_end, FMED_3_amount, FMED_4_type, FMED_4_verif, FMED_4_ref_num, FMED_4_category, FMED_4_begin, FMED_4_end, FMED_4_amount: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	CALL navigate_to_MAXIS_screen("STAT", "FMED")
 	EMReadScreen ERRR_check, 4, 2, 52			'Checking for the ERRR screen
 	If ERRR_check = "ERRR" then transmit		'If the ERRR screen is found, it transmits
@@ -5529,6 +5932,9 @@ FUNCTION write_panel_to_MAXIS_FMED(FMED_medical_mileage, FMED_1_type, FMED_1_ver
 END FUNCTION
 
 Function write_panel_to_MAXIS_HCRE(hcre_appl_addnd_date_input,hcre_retro_months_input,hcre_recvd_by_service_date_input)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ hcre_appl_addnd_date_input,hcre_retro_months_input,hcre_recvd_by_service_date_input: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator	
 	call navigate_to_MAXIS_screen("STAT","HCRE")
 	call create_panel_if_nonexistent
 	'Converting the Appl Addendum Date into a usable format
@@ -5552,11 +5958,13 @@ Function write_panel_to_MAXIS_HCRE(hcre_appl_addnd_date_input,hcre_retro_months_
 	EMWriteScreen left(hcre_recvd_by_service_date_output,2)	, row, col + 51
 	EMWriteScreen mid(hcre_recvd_by_service_date_output,4,2), row, col + 54
 	EMWriteScreen right(hcre_recvd_by_service_date_output,2), row, col + 57
-
 	transmit
 End Function
 
 FUNCTION write_panel_to_MAXIS_HEST(HEST_FS_choice_date, HEST_first_month, HEST_heat_air_retro, HEST_electric_retro, HEST_phone_retro, HEST_heat_air_pro, HEST_electric_pro, HEST_phone_pro)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ HEST_FS_choice_date, HEST_first_month, HEST_heat_air_retro, HEST_electric_retro, HEST_phone_retro, HEST_heat_air_pro, HEST_electric_pro, HEST_phone_pro: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator	
 	call navigate_to_MAXIS_screen("STAT", "HEST")
 	call create_panel_if_nonexistent
 	Emwritescreen "01", 6, 40
@@ -5579,6 +5987,9 @@ FUNCTION write_panel_to_MAXIS_HEST(HEST_FS_choice_date, HEST_first_month, HEST_h
 End function
 
 Function write_panel_to_MAXIS_IMIG(IMIG_imigration_status, IMIG_entry_date, IMIG_status_date, IMIG_status_ver, IMIG_status_LPR_adj_from, IMIG_nationality, IMIG_40_soc_sec, IMIG_40_soc_sec_verif, IMIG_battered_spouse_child, IMIG_battered_spouse_child_verif, IMIG_military_status, IMIG_military_status_verif, IMIG_hmong_lao_nat_amer, IMIG_st_prog_esl_ctzn_coop, IMIG_st_prog_esl_ctzn_coop_verif, IMIG_fss_esl_skills_training)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ IMIG_imigration_status, IMIG_entry_date, IMIG_status_date, IMIG_status_ver, IMIG_status_LPR_adj_from, IMIG_nationality, IMIG_40_soc_sec, IMIG_40_soc_sec_verif, IMIG_battered_spouse_child, IMIG_battered_spouse_child_verif, IMIG_military_status, IMIG_military_status_verif, IMIG_hmong_lao_nat_amer, IMIG_st_prog_esl_ctzn_coop, IMIG_st_prog_esl_ctzn_coop_verif, IMIG_fss_esl_skills_training: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator		
 	call navigate_to_MAXIS_screen("STAT", "IMIG")
 	EMReadScreen ERRR_check, 4, 2, 52			'Checking for the ERRR screen
 	If ERRR_check = "ERRR" then transmit		'If the ERRR screen is found, it transmits
@@ -5612,6 +6023,9 @@ Function write_panel_to_MAXIS_IMIG(IMIG_imigration_status, IMIG_entry_date, IMIG
 End function
 
 Function write_panel_to_MAXIS_INSA(insa_pers_coop_ohi, insa_good_cause_status, insa_good_cause_cliam_date, insa_good_cause_evidence, insa_coop_cost_effect, insa_insur_name, insa_prescrip_drug_cover, insa_prescrip_end_date, insa_persons_covered)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ insa_pers_coop_ohi, insa_good_cause_status, insa_good_cause_cliam_date, insa_good_cause_evidence, insa_coop_cost_effect, insa_insur_name, insa_prescrip_drug_cover, insa_prescrip_end_date, insa_persons_covered: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	call navigate_to_MAXIS_screen("STAT","INSA")
 	call create_panel_if_nonexistent
 
@@ -5639,11 +6053,13 @@ Function write_panel_to_MAXIS_INSA(insa_pers_coop_ohi, insa_good_cause_status, i
 			insa_row = 16
 		END IF
 	NEXT
-
 	transmit
 End Function
 
 FUNCTION write_panel_to_MAXIS_JOBS(jobs_number, jobs_inc_type, jobs_inc_verif, jobs_employer_name, jobs_inc_start, jobs_wkly_hrs, jobs_hrly_wage, jobs_pay_freq)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ jobs_number, jobs_inc_type, jobs_inc_verif, jobs_employer_name, jobs_inc_start, jobs_wkly_hrs, jobs_hrly_wage, jobs_pay_freq: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	call navigate_to_MAXIS_screen("STAT", "JOBS")
 	EMWriteScreen reference_number, 20, 76
 	EMWriteScreen jobs_number, 20, 79
@@ -5777,6 +6193,9 @@ FUNCTION write_panel_to_MAXIS_JOBS(jobs_number, jobs_inc_type, jobs_inc_verif, j
 END FUNCTION
 
 Function write_panel_to_MAXIS_MEDI(SSN_first, SSN_mid, SSN_last, MEDI_claim_number_suffix, MEDI_part_A_premium, MEDI_part_B_premium, MEDI_part_A_begin_date, MEDI_part_B_begin_date, MEDI_apply_prem_to_spdn, MEDI_apply_prem_end_date)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ SSN_first, SSN_mid, SSN_last, MEDI_claim_number_suffix, MEDI_part_A_premium, MEDI_part_B_premium, MEDI_part_A_begin_date, MEDI_part_B_begin_date, MEDI_apply_prem_to_spdn, MEDI_apply_prem_end_date: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	call navigate_to_MAXIS_screen("STAT", "MEDI")
 	EMReadScreen ERRR_check, 4, 2, 52			'Checking for the ERRR screen
 	If ERRR_check = "ERRR" then transmit		'If the ERRR screen is found, it transmits
@@ -5799,6 +6218,9 @@ Function write_panel_to_MAXIS_MEDI(SSN_first, SSN_mid, SSN_last, MEDI_claim_numb
 End function
 
 FUNCTION write_panel_to_MAXIS_MMSA(mmsa_liv_arr, mmsa_cont_elig, mmsa_spous_inc, mmsa_shared_hous)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ mmsa_liv_arr, mmsa_cont_elig, mmsa_spous_inc, mmsa_shared_hous: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	IF mmsa_liv_arr <> "" THEN
 		call navigate_to_MAXIS_screen("STAT", "MMSA")
 		EMWriteScreen "NN", 20, 79
@@ -5812,6 +6234,9 @@ FUNCTION write_panel_to_MAXIS_MMSA(mmsa_liv_arr, mmsa_cont_elig, mmsa_spous_inc,
 END FUNCTION
 
 Function write_panel_to_MAXIS_MSUR(msur_begin_date)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ msur_begin_date: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	call navigate_to_MAXIS_screen("STAT","MSUR")
 	call create_panel_if_nonexistent
 
@@ -5831,8 +6256,10 @@ Function write_panel_to_MAXIS_MSUR(msur_begin_date)
 	transmit
 End Function
 
-'---This function writes using the variables read off of the specialized excel template to the othr panel in MAXIS
 Function write_panel_to_MAXIS_OTHR(othr_type, othr_cash_value, othr_cash_value_ver, othr_owed, othr_owed_ver, othr_date, othr_cash_count, othr_SNAP_count, othr_HC_count, othr_IV_count, othr_joint_owner, othr_share_ratio)
+'--- This function writes to MAXIS in Krabappel only (writes using the variables read off of the specialized excel template to the othr panel in MAXIS)
+'~~~~~ othr_type, othr_cash_value, othr_cash_value_ver, othr_owed, othr_owed_ver, othr_date, othr_cash_count, othr_SNAP_count, othr_HC_count, othr_IV_count, othr_joint_owner, othr_share_ratio: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	Call navigate_to_MAXIS_screen("STAT", "OTHR")  'navigates to the stat panel
 	call create_panel_if_nonexistent
 	Emwritescreen othr_type, 6, 40  'enters other asset type
@@ -5853,6 +6280,9 @@ Function write_panel_to_MAXIS_OTHR(othr_type, othr_cash_value, othr_cash_value_v
 End Function
 
 FUNCTION write_panel_to_MAXIS_PARE(appl_date, reference_number, PARE_child_1, PARE_child_1_relation, PARE_child_1_verif, PARE_child_2, PARE_child_2_relation, PARE_child_2_verif, PARE_child_3, PARE_child_3_relation, PARE_child_3_verif, PARE_child_4, PARE_child_4_relation, PARE_child_4_verif, PARE_child_5, PARE_child_5_relation, PARE_child_5_verif, PARE_child_6, PARE_child_6_relation, PARE_child_6_verif)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ appl_date, reference_number, PARE_child_1, PARE_child_1_relation, PARE_child_1_verif, PARE_child_2, PARE_child_2_relation, PARE_child_2_verif, PARE_child_3, PARE_child_3_relation, PARE_child_3_verif, PARE_child_4, PARE_child_4_relation, PARE_child_4_verif, PARE_child_5, PARE_child_5_relation, PARE_child_5_verif, PARE_child_6, PARE_child_6_relation, PARE_child_6_verif: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	Call navigate_to_MAXIS_screen("STAT", "PARE")
 	CALL write_value_and_transmit(reference_number, 20, 76)
 	EMReadScreen num_of_PARE, 1, 2, 78
@@ -5891,8 +6321,10 @@ FUNCTION write_panel_to_MAXIS_PARE(appl_date, reference_number, PARE_child_1, PA
 	transmit
 end function
 
-'---This function writes using the variables read off of the specialized excel template to the pben panel in MAXIS
 Function write_panel_to_MAXIS_PBEN(pben_referal_date, pben_type, pben_appl_date, pben_appl_ver, pben_IAA_date, pben_disp)
+'--- This function writes to MAXIS in Krabappel only (writes using the variables read off of the specialized excel template to the pben panel in MAXIS)
+'~~~~~ pben_referal_date, pben_type, pben_appl_date, pben_appl_ver, pben_IAA_date, pben_disp: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	Call navigate_to_MAXIS_screen("STAT", "PBEN")  'navigates to the stat panel
 	call create_panel_if_nonexistent
 	Emreadscreen pben_row_check, 2, 8, 24  'reads the MAXIS screen to find out if the PBEN row has already been used.
@@ -5929,6 +6361,9 @@ Function write_panel_to_MAXIS_PBEN(pben_referal_date, pben_type, pben_appl_date,
 End Function
 
 Function write_panel_to_MAXIS_PDED(PDED_wid_deduction, PDED_adult_child_disregard, PDED_wid_disregard, PDED_unea_income_deduction_reason, PDED_unea_income_deduction_value, PDED_earned_income_deduction_reason, PDED_earned_income_deduction_value, PDED_ma_epd_inc_asset_limit, PDED_guard_fee, PDED_rep_payee_fee, PDED_other_expense, PDED_shel_spcl_needs, PDED_excess_need, PDED_restaurant_meals)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ PDED_wid_deduction, PDED_adult_child_disregard, PDED_wid_disregard, PDED_unea_income_deduction_reason, PDED_unea_income_deduction_value, PDED_earned_income_deduction_reason, PDED_earned_income_deduction_value, PDED_ma_epd_inc_asset_limit, PDED_guard_fee, PDED_rep_payee_fee, PDED_other_expense, PDED_shel_spcl_needs, PDED_excess_need, PDED_restaurant_meals: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	call navigate_to_MAXIS_screen("STAT","PDED")
 	call create_panel_if_nonexistent
 
@@ -6013,12 +6448,13 @@ Function write_panel_to_MAXIS_PDED(PDED_wid_deduction, PDED_adult_child_disregar
 		pded_restaurant_meals = left(pded_restaurant_meals,1)
 		EMWriteScreen pded_restaurant_meals, 19, 78
 	End If
-
 	Transmit
-
 End Function
 
 FUNCTION write_panel_to_MAXIS_PREG(PREG_conception_date, PREG_conception_date_ver, PREG_third_trimester_ver, PREG_due_date, PREG_multiple_birth)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ PREG_conception_date, PREG_conception_date_ver, PREG_third_trimester_ver, PREG_due_date, PREG_multiple_birth: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	call navigate_to_MAXIS_screen("STAT", "PREG")
 	call create_panel_if_nonexistent
 	EMWritescreen "NN", 20, 79
@@ -6033,8 +6469,10 @@ FUNCTION write_panel_to_MAXIS_PREG(PREG_conception_date, PREG_conception_date_ve
 	transmit
 end function
 
-'---This function writes using the variables read off of the specialized excel template to the rbic panel in MAXIS
 Function write_panel_to_MAXIS_RBIC(rbic_type, rbic_start_date, rbic_end_date, rbic_group_1, rbic_retro_income_group_1, rbic_prosp_income_group_1, rbic_ver_income_group_1, rbic_group_2, rbic_retro_income_group_2, rbic_prosp_income_group_2, rbic_ver_income_group_2, rbic_group_3, rbic_retro_income_group_3, rbic_prosp_income_group_3, rbic_ver_income_group_3, rbic_retro_hours, rbic_prosp_hours, rbic_exp_type_1, rbic_exp_retro_1, rbic_exp_prosp_1, rbic_exp_ver_1, rbic_exp_type_2, rbic_exp_retro_2, rbic_exp_prosp_2, rbic_exp_ver_2)
+'--- This function writes to MAXIS in Krabappel only (writes using the variables read off of the specialized excel template to the rbic panel in MAXIS)
+'~~~~~ rbic_type, rbic_start_date, rbic_end_date, rbic_group_1, rbic_retro_income_group_1, rbic_prosp_income_group_1, rbic_ver_income_group_1, rbic_group_2, rbic_retro_income_group_2, rbic_prosp_income_group_2, rbic_ver_income_group_2, rbic_group_3, rbic_retro_income_group_3, rbic_prosp_income_group_3, rbic_ver_income_group_3, rbic_retro_hours, rbic_prosp_hours, rbic_exp_type_1, rbic_exp_retro_1, rbic_exp_prosp_1, rbic_exp_ver_1, rbic_exp_type_2, rbic_exp_retro_2, rbic_exp_prosp_2, rbic_exp_ver_2: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	call navigate_to_MAXIS_screen("STAT", "RBIC")  'navigates to the stat panel
 	call create_panel_if_nonexistent
 	EMwritescreen rbic_type, 5, 44  'enters rbic type code
@@ -6082,8 +6520,10 @@ Function write_panel_to_MAXIS_RBIC(rbic_type, rbic_start_date, rbic_end_date, rb
 	EMwritescreen rbic_exp_ver_2, 16, 76    'enters the expenses verification code for group 2
 end function
 
-'---This function writes using the variables read off of the specialized excel template to the rest panel in MAXIS
 Function write_panel_to_MAXIS_REST(rest_type, rest_type_ver, rest_market, rest_market_ver, rest_owed, rest_owed_ver, rest_date, rest_status, rest_joint, rest_share_ratio, rest_agreement_date)
+'--- This function writes to MAXIS in Krabappel only (writes using the variables read off of the specialized excel template to the rest panel in MAXIS)
+'~~~~~ rest_type, rest_type_ver, rest_market, rest_market_ver, rest_owed, rest_owed_ver, rest_date, rest_status, rest_joint, rest_share_ratio, rest_agreement_date: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	Call navigate_to_MAXIS_screen("STAT", "REST")  'navigates to the stat panel
 	call create_panel_if_nonexistent
 	Emwritescreen rest_type, 6, 39  'enters residence type
@@ -6101,6 +6541,9 @@ Function write_panel_to_MAXIS_REST(rest_type, rest_type_ver, rest_market, rest_m
 End Function
 
 Function write_panel_to_MAXIS_SCHL(appl_date, SCHL_status, SCHL_ver, SCHL_type, SCHL_district_nbr, SCHL_kindergarten_start_date, SCHL_grad_date, SCHL_grad_date_ver, SCHL_primary_secondary_funding, SCHL_FS_eligibility_status, SCHL_higher_ed)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ appl_date, SCHL_status, SCHL_ver, SCHL_type, SCHL_district_nbr, SCHL_kindergarten_start_date, SCHL_grad_date, SCHL_grad_date_ver, SCHL_primary_secondary_funding, SCHL_FS_eligibility_status, SCHL_higher_ed: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	EMWriteScreen "SCHL", 20, 71
 	EMWriteScreen reference_number, 20, 76
 	transmit
@@ -6132,8 +6575,10 @@ Function write_panel_to_MAXIS_SCHL(appl_date, SCHL_status, SCHL_ver, SCHL_type, 
 	END IF
 End function
 
-'---This function writes using the variables read off of the specialized excel template to the secu panel in MAXIS
 Function write_panel_to_MAXIS_SECU(secu_type, secu_pol_numb, secu_name, secu_cash_val, secu_date, secu_cash_ver, secu_face_val, secu_withdraw, secu_cash_count, secu_SNAP_count, secu_HC_count, secu_GRH_count, secu_IV_count, secu_joint, secu_share_ratio)
+'--- This function writes to MAXIS in Krabappel only (writes using the variables read off of the specialized excel template to the secu panel in MAXIS)
+'~~~~~ secu_type, secu_pol_numb, secu_name, secu_cash_val, secu_date, secu_cash_ver, secu_face_val, secu_withdraw, secu_cash_count, secu_SNAP_count, secu_HC_count, secu_GRH_count, secu_IV_count, secu_joint, secu_share_ratio: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	Call navigate_to_MAXIS_screen("STAT", "SECU")  'navigates to the stat panel
 	call create_panel_if_nonexistent
 	Emwritescreen secu_type, 6, 50  'enters security type
@@ -6155,6 +6600,9 @@ Function write_panel_to_MAXIS_SECU(secu_type, secu_pol_numb, secu_name, secu_cas
 End Function
 
 FUNCTION write_panel_to_MAXIS_SHEL(SHEL_subsidized, SHEL_shared, SHEL_paid_to, SHEL_rent_retro, SHEL_rent_retro_ver, SHEL_rent_pro, SHEL_rent_pro_ver, SHEL_lot_rent_retro, SHEL_lot_rent_retro_ver, SHEL_lot_rent_pro, SHEL_lot_rent_pro_ver, SHEL_mortgage_retro, SHEL_mortgage_retro_ver, SHEL_mortgage_pro, SHEL_mortgage_pro_ver, SHEL_insur_retro, SHEL_insur_retro_ver, SHEL_insur_pro, SHEL_insur_pro_ver, SHEL_taxes_retro, SHEL_taxes_retro_ver, SHEL_taxes_pro, SHEL_taxes_pro_ver, SHEL_room_retro, SHEL_room_retro_ver, SHEL_room_pro, SHEL_room_pro_ver, SHEL_garage_retro, SHEL_garage_retro_ver, SHEL_garage_pro, SHEL_garage_pro_ver, SHEL_subsidy_retro, SHEL_subsidy_retro_ver, SHEL_subsidy_pro, SHEL_subsidy_pro_ver)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ SHEL_subsidized, SHEL_shared, SHEL_paid_to, SHEL_rent_retro, SHEL_rent_retro_ver, SHEL_rent_pro, SHEL_rent_pro_ver, SHEL_lot_rent_retro, SHEL_lot_rent_retro_ver, SHEL_lot_rent_pro, SHEL_lot_rent_pro_ver, SHEL_mortgage_retro, SHEL_mortgage_retro_ver, SHEL_mortgage_pro, SHEL_mortgage_pro_ver, SHEL_insur_retro, SHEL_insur_retro_ver, SHEL_insur_pro, SHEL_insur_pro_ver, SHEL_taxes_retro, SHEL_taxes_retro_ver, SHEL_taxes_pro, SHEL_taxes_pro_ver, SHEL_room_retro, SHEL_room_retro_ver, SHEL_room_pro, SHEL_room_pro_ver, SHEL_garage_retro, SHEL_garage_retro_ver, SHEL_garage_pro, SHEL_garage_pro_ver, SHEL_subsidy_retro, SHEL_subsidy_retro_ver, SHEL_subsidy_pro, SHEL_subsidy_pro_ver: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	call navigate_to_MAXIS_screen("STAT", "SHEL")
 	call create_panel_if_nonexistent
 	EMWritescreen SHEL_subsidized, 6, 46
@@ -6196,6 +6644,9 @@ FUNCTION write_panel_to_MAXIS_SHEL(SHEL_subsidized, SHEL_shared, SHEL_paid_to, S
 end function
 
 FUNCTION write_panel_to_MAXIS_SIBL(SIBL_group_1, SIBL_group_2, SIBL_group_3)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ SIBL_group_1, SIBL_group_2, SIBL_group_3: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	call navigate_to_MAXIS_screen("STAT", "SIBL")
 	EMReadScreen num_of_SIBL, 1, 2, 78
 	IF num_of_SIBL = "0" THEN
@@ -6239,6 +6690,9 @@ FUNCTION write_panel_to_MAXIS_SIBL(SIBL_group_1, SIBL_group_2, SIBL_group_3)
 end function
 
 Function write_panel_to_MAXIS_SPON(SPON_type, SPON_ver, SPON_name, SPON_state)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ SPON_type, SPON_ver, SPON_name, SPON_state: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	call navigate_to_MAXIS_screen("STAT", "SPON")
 	EMReadScreen ERRR_check, 4, 2, 52			'Checking for the ERRR screen
 	If ERRR_check = "ERRR" then transmit		'If the ERRR screen is found, it transmits
@@ -6251,6 +6705,9 @@ Function write_panel_to_MAXIS_SPON(SPON_type, SPON_ver, SPON_name, SPON_state)
 End function
 
 Function write_panel_to_MAXIS_STEC(STEC_type_1, STEC_amt_1, STEC_actual_from_thru_months_1, STEC_ver_1, STEC_earmarked_amt_1, STEC_earmarked_from_thru_months_1, STEC_type_2, STEC_amt_2, STEC_actual_from_thru_months_2, STEC_ver_2, STEC_earmarked_amt_2, STEC_earmarked_from_thru_months_2)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ STEC_type_1, STEC_amt_1, STEC_actual_from_thru_months_1, STEC_ver_1, STEC_earmarked_amt_1, STEC_earmarked_from_thru_months_1, STEC_type_2, STEC_amt_2, STEC_actual_from_thru_months_2, STEC_ver_2, STEC_earmarked_amt_2, STEC_earmarked_from_thru_months_2: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	EMWriteScreen "STEC", 20, 71
 	EMWriteSCreen reference_number, 20, 76
 	transmit
@@ -6293,6 +6750,9 @@ Function write_panel_to_MAXIS_STEC(STEC_type_1, STEC_amt_1, STEC_actual_from_thr
 End function
 
 Function write_panel_to_MAXIS_STIN(STIN_type_1, STIN_amt_1, STIN_avail_date_1, STIN_months_covered_1, STIN_ver_1, STIN_type_2, STIN_amt_2, STIN_avail_date_2, STIN_months_covered_2, STIN_ver_2)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ STIN_type_1, STIN_amt_1, STIN_avail_date_1, STIN_months_covered_1, STIN_ver_1, STIN_type_2, STIN_amt_2, STIN_avail_date_2, STIN_months_covered_2, STIN_ver_2: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	EMWriteScreen "STIN", 20, 71
 	EMWriteSCreen reference_number, 20, 76
 	transmit
@@ -6325,6 +6785,9 @@ Function write_panel_to_MAXIS_STIN(STIN_type_1, STIN_amt_1, STIN_avail_date_1, S
 End function
 
 Function write_panel_to_MAXIS_STWK(STWK_empl_name, STWK_wrk_stop_date, STWK_wrk_stop_date_verif, STWK_inc_stop_date, STWK_refused_empl_yn, STWK_vol_quit, STWK_ref_empl_date, STWK_gc_cash, STWK_gc_grh, STWK_gc_fs, STWK_fs_pwe, STWK_maepd_ext)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ STWK_empl_name, STWK_wrk_stop_date, STWK_wrk_stop_date_verif, STWK_inc_stop_date, STWK_refused_empl_yn, STWK_vol_quit, STWK_ref_empl_date, STWK_gc_cash, STWK_gc_grh, STWK_gc_fs, STWK_fs_pwe, STWK_maepd_ext: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	call navigate_to_MAXIS_screen("STAT","STWK")
 	call create_panel_if_nonexistent
 
@@ -6344,6 +6807,9 @@ Function write_panel_to_MAXIS_STWK(STWK_empl_name, STWK_wrk_stop_date, STWK_wrk_
 End Function
 
 FUNCTION write_panel_to_MAXIS_TYPE_PROG_REVW(appl_date, type_cash_yn, type_hc_yn, type_fs_yn, prog_mig_worker, revw_ar_or_ir, revw_exempt)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ appl_date, type_cash_yn, type_hc_yn, type_fs_yn, prog_mig_worker, revw_ar_or_ir, revw_exempt: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	call navigate_to_MAXIS_screen("STAT", "TYPE")
 	IF reference_number = "01" THEN
 		EMWriteScreen "NN", 20, 79
@@ -6446,6 +6912,9 @@ FUNCTION write_panel_to_MAXIS_TYPE_PROG_REVW(appl_date, type_cash_yn, type_hc_yn
 END FUNCTION
 
 FUNCTION write_panel_to_MAXIS_UNEA(unea_number, unea_inc_type, unea_inc_verif, unea_claim_suffix, unea_start_date, unea_pay_freq, unea_inc_amount, ssn_first, ssn_mid, ssn_last)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ unea_number, unea_inc_type, unea_inc_verif, unea_claim_suffix, unea_start_date, unea_pay_freq, unea_inc_amount, ssn_first, ssn_mid, ssn_last: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	call navigate_to_MAXIS_screen("STAT", "UNEA")
 	PF10
 	EMWriteScreen reference_number, 20, 76
@@ -6567,6 +7036,9 @@ FUNCTION write_panel_to_MAXIS_UNEA(unea_number, unea_inc_type, unea_inc_verif, u
 END FUNCTION
 
 FUNCTION write_panel_to_MAXIS_WKEX(program, fed_tax_retro, fed_tax_prosp, fed_tax_verif, state_tax_retro, state_tax_prosp, state_tax_verif, fica_retro, fica_prosp, fica_verif, tran_retro, tran_prosp, tran_verif, tran_imp_rel, meals_retro, meals_prosp, meals_verif, meals_imp_rel, uniforms_retro, uniforms_prosp, uniforms_verif, uniforms_imp_rel, tools_retro, tools_prosp, tools_verif, tools_imp_rel, dues_retro, dues_prosp, dues_verif, dues_imp_rel, othr_retro, othr_prosp, othr_verif, othr_imp_rel, HC_Exp_Fed_Tax, HC_Exp_State_Tax, HC_Exp_FICA, HC_Exp_Tran, HC_Exp_Tran_imp_rel, HC_Exp_Meals, HC_Exp_Meals_Imp_Rel, HC_Exp_Uniforms, HC_Exp_Uniforms_Imp_Rel, HC_Exp_Tools, HC_Exp_Tools_Imp_Rel, HC_Exp_Dues, HC_Exp_Dues_Imp_Rel, HC_Exp_Othr, HC_Exp_Othr_Imp_Rel)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ program, fed_tax_retro, fed_tax_prosp, fed_tax_verif, state_tax_retro, state_tax_prosp, state_tax_verif, fica_retro, fica_prosp, fica_verif, tran_retro, tran_prosp, tran_verif, tran_imp_rel, meals_retro, meals_prosp, meals_verif, meals_imp_rel, uniforms_retro, uniforms_prosp, uniforms_verif, uniforms_imp_rel, tools_retro, tools_prosp, tools_verif, tools_imp_rel, dues_retro, dues_prosp, dues_verif, dues_imp_rel, othr_retro, othr_prosp, othr_verif, othr_imp_rel, HC_Exp_Fed_Tax, HC_Exp_State_Tax, HC_Exp_FICA, HC_Exp_Tran, HC_Exp_Tran_imp_rel, HC_Exp_Meals, HC_Exp_Meals_Imp_Rel, HC_Exp_Uniforms, HC_Exp_Uniforms_Imp_Rel, HC_Exp_Tools, HC_Exp_Tools_Imp_Rel, HC_Exp_Dues, HC_Exp_Dues_Imp_Rel, HC_Exp_Othr, HC_Exp_Othr_Imp_Rel: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	CALL navigate_to_MAXIS_screen("STAT", "WKEX")
 	EMReadScreen ERRR_check, 4, 2, 52			'Checking for the ERRR screen
 	If ERRR_check = "ERRR" then transmit		'If the ERRR screen is found, it transmits0
@@ -6652,6 +7124,9 @@ FUNCTION write_panel_to_MAXIS_WKEX(program, fed_tax_retro, fed_tax_prosp, fed_ta
 END FUNCTION
 
 FUNCTION write_panel_to_MAXIS_WREG(wreg_fs_pwe, wreg_fset_status, wreg_defer_fs, wreg_fset_orientation_date, wreg_fset_sanction_date, wreg_num_sanctions, wreg_abawd_status, wreg_ga_basis)
+'--- This function writes to MAXIS in Krabappel only
+'~~~~~ wreg_fs_pwe, wreg_fset_status, wreg_defer_fs, wreg_fset_orientation_date, wreg_fset_sanction_date, wreg_num_sanctions, wreg_abawd_status, wreg_ga_basis: parameters for the training case creator to work
+'===== Keywords: MAXIS, Krabappel, traning, case, creator
 	call navigate_to_MAXIS_screen("STAT", "WREG")
 	call create_panel_if_nonexistent
 
@@ -6663,6 +7138,5 @@ FUNCTION write_panel_to_MAXIS_WREG(wreg_fs_pwe, wreg_fset_status, wreg_defer_fs,
 	IF wreg_num_sanctions <> "" THEN EMWriteScreen wreg_num_sanctions, 11, 50
 	EMWriteScreen wreg_abawd_status, 13, 50
 	EMWriteScreen wreg_ga_basis, 15, 50
-
 	transmit
 END FUNCTION
