@@ -1,4 +1,3 @@
-// TODO: add explanation text for the tool
 // TODO: add Source Code Pro font for monospace, and break out functional examples in monospace like GitHub markdown does
 // TODO: add a Favicon
 // TODO: scan script files for a list of scripts where each function is used IRL
