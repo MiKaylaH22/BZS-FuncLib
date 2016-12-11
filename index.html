@@ -25,6 +25,9 @@
 	
 	<!-- Favicon -->
 	<link rel="shortcut icon" type="image/png" href="img/BlueZoneScripts.png"/>
+	
+	<!--Hit our custom JavaScript-->
+	<script src="js/docstring-reader.js" charset="utf-8"></script>
 </head>
 
 
@@ -93,15 +96,14 @@
 			
 		
 	</div>
-	
-	<!--Hit our custom JavaScript-->
-	<script src="js/docstring-reader.js" charset="utf-8"></script>
 
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
+	<!-- Run our custom JavaScript function to modify the findlibContents span with actual stuff -->
+	<script type="text/javascript">displayFuncLibInfo();</script>
 
 </body>
 </html>
