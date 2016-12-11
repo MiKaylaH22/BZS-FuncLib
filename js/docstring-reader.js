@@ -1,10 +1,10 @@
-// TODO: add Source Code Pro font for monospace, and break out functional examples in monospace like GitHub markdown does
-// TODO: add a Favicon
+// TODO: turn the list gen elements into a function
 // TODO: scan script files for a list of scripts where each function is used IRL
 // TODO: Create alpha links bar in navbar, corresponding functionality in the long lists
 // TODO: turn dummy tag buttons into useable tag buttons which sort and integrate with the Functions by tags menu
 // TODO: add a feature to switch branches (master or insert your own)
 // TODO: create page explaining how to use FuncLib in your project
+// TODO: replace warning text with a spinner or something so as not to alarm folks with slow connections, move warning text to something that happens if connection not made
 
 // read text from URL location
 var request = new XMLHttpRequest();
