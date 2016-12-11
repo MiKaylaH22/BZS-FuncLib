@@ -4,6 +4,7 @@
 // TODO: Create alpha links bar in navbar, corresponding functionality in the long lists
 // TODO: turn dummy tag buttons into useable tag buttons which sort and integrate with the Functions by tags menu
 // TODO: add a feature to switch branches (master or insert your own)
+// TODO: create page explaining how to use FuncLib in your project
 
 // read text from URL location
 var request = new XMLHttpRequest();
