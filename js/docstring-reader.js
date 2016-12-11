@@ -1,14 +1,16 @@
-// TODO: Switch branch to classic
-// TODO: scan script files for a list of scripts where each function is used IRL
-// TODO: Create alpha links bar in navbar, corresponding functionality in the long lists
+// TODO: make sure all FuncLib functions have "()" in them\
+// TODO: add explanation text for the tool
+// TODO: shrink the details with an accordion or something
 // TODO: add Source Code Pro font for monospace, and break out functional examples in monospace like GitHub markdown does
 // TODO: add a Favicon
+// TODO: scan script files for a list of scripts where each function is used IRL
+// TODO: Create alpha links bar in navbar, corresponding functionality in the long lists
 // TODO: turn dummy tag buttons into useable tag buttons which sort and integrate with the Functions by tags menu
-// TODO: make sure all FuncLib functions have "()" in them
+// TODO: add a feature to switch branches (master or insert your own)
 
 // read text from URL location
 var request = new XMLHttpRequest();
-request.open('GET', 'https://raw.githubusercontent.com/MN-Script-Team/BZS-FuncLib/working-branch-325-docstring-time-yo/MASTER%20FUNCTIONS%20LIBRARY.vbs', true);
+request.open('GET', 'https://raw.githubusercontent.com/MN-Script-Team/BZS-FuncLib/RELEASE/MASTER%20FUNCTIONS%20LIBRARY.vbs', true);
 
 // This sends the request for info and does all of the hard work
 request.onreadystatechange = function () {
