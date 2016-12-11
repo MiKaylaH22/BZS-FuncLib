@@ -1,5 +1,4 @@
 // TODO: add explanation text for the tool
-// TODO: shrink the details with an accordion or something
 // TODO: add Source Code Pro font for monospace, and break out functional examples in monospace like GitHub markdown does
 // TODO: add a Favicon
 // TODO: scan script files for a list of scripts where each function is used IRL
@@ -74,7 +73,23 @@ request.onreadystatechange = function () {
                     while (areWeDoneYet != true);                                                                                                                                                               // do this until we're done with parameters or tags!
                     
                     // ...and finally we write the contents to the contentsForSite variable.
-                    contentsForSite = contentsForSite + "<h1>" + nameOfFunction + "</h1>" + "\n" + "<p>" + functionDefinition + "</p> \n <p>Parameters used by this function: </p> <ul>" + listOfParameters + "</ul> \n" + listOfTags;
+                    contentsForSite = contentsForSite + "<div class='panel-group'>" + "\n" + 
+                                                            "<div class='panel panel-default'>" + "\n" + 
+                                                                "<div class='panel-heading'>" + "\n" + 
+                                                                    "<h4 class='panel-title'>" + "\n" + 
+                                                                        "<a data-toggle='collapse' href='#" + nameOfFunction.replace(" ", "") + "'>" + nameOfFunction + "</a>" + "\n" + 
+                                                                    "</h4>" + "\n" + 
+                                                                "</div>" + "\n" + 
+                                                                "<div id='" + nameOfFunction.replace(" ", "") + "' class='panel-collapse collapse'>" + "\n" + 
+                                                                    "<div class='panel-body'>" + 
+                                                                        "<p>" + functionDefinition + "</p>" + "\n" + 
+                                                                        "<p>Parameters used by this function: </p>" + "\n" + 
+                                                                        "<ul>" + listOfParameters + "</ul>" + "\n" + 
+                                                                        listOfTags + "\n" +
+                                                                    "</div>" + "\n" + 
+                                                                "</div>" + "\n" + 
+                                                            "</div>" + "\n" + 
+                                                        "</div>";
                     
                     // We need to clear the listOfParameters and listOfTags before proceeding
                     listOfParameters = "";
