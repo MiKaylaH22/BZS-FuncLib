@@ -1,4 +1,4 @@
-// TODO: scan script files for a list of scripts where each function is used IRL
+// TODO: scan script files for a list of scripts where each function is used IRL <<<<<<< IN PROGRESS
 // TODO: Create alpha links bar in navbar, corresponding functionality in the long lists
 // TODO: turn dummy tag buttons into useable tag buttons which sort and integrate with the Functions by tags menu
 // TODO: add a feature to switch branches (master or insert your own)
@@ -105,5 +105,80 @@ function displayFuncLibInfo() {
         }
     }
 
+    request.send(null);
+}
+
+function displayFuncLibStats() {
+    // read text from URL location to get the list of scripts
+    var request = new XMLHttpRequest();
+    request.open('GET', 'https://raw.githubusercontent.com/MN-Script-Team/DHS-PRISM-Scripts/release/~complete-list-of-scripts.vbs', true);
+    
+    // This sends the request for info and does all of the hard work
+    request.onreadystatechange = function () {
+        // If the data is there, then...
+        if (request.readyState === 4 && request.status === 200) {
+            // create a new variable called "type" which handles the response header, or "type of content we're dealing with"
+            var type = request.getResponseHeader('Content-Type');
+            
+            // If it's text, that means it's probably working and we can proceed!
+            if (type.indexOf("text") !== 1) {
+                
+                // Create a variable filled with the contents of the FuncLib file
+                var listOfScriptsArray = request.responseText.split("\n");
+                
+                var listOfScripts = "";
+                
+                
+                for (var i = 0; i < listOfScriptsArray.length; i++) {
+                    if (listOfScriptsArray[i].startsWith("cs_scripts_array(script_num).script_name")) {
+                        
+                        // Creating a friendly name for the new script
+                        var scriptFriendlyName = listOfScriptsArray[i].replace('cs_scripts_array(script_num).script_name', '').replace(/"/g, '').replace('=', '').trim();
+                        
+                        // Getting the category, which is always on the next line
+                        var scriptCategory = listOfScriptsArray[i + 1].slice((listOfScriptsArray[i + 1].length - listOfScriptsArray[i + 1].lastIndexOf("=")) * -1).replace(/"/g, '').replace('=', '').trim();
+                        
+                        // Getting the URL for the script file
+                        var scriptURL = 'https://raw.githubusercontent.com/MN-Script-Team/DHS-PRISM-Scripts/release/' + scriptCategory + '\\' + scriptFriendlyName.toLowerCase().replace(/ /g, '-') + '.vbs';
+                        
+                        //var scriptURLAccurate;
+                        
+                        function grabScript(scriptURL, callback) {
+                        
+                            // read text from URL location to get the list of scripts
+                            var scriptCheck = new XMLHttpRequest();
+                            
+                            // This sends the request for info and does all of the hard work
+                            scriptCheck.onreadystatechange = function () {
+                                // If the data is there, then...
+                                if (scriptCheck.readyState === 4 && scriptCheck.status === 200) {
+                                    callback(scriptCheck.responseText);
+                                    //callback(true);
+                                } 
+                            }
+                            
+                            scriptCheck.open('GET', scriptURL);                            
+                            scriptCheck.send();
+                        
+                        }
+                        
+                        //var x = "";
+                        
+                        function scriptURLAccurate(data) {
+                            listOfScripts = listOfScripts + "<p><a href='" + scriptURL + "'>" + scriptFriendlyName + "</a> | " + scriptCategory + " | " + data + "</p>";
+                            document.getElementById("listOfScripts").innerHTML = listOfScripts;
+                        }
+                        
+                        grabScript(scriptURL, scriptURLAccurate);
+
+                    }
+                }
+                
+                //document.getElementById("listOfScripts").innerHTML = listOfScripts;
+
+            }
+        }
+    }
+    
     request.send(null);
 }
