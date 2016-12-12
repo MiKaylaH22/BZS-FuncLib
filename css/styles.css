@@ -96,6 +96,10 @@ body {
     margin-top: 50px;
 }
 
+code {
+    font-family: 'Source Code Pro', monospace;
+}
+
 nav {
     font-family: 'Oxygen', sans-serif;
     font-weight: 300;
