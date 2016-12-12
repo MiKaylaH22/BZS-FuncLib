@@ -1,10 +1,12 @@
-// TODO: scan script files for a list of scripts where each function is used IRL <<<<<<< IN PROGRESS
 // TODO: Create alpha links bar in navbar, corresponding functionality in the long lists
 // TODO: turn dummy tag buttons into useable tag buttons which sort and integrate with the Functions by tags menu
 // TODO: add a feature to switch branches (master or insert your own)
 // TODO: create page explaining how to use FuncLib in your project
 // TODO: replace warning text with a spinner or something so as not to alarm folks with slow connections, move warning text to something that happens if connection not made
 // TODO: create expand all functionality
+// TODO: transmit may be missing parenthesis
+// TODO: needs some kind of method to display cases where there were no functions found in any scripts
+// TODO: needs to check MAXIS scripts for functions as well
 
 function displayFuncLibInfo() {
 
@@ -87,6 +89,9 @@ function displayFuncLibInfo() {
                                                                             "<p>" + functionDefinition + "</p>" + "\n" + 
                                                                             "<p>Parameters used by this function: </p>" + "\n" + 
                                                                             "<ul>" + listOfParameters + "</ul>" + "\n" + 
+                                                                            "<button class=\'btn btn-primary\' type=\'button\' onclick=\"displayFuncLibStats(\'" + nameOfFunction + "\', \'" + nameOfFunction.replace(" ", "") + "_scriptlist\')\">Click here to view a list of scripts that use this function</button>" + "\n" + 
+                                                                            "<ul id='" + nameOfFunction.replace(" ", "") + "_scriptlist'>" + "\n" + 
+                                                                            "</ul>" + "\n" + 
                                                                             listOfTags + "\n" +
                                                                         "</div>" + "\n" + 
                                                                     "</div>" + "\n" + 
@@ -96,6 +101,9 @@ function displayFuncLibInfo() {
                         // We need to clear the listOfParameters and listOfTags before proceeding
                         listOfParameters = "";
                         listOfTags = "";
+                        
+                        //displayFuncLibStats(nameOfFunction, nameOfFunction.replace(" ", "") + "_scriptlist");
+                        
                     }                
                 }
                 
@@ -108,7 +116,10 @@ function displayFuncLibInfo() {
     request.send(null);
 }
 
-function displayFuncLibStats() {
+function displayFuncLibStats(functionToCheckFor, idToPass) {
+    
+    var listOfScriptsHTML = document.getElementById(idToPass)
+    
     // read text from URL location to get the list of scripts
     var request = new XMLHttpRequest();
     request.open('GET', 'https://raw.githubusercontent.com/MN-Script-Team/DHS-PRISM-Scripts/release/~complete-list-of-scripts.vbs', true);
@@ -140,45 +151,35 @@ function displayFuncLibStats() {
                         
                         // Getting the URL for the script file
                         var scriptURL = 'https://raw.githubusercontent.com/MN-Script-Team/DHS-PRISM-Scripts/release/' + scriptCategory + '\\' + scriptFriendlyName.toLowerCase().replace(/ /g, '-') + '.vbs';
-                        
-                        //var scriptURLAccurate;
-                        
-                        function grabScript(scriptURL, callback) {
-                        
-                            // read text from URL location to get the list of scripts
-                            var scriptCheck = new XMLHttpRequest();
+                                                
+                        // read text from URL location to get the list of scripts
+                        var scriptCheck = new XMLHttpRequest();
                             
-                            // This sends the request for info and does all of the hard work
-                            scriptCheck.onreadystatechange = function () {
-                                // If the data is there, then...
-                                if (scriptCheck.readyState === 4 && scriptCheck.status === 200) {
-                                    callback(scriptCheck.responseText);
-                                    //callback(true);
+                        // This sends the request for info and does all of the hard work
+                        scriptCheck.onreadystatechange = function () {
+                            // If the data is there, then...
+                            if (scriptCheck.readyState === 4 && scriptCheck.status === 200) {
+                                var data = scriptCheck.responseText;
+                                
+                                var re = new RegExp(functionToCheckFor, "i");
+                                
+                                if (data.search(re) != -1) {
+                                    listOfScriptsHTML.insertAdjacentHTML('beforeend', "<li><a href=\'" + scriptURL + "\' target=\'_blank\'>" + scriptCategory.toUpperCase() + " - " + scriptFriendlyName + "</a></li>");
                                 } 
-                            }
+                                    
+                                    
+                            } 
+                        }
                             
-                            scriptCheck.open('GET', scriptURL);                            
-                            scriptCheck.send();
+                        scriptCheck.open('GET', scriptURL, false);                            
+                        scriptCheck.send();
                         
-                        }
-                        
-                        //var x = "";
-                        
-                        function scriptURLAccurate(data) {
-                            listOfScripts = listOfScripts + "<p><a href='" + scriptURL + "'>" + scriptFriendlyName + "</a> | " + scriptCategory + " | " + data + "</p>";
-                            document.getElementById("listOfScripts").innerHTML = listOfScripts;
-                        }
-                        
-                        grabScript(scriptURL, scriptURLAccurate);
+
 
                     }
                 }
-                
-                //document.getElementById("listOfScripts").innerHTML = listOfScripts;
-
             }
         }
     }
-    
     request.send(null);
 }
