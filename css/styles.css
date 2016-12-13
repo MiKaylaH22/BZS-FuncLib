@@ -100,17 +100,6 @@ code {
     font-family: 'Source Code Pro', monospace;
 }
 
-nav {
-    font-family: 'Oxygen', sans-serif;
-    font-weight: 300;
-    font-size: 14px;
-}
-
-.navbar-brand {
-    font-size: 20px;
-    font-weight: bold;
-}
-
 h1 {
     font-family: 'Oxygen', sans-serif;
     font-weight: 700;
@@ -124,6 +113,17 @@ h2, h3, h4, h5, h6 {
 p, li {
     font-family: 'Source Sans Pro', sans-serif;
     font-size: 14px;
+}
+
+nav {
+    font-family: 'Oxygen', sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+}
+
+.navbar-brand {
+    font-size: 20px;
+    font-weight: bold;
 }
 
 .tag-buttons {
