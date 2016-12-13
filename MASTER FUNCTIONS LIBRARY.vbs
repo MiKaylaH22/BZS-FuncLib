@@ -3998,7 +3998,7 @@ function start_a_blank_CASE_NOTE()
 	Loop until (mode_check = "A" or mode_check = "E")
 end function
 
-function transmit
+function transmit()
 '--- This function sends or hits the transmit key. 
  '===== Keywords: MAXIS, MMIS, PRISM, transmit
   EMSendKey "<enter>"
