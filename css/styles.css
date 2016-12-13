@@ -96,6 +96,10 @@ body {
     margin-top: 50px;
 }
 
+code {
+    font-family: 'Source Code Pro', monospace;
+}
+
 nav {
     font-family: 'Oxygen', sans-serif;
     font-weight: 300;
@@ -109,13 +113,12 @@ nav {
 
 h1 {
     font-family: 'Oxygen', sans-serif;
-    font-weight: 300;
-    font-size: 24px;
+    font-weight: 700;
 }
 
-h2 {
-    font-family: 'Source Sans Pro', sans-serif;
-    font-size: 16px;
+h2, h3, h4, h5, h6 {
+    font-family: 'Oxygen', sans-serif;
+    font-weight: 300;
 }
 
 p, li {
