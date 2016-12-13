@@ -1,12 +1,11 @@
+// TODO: create page explaining how to use FuncLib in your project
+// TODO: needs to check MAXIS scripts for functions as well
+// TODO: needs some kind of method to display cases where there were no functions found in any scripts
 // TODO: Create alpha links bar in navbar, corresponding functionality in the long lists
 // TODO: turn dummy tag buttons into useable tag buttons which sort and integrate with the Functions by tags menu
 // TODO: add a feature to switch branches (master or insert your own)
-// TODO: create page explaining how to use FuncLib in your project
 // TODO: replace warning text with a spinner or something so as not to alarm folks with slow connections, move warning text to something that happens if connection not made
 // TODO: create expand all functionality
-// TODO: transmit may be missing parenthesis
-// TODO: needs some kind of method to display cases where there were no functions found in any scripts
-// TODO: needs to check MAXIS scripts for functions as well
 
 function displayFuncLibInfo() {
 
