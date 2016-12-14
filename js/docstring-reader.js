@@ -1,3 +1,5 @@
+// TODO: add footer to all docs
+// TODO: make it so brand actually goes to index.html
 // TODO: needs to check MAXIS scripts for functions as well
 // TODO: investigate why some functions like transmit aren't showing many results (case sensitive perhaps?)
 // TODO: needs some kind of method to display cases where there were no functions found in any scripts
@@ -6,6 +8,7 @@
 // TODO: add a feature to switch branches (master or insert your own)
 // TODO: replace warning text with a spinner or something so as not to alarm folks with slow connections, move warning text to something that happens if connection not made
 // TODO: create expand all functionality
+// TODO: add "copy to clipboard" button for FuncLib block
 
 function displayFuncLibInfo() {
 
