@@ -1,5 +1,5 @@
-// TODO: create page explaining how to use FuncLib in your project
 // TODO: needs to check MAXIS scripts for functions as well
+// TODO: investigate why some functions like transmit aren't showing many results (case sensitive perhaps?)
 // TODO: needs some kind of method to display cases where there were no functions found in any scripts
 // TODO: Create alpha links bar in navbar, corresponding functionality in the long lists
 // TODO: turn dummy tag buttons into useable tag buttons which sort and integrate with the Functions by tags menu
