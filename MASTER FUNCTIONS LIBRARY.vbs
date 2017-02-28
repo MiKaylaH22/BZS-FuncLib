@@ -56,6 +56,11 @@ With (CreateObject("Scripting.FileSystemObject"))															'Creating an FSO
 	END IF
 END WITH
 
+'The following code looks to find the user name of the user running the script---------------------------------------------------------------------------------------------
+'This is used in arrays that specify functionality to specific workers
+Set objNet = CreateObject("WScript.NetWork")  
+windows_user_ID = objNet.UserName 
+
 '=========================================================================================================================================================================== FUNCTIONS RELATED TO GLOBAL CONSTANTS
 FUNCTION income_test_SNAP_categorically_elig(household_size, income_limit) '165% FPG
 	'See Combined Manual 0019.06
