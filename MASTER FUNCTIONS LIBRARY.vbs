@@ -2409,6 +2409,32 @@ function create_array_of_all_active_x_numbers_in_county(array_name, county_code)
 	array_name = split(array_name)
 end function
 
+FUNCTION create_outlook_appointment(appt_date, appt_start_time, appt_end_time, appt_subject, appt_body, appt_location, appt_reminder, appt_category)
+	'Assigning needed numbers as variables for readability
+	olAppointmentItem = 1
+	olRecursDaily = 0
+
+	'Creating an Outlook object item
+	Set objOutlook = CreateObject("Outlook.Application")
+	Set objAppointment = objOutlook.CreateItem(olAppointmentItem)
+
+	'Assigning individual appointment options
+	objAppointment.Start = appt_date & " " & appt_start_time		'Start date and time are carried over from parameters
+	objAppointment.End = appt_date & " " & appt_end_time			'End date and time are carried over from parameters
+	objAppointment.AllDayEvent = False 								'Defaulting to false for this. Perhaps someday this can be true. Who knows.
+	objAppointment.Subject = appt_subject							'Defining the subject from parameters
+	objAppointment.Body = appt_body									'Defining the body from parameters
+	objAppointment.Location = appt_location							'Defining the location from parameters
+	If appt_reminder = FALSE then									'If the reminder parameter is false, it skips the reminder, otherwise it sets it to match the number here.
+		objAppointment.ReminderSet = False
+	Else
+		objAppointment.ReminderMinutesBeforeStart = appt_reminder
+		objAppointment.ReminderSet = True
+	End if
+	objAppointment.Categories = appt_category						'Defines a category
+	objAppointment.Save												'Saves the appointment
+END FUNCTION
+
 function create_mainframe_friendly_date(date_variable, screen_row, screen_col, year_type)
 '--- This function creates a mainframe friendly date. This can be used for both year formats and input spacing.
 '~~~~~ date_variable: the name of the variable to output 
