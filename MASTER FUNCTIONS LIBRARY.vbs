@@ -2409,32 +2409,6 @@ function create_array_of_all_active_x_numbers_in_county(array_name, county_code)
 	array_name = split(array_name)
 end function
 
-FUNCTION create_outlook_appointment(appt_date, appt_start_time, appt_end_time, appt_subject, appt_body, appt_location, appt_reminder, appt_category)
-	'Assigning needed numbers as variables for readability
-	olAppointmentItem = 1
-	olRecursDaily = 0
-
-	'Creating an Outlook object item
-	Set objOutlook = CreateObject("Outlook.Application")
-	Set objAppointment = objOutlook.CreateItem(olAppointmentItem)
-
-	'Assigning individual appointment options
-	objAppointment.Start = appt_date & " " & appt_start_time		'Start date and time are carried over from parameters
-	objAppointment.End = appt_date & " " & appt_end_time			'End date and time are carried over from parameters
-	objAppointment.AllDayEvent = False 								'Defaulting to false for this. Perhaps someday this can be true. Who knows.
-	objAppointment.Subject = appt_subject							'Defining the subject from parameters
-	objAppointment.Body = appt_body									'Defining the body from parameters
-	objAppointment.Location = appt_location							'Defining the location from parameters
-	If appt_reminder = FALSE then									'If the reminder parameter is false, it skips the reminder, otherwise it sets it to match the number here.
-		objAppointment.ReminderSet = False
-	Else
-		objAppointment.ReminderMinutesBeforeStart = appt_reminder
-		objAppointment.ReminderSet = True
-	End if
-	objAppointment.Categories = appt_category						'Defines a category
-	objAppointment.Save												'Saves the appointment
-END FUNCTION
-
 function create_mainframe_friendly_date(date_variable, screen_row, screen_col, year_type)
 '--- This function creates a mainframe friendly date. This can be used for both year formats and input spacing.
 '~~~~~ date_variable: the name of the variable to output 
@@ -2525,6 +2499,43 @@ function create_MAXIS_friendly_phone_number(phone_number_variable, screen_row, s
 	EMWriteScreen mid(phone_number_variable, 4, 3), screen_row, screen_col + 6	'writes in middle 3 digits of the phone number in variable
 	EMWriteScreen right(phone_number_variable, 4), screen_row, screen_col + 12	'writes in right 4 digits of the phone number in variable
 end function
+
+FUNCTION create_outlook_appointment(appt_date, appt_start_time, appt_end_time, appt_subject, appt_body, appt_location, appt_reminder, appt_category)
+'--- This function creates a an outlook appointment
+'~~~~~ (appt_date): date of the appointment
+'~~~~~ (appt_start_time): start time of the appointment - format example: "08:00 AM"
+'~~~~~ (appt_end_time): end time of the appointment - format example: "08:00 AM"
+'~~~~~ (appt_subject): subject of the email in quotations or a variable
+'~~~~~ (appt_body): body of the email in quotations or a variable
+'~~~~~ (appt_location): name of location in quotations or a variable
+'~~~~~ (appt_reminder): reminder for appointment. Set to TRUE or FALSE 
+'~~~~~ (appt_category): can be left "" or assgin to the set the name of the category in quotations
+'===== Keywords: MAXIS, PRISM, create, outlook, appointment
+
+	'Assigning needed numbers as variables for readability
+	olAppointmentItem = 1
+	olRecursDaily = 0
+
+	'Creating an Outlook object item
+	Set objOutlook = CreateObject("Outlook.Application")
+	Set objAppointment = objOutlook.CreateItem(olAppointmentItem)
+
+	'Assigning individual appointment options
+	objAppointment.Start = appt_date & " " & appt_start_time		'Start date and time are carried over from parameters
+	objAppointment.End = appt_date & " " & appt_end_time			'End date and time are carried over from parameters
+	objAppointment.AllDayEvent = False 								'Defaulting to false for this. Perhaps someday this can be true. Who knows.
+	objAppointment.Subject = appt_subject							'Defining the subject from parameters
+	objAppointment.Body = appt_body									'Defining the body from parameters
+	objAppointment.Location = appt_location							'Defining the location from parameters
+	If appt_reminder = FALSE then									'If the reminder parameter is false, it skips the reminder, otherwise it sets it to match the number here.
+		objAppointment.ReminderSet = False
+	Else
+		objAppointment.ReminderMinutesBeforeStart = appt_reminder
+		objAppointment.ReminderSet = True
+	End if
+	objAppointment.Categories = appt_category						'Defines a category
+	objAppointment.Save												'Saves the appointment
+END FUNCTION
 
 function create_panel_if_nonexistent()
 '--- This function creates a panel if a panel does not exist. This is currently only used within the FuncLib itself.
