@@ -3489,6 +3489,64 @@ function navigate_to_MAXIS(maxis_mode)
 	END IF
 end function
 
+function navigate_to_MAXIS_screen(function_to_go_to, command_to_go_to)
+'--- This function is to be used to navigate to a specific MAXIS screen
+'~~~~~ function_to_go_to: needs to be MAXIS function like "STAT" or "REPT"
+'~~~~~ command_to_go_to: needs to be MAXIS function like "WREG" or "ACTV"
+'===== Keywords: MAXIS, navigate
+  EMSendKey "<enter>"
+  EMWaitReady 0, 0
+  EMReadScreen MAXIS_check, 5, 1, 39
+  If MAXIS_check = "MAXIS" or MAXIS_check = "AXIS " then
+    EMReadScreen locked_panel, 23, 2, 30
+    IF locked_panel = "Program History Display" then
+	PF3 'Checks to see if on Program History panel - which does not allow the Command line to be updated
+    END IF
+    row = 1
+    col = 1
+    EMSearch "function: ", row, col
+    If row <> 0 then
+      EMReadScreen MAXIS_function, 4, row, col + 10
+      EMReadScreen STAT_note_check, 4, 2, 45
+      row = 1
+      col = 1
+      EMSearch "Case Nbr: ", row, col
+      EMReadScreen current_case_number, 8, row, col + 10
+      current_case_number = replace(current_case_number, "_", "")
+      current_case_number = trim(current_case_number)
+    End if
+    If current_case_number = MAXIS_case_number and MAXIS_function = ucase(function_to_go_to) and STAT_note_check <> "NOTE" then
+      row = 1
+      col = 1
+      EMSearch "Command: ", row, col
+      EMWriteScreen command_to_go_to, row, col + 9
+      EMSendKey "<enter>"
+      EMWaitReady 0, 0
+    Else
+      Do
+        EMSendKey "<PF3>"
+        EMWaitReady 0, 0
+        EMReadScreen SELF_check, 4, 2, 50
+      Loop until SELF_check = "SELF"
+      EMWriteScreen function_to_go_to, 16, 43
+      EMWriteScreen "________", 18, 43
+      EMWriteScreen MAXIS_case_number, 18, 43
+      EMWriteScreen MAXIS_footer_month, 20, 43
+      EMWriteScreen MAXIS_footer_year, 20, 46
+      EMWriteScreen command_to_go_to, 21, 70
+      EMSendKey "<enter>"
+      EMWaitReady 0, 0
+      EMReadScreen abended_check, 7, 9, 27
+      If abended_check = "abended" then
+        EMSendKey "<enter>"
+        EMWaitReady 0, 0
+      End if
+	  EMReadScreen ERRR_check, 4, 2, 52			'Checking for the ERRR screen
+	  If ERRR_check = "ERRR" then transmit		'If the ERRR screen is found, it transmits
+    End if
+  End if
+end function
+
 function navigate_to_MMIS()
 '--- This function is to be used when navigating to MMIS from another function in BlueZone (MAXIS, PRISM, INFOPAC, etc.)
 '===== Keywords: MMIS, navigate
@@ -3583,64 +3641,6 @@ function navigate_to_MMIS()
 	EMSearch "RECIPIENT FILE APPLICATION", row, col
 	EMWriteScreen "x", row, col - 3
 	transmit
-end function
-
-function navigate_to_MAXIS_screen(function_to_go_to, command_to_go_to)
-'--- This function is to be used to navigate to a specific MAXIS screen
-'~~~~~ function_to_go_to: needs to be MAXIS function like "STAT" or "REPT"
-'~~~~~ command_to_go_to: needs to be MAXIS function like "WREG" or "ACTV"
-'===== Keywords: MAXIS, navigate
-  EMSendKey "<enter>"
-  EMWaitReady 0, 0
-  EMReadScreen MAXIS_check, 5, 1, 39
-  If MAXIS_check = "MAXIS" or MAXIS_check = "AXIS " then
-    EMReadScreen locked_panel, 23, 2, 30
-    IF locked_panel = "Program History Display" then
-	PF3 'Checks to see if on Program History panel - which does not allow the Command line to be updated
-    END IF
-    row = 1
-    col = 1
-    EMSearch "function: ", row, col
-    If row <> 0 then
-      EMReadScreen MAXIS_function, 4, row, col + 10
-      EMReadScreen STAT_note_check, 4, 2, 45
-      row = 1
-      col = 1
-      EMSearch "Case Nbr: ", row, col
-      EMReadScreen current_case_number, 8, row, col + 10
-      current_case_number = replace(current_case_number, "_", "")
-      current_case_number = trim(current_case_number)
-    End if
-    If current_case_number = MAXIS_case_number and MAXIS_function = ucase(function_to_go_to) and STAT_note_check <> "NOTE" then
-      row = 1
-      col = 1
-      EMSearch "Command: ", row, col
-      EMWriteScreen command_to_go_to, row, col + 9
-      EMSendKey "<enter>"
-      EMWaitReady 0, 0
-    Else
-      Do
-        EMSendKey "<PF3>"
-        EMWaitReady 0, 0
-        EMReadScreen SELF_check, 4, 2, 50
-      Loop until SELF_check = "SELF"
-      EMWriteScreen function_to_go_to, 16, 43
-      EMWriteScreen "________", 18, 43
-      EMWriteScreen MAXIS_case_number, 18, 43
-      EMWriteScreen MAXIS_footer_month, 20, 43
-      EMWriteScreen MAXIS_footer_year, 20, 46
-      EMWriteScreen command_to_go_to, 21, 70
-      EMSendKey "<enter>"
-      EMWaitReady 0, 0
-      EMReadScreen abended_check, 7, 9, 27
-      If abended_check = "abended" then
-        EMSendKey "<enter>"
-        EMWaitReady 0, 0
-      End if
-	  EMReadScreen ERRR_check, 4, 2, 52			'Checking for the ERRR screen
-	  If ERRR_check = "ERRR" then transmit		'If the ERRR screen is found, it transmits
-    End if
-  End if
 end function
 
 function navigate_to_PRISM_screen(x) 
