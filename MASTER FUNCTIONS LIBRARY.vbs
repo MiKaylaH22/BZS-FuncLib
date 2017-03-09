@@ -3965,7 +3965,12 @@ function script_end_procedure(closing_message)
         else
             SCRIPT_success = 0
         end if
-
+		
+		'Determines if the value of the MAXIS case number - BULK and UTILITIES scripts will not have case number informaiton input into the database									
+		IF left(name_of_script, 4) = "BULK" or left(name_of_script, 4) = "UTIL" then 	
+			MAXIS_CASE_NUMBER = ""											
+		End if 
+		
 		'Creating objects for Access
 		Set objConnection = CreateObject("ADODB.Connection")
 		Set objRecordSet = CreateObject("ADODB.Recordset")
@@ -3979,17 +3984,22 @@ function script_end_procedure(closing_message)
 		ELSE
 			objConnection.Open "Provider = Microsoft.ACE.OLEDB.12.0; Data Source = " & "" & stats_database_path & ""
 		END IF
-
+		
         'Adds some data for users of the old database, but adds lots more data for users of the new.
         If STATS_enhanced_db = false or STATS_enhanced_db = "" then     'For users of the old db
     		'Opening usage_log and adding a record
     		objRecordSet.Open "INSERT INTO usage_log (USERNAME, SDATE, STIME, SCRIPT_NAME, SRUNTIME, CLOSING_MSGBOX)" &  _
     		"VALUES ('" & user_ID & "', '" & date & "', '" & time & "', '" & name_of_script & "', " & script_run_time & ", '" & closing_message & "')", objConnection, adOpenStatic, adLockOptimistic
-        Else    'for users of the new db
+		'collecting case numbers counties
+		Elseif collect_MAXIS_case_number = true then 
+			objRecordSet.Open "INSERT INTO usage_log (USERNAME, SDATE, STIME, SCRIPT_NAME, SRUNTIME, CLOSING_MSGBOX, STATS_COUNTER, STATS_MANUALTIME, STATS_DENOMINATION, WORKER_COUNTY_CODE, SCRIPT_SUCCESS, CASE_NUMBER)" &  _
+			"VALUES ('" & user_ID & "', '" & date & "', '" & time & "', '" & name_of_script & "', " & abs(script_run_time) & ", '" & closing_message & "', " & abs(STATS_counter) & ", " & abs(STATS_manualtime) & ", '" & STATS_denomination & "', '" & worker_county_code & "', " & SCRIPT_success & ", '" & MAXIS_CASE_NUMBER & "')", objConnection, adOpenStatic, adLockOptimistic
+		 'for users of the new db
+		Else   
             objRecordSet.Open "INSERT INTO usage_log (USERNAME, SDATE, STIME, SCRIPT_NAME, SRUNTIME, CLOSING_MSGBOX, STATS_COUNTER, STATS_MANUALTIME, STATS_DENOMINATION, WORKER_COUNTY_CODE, SCRIPT_SUCCESS)" &  _
             "VALUES ('" & user_ID & "', '" & date & "', '" & time & "', '" & name_of_script & "', " & abs(script_run_time) & ", '" & closing_message & "', " & abs(STATS_counter) & ", " & abs(STATS_manualtime) & ", '" & STATS_denomination & "', '" & worker_county_code & "', " & SCRIPT_success & ")", objConnection, adOpenStatic, adLockOptimistic
         End if
-
+		
 		'Closing the connection
 		objConnection.Close
 	End if
