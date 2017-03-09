@@ -4617,13 +4617,13 @@ function write_three_columns_in_CASE_NOTE(col_01_start_point, col_01_variable, c
   End if
 end function
 
-function write_value_and_transmit(input_value, MAXIS_row, MAXIS_col)
+function write_value_and_transmit(input_value, row, col)
 '--- This function writes a specific value and transmits.
 '~~~~~ input_value: information to be entered 
-'~~~~~ MAXIS_row: row to write the input_value
-'~~~~~ MAXIS_col: column to write the input_value
-'===== Keywords: MAXIS, case note, three columns, format
-	EMWriteScreen input_value, MAXIS_row, MAXIS_col
+'~~~~~ row: row to write the input_value
+'~~~~~ col: column to write the input_value
+'===== Keywords: MAXIS, PRISM, case note, three columns, format
+	EMWriteScreen input_value, row, col
 	transmit
 end function
 
