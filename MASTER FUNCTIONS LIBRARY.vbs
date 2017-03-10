@@ -3662,17 +3662,6 @@ function navigate_to_PRISM_screen(x)
   EMWaitReady 0, 0
 end function
 
-function new_page_check()
-
-  EMGetCursor MAXIS_row, MAXIS_col
-  If MAXIS_row = 17 then
-    EMSendKey ">>>>MORE>>>>"
-    EMSendKey "<PF8>"
-    EMWaitReady 0, 0
-    MAXIS_row = 4
-  End if
-end function
-
 function open_URL_in_browser(URL_to_open)
 '--- This function is to be used to open a URL in user's default browser
 '~~~~~ URL_to_open: web address to open
