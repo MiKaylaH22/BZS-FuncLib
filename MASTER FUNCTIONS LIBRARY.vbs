@@ -2054,12 +2054,22 @@ end function
 function change_client_name_to_FML(client_name)
 '--- This function changes the format of a participant name. client's name formatted like "Levesseur, Wendy K", and will change it to "Wendy K LeVesseur".
 '~~~~~ client_name: variable used within the script for name to be converted
-'===== Keywords: PRISM, name, change
+'===== Keywords: PRISM, MAXIS, name, change
+
 	client_name = trim(client_name)
 	length = len(client_name)
-	position = InStr(client_name, ", ")
-	last_name = Left(client_name, position-1)
-	first_name = Right(client_name, length-position-1)
+	
+	'Adds handling for names that have no spaces or 1 space
+	If Instr(client_name, ", ") then 
+		position = InStr(client_name, ", ")  
+		first_name = Right(client_name, length-position - 1) 
+	elseif Instr(client_name, ",") then  
+		position = InStr(client_name, ",")                           '
+		first_name = Right(client_name, length-position)
+	END if 
+	last_name = Left(client_name, position - 1)
+	
+	'final formating of the client name
 	client_name = first_name & " " & last_name
 	client_name = lcase(client_name)
 	call fix_case(client_name, 1)
